@@ -7,31 +7,22 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Layout;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class HomePage extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
     ActionBarDrawerToggle actionBarDrawerToggle;
 
-    private LinearLayout neworderBtn,orderHistory_btn;
+    private LinearLayout neworderBtn,orderHistory_btn,booking_btn;
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         if(actionBarDrawerToggle.onOptionsItemSelected(item)){
@@ -45,11 +36,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage);
 
+        booking_btn = findViewById(R.id.booking_btn);
+        booking_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bookingPage(v);
+            }
+        });
+
         neworderBtn = findViewById(R.id.neworder_btn);
         neworderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,neworder.class);
+                Intent intent = new Intent(HomePage.this,neworder.class);
                 startActivity(intent);
             }
         });
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         orderHistory_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,Orderhistory.class);
+                Intent intent = new Intent(HomePage.this,Orderhistory.class);
                 startActivity(intent);
             }
         });
@@ -92,6 +91,11 @@ public class MainActivity extends AppCompatActivity {
     }
     public void onClosesideBar(View view){
         drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    public void bookingPage(View view){
+        Intent bookingPage = new Intent(HomePage.this, BookingPage.class);
+        startActivity(bookingPage);
     }
 
 }

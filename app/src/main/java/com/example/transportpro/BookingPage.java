@@ -38,4 +38,9 @@ public class BookingPage extends AppCompatActivity {
         Intent loginPage = new Intent(this, LoginPage.class);
         startActivity(loginPage);
     }
+
+    public void backHomePage(View view){
+        Intent homePage = new Intent(BookingPage.this, HomePage.class);
+        startActivity(homePage);
+    }
 }

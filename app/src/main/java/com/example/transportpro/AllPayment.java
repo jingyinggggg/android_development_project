@@ -1,6 +1,5 @@
-package com.example.setting;
+package com.example.transportpro;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

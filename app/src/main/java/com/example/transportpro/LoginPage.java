@@ -89,7 +89,7 @@ public class LoginPage extends AppCompatActivity {
 
     public void openHomePage(){
 //        Intent home = new Intent(this, BookingPage.class);
-        Intent home = new Intent(this, ParcelPage.class);
+        Intent home = new Intent(this, HomePage.class);
         startActivity(home);
     }
 

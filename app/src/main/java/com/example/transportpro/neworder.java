@@ -33,7 +33,7 @@ public class neworder extends AppCompatActivity {
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(neworder.this,MainActivity.class);
+                Intent intent = new Intent(neworder.this, HomePage.class);
                 startActivity(intent);
             }
         });

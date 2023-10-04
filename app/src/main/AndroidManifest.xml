@@ -44,7 +44,7 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize"/>
         <activity
-            android:name=".MainActivity"
+            android:name=".HomePage"
             android:exported="false"/>
         <activity
             android:name=".ParcelViewPage"

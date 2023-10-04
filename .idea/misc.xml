@@ -6,7 +6,6 @@
   <component name="ProjectType">
     <option name="id" value="Android" />
   </component>
-
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
@@ -14,5 +13,4 @@
       </ProjectState>
     </option>
   </component>
-
 </project>

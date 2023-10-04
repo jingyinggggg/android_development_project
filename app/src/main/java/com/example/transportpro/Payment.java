@@ -1,14 +1,10 @@
-package com.example.setting;
+package com.example.transportpro;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.app.Dialog;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 
 public class Payment extends AppCompatActivity {
