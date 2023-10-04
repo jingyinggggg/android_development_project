@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-public class MainActivity extends AppCompatActivity {
+public class Setting extends AppCompatActivity {
     public ImageButton account;
     public ImageButton password;
     public ImageButton delete;
@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_setting);
 
         account = (ImageButton)findViewById(R.id.goAccountButton);
         account.setOnClickListener(new View.OnClickListener() {

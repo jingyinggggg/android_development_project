@@ -17,7 +17,6 @@ import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,7 +65,7 @@ public class DeleteAccountPage extends AppCompatActivity {
     }
 
     public void backSettingPage() {
-        Intent settingPage = new Intent(this, MainActivity.class);
+        Intent settingPage = new Intent(this, Setting.class);
         startActivity(settingPage);
     }
 

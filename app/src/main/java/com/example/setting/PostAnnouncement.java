@@ -1,7 +1,5 @@
 package com.example.setting;
 
-import static java.security.AccessController.getContext;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -101,7 +99,7 @@ public class PostAnnouncement extends AppCompatActivity {
 
     // back admin homepage
     public void backAdminHomepage() {
-        Intent intent = new Intent(PostAnnouncement.this, MainActivity.class);
+        Intent intent = new Intent(PostAnnouncement.this, Setting.class);
         startActivity(intent);
     }
 }

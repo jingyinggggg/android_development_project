@@ -119,7 +119,7 @@ public class PasswordSecurityPage extends AppCompatActivity {
     }
 
     public void backSettingPage(){
-        Intent settingPage = new Intent(this,MainActivity.class);
+        Intent settingPage = new Intent(this, Setting.class);
         startActivity(settingPage);
     }
     private class PasswordTextWatcher implements TextWatcher {

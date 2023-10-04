@@ -25,7 +25,7 @@ public class AccountPage extends AppCompatActivity {
     }
 
     public void backSettingPage(){
-        Intent settingPage = new Intent(this,MainActivity.class);
+        Intent settingPage = new Intent(this, Setting.class);
         startActivity(settingPage);
     }
 }

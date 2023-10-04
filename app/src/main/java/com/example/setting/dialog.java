@@ -27,7 +27,7 @@ public class dialog extends AppCompatDialogFragment {
 
 
     public void backSettingPage(){
-        Intent settingPage = new Intent(getContext(), MainActivity.class);
+        Intent settingPage = new Intent(getContext(), Setting.class);
         startActivity(settingPage);
     }
 

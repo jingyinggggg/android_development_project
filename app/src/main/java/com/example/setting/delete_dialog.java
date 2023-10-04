@@ -28,7 +28,7 @@ public class delete_dialog extends AppCompatDialogFragment {
 
     /* Main Activity class need to change to welcome page */
     public void backWelcomePage(){
-        Intent settingPage = new Intent(getContext(), MainActivity.class);
+        Intent settingPage = new Intent(getContext(), Setting.class);
         startActivity(settingPage);
     }
 
