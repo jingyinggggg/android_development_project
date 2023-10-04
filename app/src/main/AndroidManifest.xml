@@ -32,6 +32,46 @@
             android:exported="false" />
         <activity
             android:name=".Setting"
+            android:exported="false" />
+        <activity
+            android:name=".Edit_order"
+            android:exported="false" />
+        <activity
+            android:name=".Orderhistory"
+            android:exported="false" />
+        <activity
+            android:name=".neworder"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".ParcelViewPage"
+            android:exported="false" />
+        <activity
+            android:name=".ParcelPage"
+            android:exported="false" />
+        <activity
+            android:name=".ParcelEditPage"
+            android:exported="false" />
+        <activity
+            android:name=".NotificationPage"
+            android:exported="false" />
+        <activity
+            android:name=".PricingPage"
+            android:exported="false" />
+        <activity
+            android:name=".BookingPage"
+            android:exported="false" />
+        <activity
+            android:name=".SignUpPage"
+            android:exported="false" />
+        <activity
+            android:name=".LoginPage"
+            android:exported="false" />
+        <activity
+            android:name=".WelcomePage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,3 +86,4 @@
     </application>
 
 </manifest>
+

@@ -13,6 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "setting"
-include(":app")
- 
+rootProject.name = "TransportPro"
+include(":app") 

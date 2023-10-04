@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PricingPage">
+
+    <ImageButton
+        android:id="@+id/backIcon"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        app:srcCompat="@drawable/back_arrow"
+        android:background="@android:color/transparent"
+        android:onClick="backLoginPage"/>
+
+    <TextView
+        android:id="@+id/pricing"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/pricing"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/menu"
+        android:layout_marginTop="65dp"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/grey">
+    </View>
+
+    <ImageView
+        android:id="@+id/priceList"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@+id/menu"
+        android:layout_marginTop="10dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/price_list"/>
+
+    <TextView
+        android:id="@+id/estimateCost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/priceList"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:text="Estimate Shipping Cost Calculator"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textColor="@color/black"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+        android:id="@+id/textInputLayoutShippingType"
+        android:layout_width="175dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_below="@id/estimateCost"
+        android:hint="@string/transportationType"
+        app:startIconDrawable="@drawable/cargo"
+        app:startIconScaleType="fitCenter"
+        app:startIconTintMode="src_atop"
+        app:startIconTint="@color/black">
+
+        <AutoCompleteTextView
+            android:id="@+id/transportationTypeText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:inputType="none"
+            android:textSize="14sp"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/textInputLayoutWeight"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_below="@+id/textInputLayoutShippingType"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="5dp"
+        android:hint="Weight [KG]"
+        app:startIconDrawable="@drawable/weight"
+        app:startIconScaleType="fitCenter"
+        app:startIconTintMode="src_atop"
+        app:startIconTint="@color/black">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/weightText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:textSize="14sp"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:id="@+id/textInputLayoutArea"
+        android:layout_width="175dp"
+        android:layout_height="55dp"
+        android:layout_toRightOf="@+id/textInputLayoutShippingType"
+        android:layout_below="@+id/estimateCost"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="-15dp"
+        android:layout_marginEnd="25dp"
+        android:hint="Area"
+        app:startIconDrawable="@drawable/location"
+        app:startIconScaleType="fitCenter"
+        app:startIconTintMode="src_atop"
+        app:startIconTint="@color/black">
+
+        <AutoCompleteTextView
+            android:id="@+id/areaTypeText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="none"
+            android:textSize="14sp"
+            android:layout_weight="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textInputLayoutWeight"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="8dp"
+        android:layout_alignParentEnd="true"
+        android:text="Check"
+        app:cornerRadius="7dp"
+        android:textColor="@color/white"/>
+
+<!--    android:enabled="false"-->
+
+    <TextView
+        android:id="@+id/priceTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/check"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:text="Shipping Cost"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textColor="@color/black"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/textInputLayoutPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/priceTextView"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:hint="Estimated Cost"
+        app:startIconDrawable="@drawable/calculator"
+        app:startIconScaleType="fitCenter"
+        app:startIconTintMode="src_atop"
+        app:startIconTint="@color/black">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/priceText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:textSize="14sp"
+            android:focusable="false"
+            android:clickable="false"
+            android:longClickable="false"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</RelativeLayout>
