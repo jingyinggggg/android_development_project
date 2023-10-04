@@ -149,7 +149,7 @@
             android:id="@+id/wallet"
             android:layout_width="94dp"
             android:layout_height="70dp"
-            android:src="@drawable/wallet"
+            android:src="@drawable/wallet2"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"/>
 

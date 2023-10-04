@@ -24,5 +24,8 @@
         <item name="android:textColorHint">@color/purple</item>
     </style>
 
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorSecondary">#3386C5</item>
+    </style>
 
 </resources>

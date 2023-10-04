@@ -14,5 +14,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "TransportPro"
-include(":app")
- 
+include(":app") 

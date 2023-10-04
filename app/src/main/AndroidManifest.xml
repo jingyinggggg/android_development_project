@@ -13,6 +13,19 @@
         android:theme="@style/Theme.TransportPro"
         tools:targetApi="31">
         <activity
+            android:name=".Edit_order"
+            android:exported="false" />
+        <activity
+            android:name=".Orderhistory"
+            android:exported="false" />
+        <activity
+            android:name=".neworder"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"/>
+        <activity
             android:name=".ParcelViewPage"
             android:exported="false" />
         <activity
