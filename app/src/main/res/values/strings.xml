@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">TransportPro</string>
+    <string name="username">Enter Username</string>
+    <string name="password">Enter Password</string>
+    <string name="rememberUser">Remember Me</string>
+    <string name="login">Login</string>
+    <string name="signup">Sign Up</string>
+    <string name="name">Enter Full Name</string>
+    <string name="email">Enter E-mail</string>
+    <string name="phoneNo">Enter Phone Number</string>
+    <string name="passwordReenter">Re-enter Password</string>
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
+    <string name="tryAgain">Try Again</string>
+    <string name="home">Home</string>
+    <string name="booking">Booking</string>
+    <string name="notification">Notification</string>
+    <string name="pricing">Pricing</string>
+    <string name="transportationType">Transport</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="parcel">Parcel</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

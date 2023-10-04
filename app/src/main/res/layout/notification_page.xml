@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E9E9E9"
+    tools:context=".NotificationPage">
+
+    <RelativeLayout
+        android:id="@+id/menu"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="@color/purple">
+
+        <ImageButton
+            android:id="@+id/backIcon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="15dp"
+            app:srcCompat="@drawable/back_arrow_white"
+            android:background="@android:color/transparent"
+            android:onClick="backLoginPage"/>
+
+        <TextView
+            android:id="@+id/notification"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="@string/notification"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/announcementContainer"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_below="@id/menu"
+        android:background="@color/white">
+        
+        <ImageView
+            android:id="@+id/announcement"
+            android:layout_width="94dp"
+            android:layout_height="70dp"
+            android:src="@drawable/maintenance"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/announcementText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/announcement"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Announcement"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/announcementDescription"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/announcement"
+            android:layout_below="@+id/announcementText"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:justificationMode="inter_word"
+            android:text="TransportPro will have maintenance tomorrow!"
+            android:textSize="14sp"
+            android:lineSpacingExtra="5sp"/>
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/containerSeparator"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/announcementContainer"
+        android:background="@color/grey">
+    </View>
+
+    <RelativeLayout
+        android:id="@+id/reminderContainer"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_below="@id/containerSeparator"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/reminder"
+            android:layout_width="94dp"
+            android:layout_height="70dp"
+            android:src="@drawable/reminder"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/reminderText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/reminder"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Reminder"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/reminderDescription"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/reminder"
+            android:layout_below="@+id/reminderText"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:justificationMode="inter_word"
+            android:text="Your parcel is collected at warehouse!Start ship to Malaysia now!"
+            android:textSize="14sp"
+            android:lineSpacingExtra="5sp"/>
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/containerSeparator2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/reminderContainer"
+        android:background="@color/grey">
+    </View>
+
+    <RelativeLayout
+        android:id="@+id/walletContainer"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_below="@id/containerSeparator2"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/wallet"
+            android:layout_width="94dp"
+            android:layout_height="70dp"
+            android:src="@drawable/wallet"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/walletText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/wallet"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Wallet Top Up"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/walletDescription"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/wallet"
+            android:layout_below="@+id/walletText"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:justificationMode="inter_word"
+            android:text="Insufficient balance in your wallet! Top up and enjoy our services now!"
+            android:textSize="14sp"
+            android:lineSpacingExtra="5sp"/>
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/containerSeparator3"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/walletContainer"
+        android:background="@color/grey">
+    </View>
+
+
+
+</RelativeLayout>
