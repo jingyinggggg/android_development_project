@@ -25,4 +25,14 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string-array name="choice_items">
+        <item>TransportPro Wallet</item>
+        <item>Tng Wallet</item>
+        <item>Online Banking</item>
+        <item>Debit/Credit Card</item>
+
+
+    </string-array>
+
 </resources>

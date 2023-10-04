@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AccountPage"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="414dp"
+        android:layout_height="75dp"
+        android:background="#3D3F99"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_gravity="center"
+            android:text="Account"
+            android:textColor="#FEFEFE"
+            android:textSize="24sp"
+            android:textStyle="bold"/>
+
+        <ImageButton
+            android:id="@+id/backArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="-40dp"
+            android:backgroundTint="#00FFFFFF"
+            android:onClick="settingPage"
+            app:srcCompat="@drawable/baseline_arrow_back_24" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/round_corner_layout"
+        android:elevation="10dp"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="111dp"
+            android:layout_height="116dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            tools:srcCompat="@drawable/woman" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="35dp"
+            android:layout_toRightOf="@id/imageView"
+            android:text="jingying"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="135dp"
+            android:layout_marginTop="60dp"
+            android:text="User id:ngjingyingtanguanyi"
+            android:textColor="#717171"
+            android:textSize="18sp"
+            android:typeface="sans" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="Personal Details"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:typeface="normal" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/white"
+        android:elevation="10dp"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/fullname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Full name         : "
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/getName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ng Jing Ying"
+            android:layout_marginTop="12dp"
+            android:layout_toRightOf="@id/fullname"/>
+
+        <TextView
+            android:id="@+id/mobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Mobile               : "
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/getMobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+60 130008882"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="48dp"
+            android:layout_toRightOf="@id/mobile"/>
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="80dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Email                 : "
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/getEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="ngjingying@gmail.com"
+            android:layout_marginTop="84dp"
+            android:layout_toRightOf="@id/email"/>
+
+        <TextView
+            android:id="@+id/postcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="115dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="Postcode          : "
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/getPostCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11900"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="120dp"
+            android:layout_toRightOf="@id/postcode"/>
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="150dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/roboto_medium"
+            android:text="4-line Address : "
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/getAddress"
+            android:layout_width="193dp"
+            android:layout_height="44dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="150dp"
+            android:layout_toRightOf="@id/address"
+            android:text="10A, Jalan Tengah,Sungai Ara, Pulau Pinang" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>
