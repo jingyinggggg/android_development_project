@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".homepage">
+
+    <!--Header-->
+    <include
+        layout="@layout/header_layout"
+        android:id="@+id/header"/>
+
+    <RelativeLayout
+        android:id="@+id/image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:layout_marginTop="75dp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/PostAnnouncement"
+        android:layout_below="@+id/image"
+        android:layout_marginTop="20sp">
+
+        <Button
+            android:layout_width="390dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_shape_homepage"
+            android:gravity="center"
+            android:text="Post Announcement"
+            android:textAllCaps="false"
+            android:drawableLeft="@drawable/post_announcement"
+            android:paddingLeft="30dip"
+            android:paddingRight="26dip"
+            android:textColor="@drawable/btn_txt_selector"
+            android:textIsSelectable="false" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ViewAndUpdateWarehouse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/PostAnnouncement"
+        android:layout_marginTop="21dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/warehouse"
+            android:layout_width="390dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/btn_shape_homepage"
+            android:text="View and Update Warehouse"
+            android:textAllCaps="false"
+            android:drawableLeft="@drawable/warehouse"
+            android:paddingLeft="30dip"
+            android:paddingRight="26dip"
+            android:textColor="@drawable/btn_txt_selector"
+            android:textIsSelectable="false" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/BookingRequest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ViewAndUpdateWarehouse"
+        android:layout_marginTop="21dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/booking_page"
+            android:layout_width="390dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/btn_shape_homepage"
+            android:text="Booking Request"
+            android:textAllCaps="false"
+            android:drawableLeft="@drawable/booking"
+            android:paddingLeft="30dip"
+            android:paddingRight="26dip"
+            android:textColor="@drawable/btn_txt_selector"
+            android:textIsSelectable="false"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/OrderRequest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/BookingRequest"
+        android:layout_marginTop="21dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/order_request"
+            android:layout_width="390dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/btn_shape_homepage"
+            android:text="Order Request"
+            android:textAllCaps="false"
+            android:drawableLeft="@drawable/order"
+            android:paddingLeft="30dip"
+            android:paddingRight="26dip"
+            android:textColor="@drawable/btn_txt_selector"
+            android:textIsSelectable="false" />
+
+    </LinearLayout>
+
+</RelativeLayout>

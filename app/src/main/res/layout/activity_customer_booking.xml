@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".CustomerBookingPage">
+
+    <!--Header-->
+    <include
+        layout="@layout/header_layout"
+        android:id="@+id/header"/>
+
+    <!--Body-->
+    <RelativeLayout
+        android:id="@+id/search_box"
+        android:layout_width="412dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/header"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/Search_cId"
+            android:layout_width="406dp"
+            android:layout_height="30dp"
+            android:paddingLeft="10dp"
+            android:drawableLeft="@drawable/search_icon"
+            android:drawablePadding="5dp"
+            android:hint="Enter Customer Id"
+            android:fontFamily="@font/inter_regular"
+            android:background="@drawable/text_box"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:layout_below="@+id/search_box"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <!-- Header Row -->
+        <TableRow
+            android:layout_width="390dp"
+            android:layout_height="44dp"
+            android:background="@drawable/table_header">
+
+            <!-- Header Column -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_medium"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="Booking Request"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+        </TableRow>
+
+        <!-- Row 1 -->
+        <TableRow
+            android:layout_width="390dp"
+            android:layout_height="48dp"
+            android:background="@drawable/table_row"
+            android:orientation="vertical"
+            >
+
+            <!-- Column 1 -->
+            <TextView
+                android:id="@+id/customerId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/black"
+                android:text="Customer ID: 000000"
+                android:fontFamily="@font/inter_regular" />
+
+            <Button
+                android:id="@+id/view_details"
+                android:layout_width="108dp"
+                android:layout_height="26dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="120dp"
+                android:background="@drawable/btn_shape_homepage"
+                android:backgroundTint="@color/blue"
+                android:textColor="@color/white"
+                android:text="View Details"
+                android:textAllCaps="false"
+                android:fontFamily="@font/inter_medium"/>
+
+        </TableRow>
+
+        <!-- Row 2 -->
+        <TableRow
+            android:layout_width="390dp"
+            android:layout_height="48dp"
+            android:background="@drawable/table_row">
+
+            <!-- Column 1 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/black"
+                android:text="Customer ID: 000000"
+                android:fontFamily="@font/inter_regular" />
+
+            <Button
+                android:layout_width="108dp"
+                android:layout_height="26dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="120dp"
+                android:background="@drawable/btn_shape_homepage"
+                android:backgroundTint="@color/blue"
+                android:textColor="@color/white"
+                android:text="View Details"
+                android:textAllCaps="false"
+                android:fontFamily="@font/inter_medium"/>
+
+        </TableRow>
+
+        <!-- Row 3 -->
+        <TableRow
+            android:layout_width="390dp"
+            android:layout_height="48dp"
+            android:background="@drawable/table_row">
+
+            <!-- Column 1 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/black"
+                android:text="Customer ID: 000000"
+                android:fontFamily="@font/inter_regular" />
+
+            <Button
+                android:layout_width="108dp"
+                android:layout_height="26dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="120dp"
+                android:background="@drawable/btn_shape_homepage"
+                android:backgroundTint="@color/blue"
+                android:textColor="@color/white"
+                android:text="View Details"
+                android:textAllCaps="false"
+                android:fontFamily="@font/inter_medium"/>
+
+        </TableRow>
+
+        <!-- Row 4 -->
+        <TableRow
+            android:layout_width="390dp"
+            android:layout_height="48dp"
+            android:background="@drawable/table_row">
+
+            <!-- Column 1 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/black"
+                android:text="Customer ID: 000000"
+                android:fontFamily="@font/inter_regular" />
+
+            <Button
+                android:layout_width="108dp"
+                android:layout_height="26dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="120dp"
+                android:background="@drawable/btn_shape_homepage"
+                android:backgroundTint="@color/blue"
+                android:textColor="@color/white"
+                android:text="View Details"
+                android:textAllCaps="false"
+                android:fontFamily="@font/inter_medium"/>
+
+        </TableRow>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
