@@ -49,6 +49,14 @@ public class Setting extends AppCompatActivity {
             }
         });
 
+        logout = (ImageButton)findViewById(R.id.goLogoutButton);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goLoginPage(view);
+            }
+        });
+
         test = (Button)findViewById(R.id.test);
         test.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +90,11 @@ public class Setting extends AppCompatActivity {
         startActivity(delete_account_page);
     }
 
+    public void goLoginPage(View view){
+        Intent login_page = new Intent(this, LoginPage.class);
+        startActivity(login_page);
+    }
+
     public void postAnnouncement(View view){
         Intent post_announcement = new Intent(this, PostAnnouncement.class);
         startActivity(post_announcement);
@@ -90,5 +103,10 @@ public class Setting extends AppCompatActivity {
     public void payment(View view){
         Intent payment = new Intent(this, Payment.class);
         startActivity(payment);
+    }
+
+    public void mainPage(View view){
+        Intent homePage = new Intent(Setting.this, HomePage.class);
+        startActivity(homePage);
     }
 }

@@ -22,7 +22,7 @@ public class HomePage extends AppCompatActivity {
     Toolbar toolbar;
     ActionBarDrawerToggle actionBarDrawerToggle;
 
-    private LinearLayout neworderBtn,orderHistory_btn,booking_btn;
+    private LinearLayout neworderBtn,orderHistory_btn,booking_btn,parcel_btn,payment_btn,pricing_btn,setting_btn;
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         if(actionBarDrawerToggle.onOptionsItemSelected(item)){
@@ -44,11 +44,19 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
+        parcel_btn = findViewById(R.id.parcel_btn);
+        parcel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                parcelPage(v);
+            }
+        });
+
         neworderBtn = findViewById(R.id.neworder_btn);
         neworderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomePage.this,neworder.class);
+                Intent intent = new Intent(HomePage.this, NewOrder.class);
                 startActivity(intent);
             }
         });
@@ -59,6 +67,30 @@ public class HomePage extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(HomePage.this,Orderhistory.class);
                 startActivity(intent);
+            }
+        });
+
+        payment_btn = findViewById(R.id.payment_btn);
+        payment_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                paymentPage(v);
+            }
+        });
+
+        pricing_btn = findViewById(R.id.pricing_btn);
+        pricing_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pricingPage(v);
+            }
+        });
+
+        setting_btn = findViewById(R.id.setting_btn);
+        setting_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                settingPage(v);
             }
         });
 
@@ -96,6 +128,31 @@ public class HomePage extends AppCompatActivity {
     public void bookingPage(View view){
         Intent bookingPage = new Intent(HomePage.this, BookingPage.class);
         startActivity(bookingPage);
+    }
+
+    public void parcelPage(View view){
+        Intent parcelPage = new Intent(HomePage.this, ParcelPage.class);
+        startActivity(parcelPage);
+    }
+
+    public void paymentPage(View view){
+        Intent paymentPage = new Intent(HomePage.this, Payment.class);
+        startActivity(paymentPage);
+    }
+
+    public void pricingPage(View view){
+        Intent pricingPage = new Intent(HomePage.this, PricingPage.class);
+        startActivity(pricingPage);
+    }
+
+    public void settingPage(View view){
+        Intent settingPage = new Intent(HomePage.this, Setting.class);
+        startActivity(settingPage);
+    }
+
+    public void notificationPage(View view){
+        Intent notificationPage = new Intent(HomePage.this, NotificationPage.class);
+        startActivity(notificationPage);
     }
 
 }

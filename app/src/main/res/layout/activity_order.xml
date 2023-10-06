@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".order"
+    android:orientation="vertical">
+
+  <!--Header-->
+  <include
+      layout="@layout/header_layout"
+      android:id="@+id/header"/>
+
+  <!--Requesting Order-->
+  <LinearLayout
+      android:id="@+id/chn_warehouse_border"
+      android:layout_width="390dp"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/search_box"
+      android:layout_marginStart="8dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginBottom="8dp"
+      android:background="@drawable/border_drop_shadow"
+      android:orientation="vertical"
+      android:gravity="center_vertical">
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+      <!--Warehouse Title-->
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Requesting Order"
+          android:textColor="@color/black"
+          android:textSize="18dp"
+          android:fontFamily="@font/inter_bold"
+          />
+
+      <!--All Order button-->
+      <Button
+          android:id="@+id/all_order"
+          android:layout_width="98dp"
+          android:layout_height="29dp"
+          android:layout_marginTop="20dp"
+          android:background="@color/white"
+          android:text="All Order" />
+
+      <!--Show Parcel Table-->
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="30dp"
+          android:orientation="vertical"
+          android:layout_gravity="center">
+
+
+        <!-- Row 1 -->
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="38dp"
+            android:background="@drawable/table_row">
+
+          <!-- Column 1 -->
+          <Button
+              android:id="@+id/order_id"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:fontFamily="@font/inter_medium"
+              android:gravity="center_vertical"
+              android:text="Order ID: 000000"
+              android:textAllCaps="false"
+              android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <!-- Row 2 -->
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="38dp"
+            android:background="@drawable/table_row">
+
+          <!-- Column 1 -->
+          <Button
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:fontFamily="@font/inter_regular"
+              android:gravity="center_vertical"
+              android:textAllCaps="false"
+              android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <!-- Row 3 -->
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="38dp"
+            android:background="@drawable/table_row">
+
+          <!-- Column 1 -->
+          <Button
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:fontFamily="@font/inter_regular"
+              android:gravity="center_vertical"
+              android:textAllCaps="false"
+              android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <!-- Row 4 -->
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="38dp"
+            android:background="@drawable/table_row">
+
+          <!-- Column 1 -->
+          <Button
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:fontFamily="@font/inter_regular"
+              android:gravity="center_vertical"
+              android:textAllCaps="false"
+              android:textColor="@color/black" />
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+    </LinearLayout>
+
+  </LinearLayout>
+  </LinearLayout>

@@ -14,7 +14,7 @@
         android:layout_marginLeft="15dp"
         app:srcCompat="@drawable/back_arrow"
         android:background="@android:color/transparent"
-        android:onClick="backLoginPage"/>
+        android:onClick="backHomePage"/>
 
     <TextView
         android:id="@+id/pricing"
