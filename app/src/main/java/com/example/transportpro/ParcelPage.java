@@ -62,7 +62,7 @@ public class ParcelPage extends AppCompatActivity {
     }
 
     public void backHomePage(View view){
-        Intent home = new Intent(ParcelPage.this, LoginPage.class);
+        Intent home = new Intent(ParcelPage.this, HomePage.class);
         startActivity(home);
     }
 

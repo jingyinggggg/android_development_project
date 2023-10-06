@@ -3,7 +3,10 @@ package com.example.transportpro;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -17,8 +20,6 @@ public class Payment extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
-
-
 
         tabLayout = findViewById(R.id.tab_layout);
         viewPager2 = findViewById(R.id.viewPager);
@@ -49,7 +50,19 @@ public class Payment extends AppCompatActivity {
             }
         });
 
+        ImageButton backHome = findViewById(R.id.backHome);
+        backHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backHomePage(v);
+            }
+        });
+
     }
 
+    public void backHomePage(View view){
+        Intent home = new Intent(Payment.this, HomePage.class);
+        startActivity(home);
+    }
 
 }

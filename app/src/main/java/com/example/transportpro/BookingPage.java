@@ -22,9 +22,7 @@ public class BookingPage extends AppCompatActivity {
             public void onClick(View v) {
                 showToast("Booking submitted!");
 
-//                Intent home = new Intent(BookingPage.this, LoginPage.class);
-                Intent home = new Intent(BookingPage.this, PricingPage.class);
-//                Intent home = new Intent(BookingPage.this, NotificationPage.class);
+                Intent home = new Intent(BookingPage.this, HomePage.class);
                 startActivity(home);
             }
         });

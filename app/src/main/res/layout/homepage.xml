@@ -217,7 +217,9 @@
                 android:src="@drawable/noti"
                 android:layout_gravity="end"
                 android:layout_marginRight="21sp"
-                ></ImageView>
+                android:onClick="notificationPage">
+
+            </ImageView>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -328,6 +330,7 @@
                     android:gravity="center">
 
                     <LinearLayout
+                        android:id="@+id/parcel_btn"
                         android:layout_width="90sp"
                         android:layout_height="85sp"
                         android:background="@drawable/customborder"
@@ -426,6 +429,7 @@
                     android:gravity="center">
 
                     <LinearLayout
+                        android:id="@+id/payment_btn"
                         android:layout_width="90sp"
                         android:layout_height="85sp"
                         android:background="@drawable/customborder"
@@ -458,6 +462,7 @@
                     android:gravity="center">
 
                     <LinearLayout
+                        android:id="@+id/pricing_btn"
                         android:layout_width="90sp"
                         android:layout_height="85sp"
                         android:background="@drawable/customborder"
@@ -490,6 +495,7 @@
                     android:gravity="center">
 
                     <LinearLayout
+                        android:id="@+id/setting_btn"
                         android:layout_width="90sp"
                         android:layout_height="85sp"
                         android:background="@drawable/customborder"

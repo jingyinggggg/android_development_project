@@ -13,24 +13,25 @@
         android:orientation="vertical">
 
         <ImageButton
-            android:id="@+id/backArrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:id="@+id/backHome"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginTop="20dp"
-            android:backgroundTint="#00FFFFFF"
-            android:onClick="homepage"
-            app:srcCompat="@drawable/baseline_arrow_back_24" />
+            android:layout_marginLeft="15dp"
+            app:srcCompat="@drawable/back_arrow"
+            android:background="@android:color/transparent"
+            android:onClick="backHomePage"/>
 
         <TextView
-            android:id="@+id/paymentTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/payment"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:text="Payment"
-            android:gravity="center"
-            android:textSize="24sp"
-            android:textStyle="bold"/>
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"

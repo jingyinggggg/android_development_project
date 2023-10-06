@@ -71,7 +71,7 @@
                 android:id="@+id/customerId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:textColor="@color/black"
                 android:text="Customer ID: 000000"
@@ -79,14 +79,15 @@
 
             <Button
                 android:id="@+id/view_details"
-                android:layout_width="108dp"
-                android:layout_height="26dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="120dp"
-                android:background="@drawable/btn_shape_homepage"
-                android:backgroundTint="@color/blue"
+                android:layout_width="130dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="100dp"
+                android:backgroundTint="@color/purple"
+                app:cornerRadius="7dp"
                 android:textColor="@color/white"
                 android:text="View Details"
+                android:textSize="12sp"
                 android:textAllCaps="false"
                 android:fontFamily="@font/inter_medium"/>
 
@@ -102,21 +103,23 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:textColor="@color/black"
                 android:text="Customer ID: 000000"
                 android:fontFamily="@font/inter_regular" />
 
             <Button
-                android:layout_width="108dp"
-                android:layout_height="26dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="120dp"
-                android:background="@drawable/btn_shape_homepage"
-                android:backgroundTint="@color/blue"
+                android:id="@+id/view_details2"
+                android:layout_width="130dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="100dp"
+                android:backgroundTint="@color/purple"
+                app:cornerRadius="7dp"
                 android:textColor="@color/white"
                 android:text="View Details"
+                android:textSize="12sp"
                 android:textAllCaps="false"
                 android:fontFamily="@font/inter_medium"/>
 
@@ -139,14 +142,16 @@
                 android:fontFamily="@font/inter_regular" />
 
             <Button
-                android:layout_width="108dp"
-                android:layout_height="26dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="120dp"
-                android:background="@drawable/btn_shape_homepage"
-                android:backgroundTint="@color/blue"
+                android:id="@+id/view_details3"
+                android:layout_width="130dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="100dp"
+                android:backgroundTint="@color/purple"
+                app:cornerRadius="7dp"
                 android:textColor="@color/white"
                 android:text="View Details"
+                android:textSize="12sp"
                 android:textAllCaps="false"
                 android:fontFamily="@font/inter_medium"/>
 
@@ -169,14 +174,16 @@
                 android:fontFamily="@font/inter_regular" />
 
             <Button
-                android:layout_width="108dp"
-                android:layout_height="26dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="120dp"
-                android:background="@drawable/btn_shape_homepage"
-                android:backgroundTint="@color/blue"
+                android:id="@+id/view_details4"
+                android:layout_width="130dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="100dp"
+                android:backgroundTint="@color/purple"
+                app:cornerRadius="7dp"
                 android:textColor="@color/white"
                 android:text="View Details"
+                android:textSize="12sp"
                 android:textAllCaps="false"
                 android:fontFamily="@font/inter_medium"/>
 
