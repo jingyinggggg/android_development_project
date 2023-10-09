@@ -23,7 +23,7 @@ public class BookingPage extends AppCompatActivity {
                 showToast("Booking submitted!");
 
 //                Intent home = new Intent(BookingPage.this, LoginPage.class);
-                Intent home = new Intent(BookingPage.this, PricingPage.class);
+                Intent home = new Intent(BookingPage.this, HomePage.class);
 //                Intent home = new Intent(BookingPage.this, NotificationPage.class);
                 startActivity(home);
             }
@@ -37,5 +37,10 @@ public class BookingPage extends AppCompatActivity {
     public void backLoginPage(View view){
         Intent loginPage = new Intent(this, LoginPage.class);
         startActivity(loginPage);
+    }
+
+    public void backHomePage(View view){
+        Intent homePage = new Intent(BookingPage.this, HomePage.class);
+        startActivity(homePage);
     }
 }

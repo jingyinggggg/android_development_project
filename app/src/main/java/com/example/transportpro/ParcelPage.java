@@ -52,17 +52,10 @@ public class ParcelPage extends AppCompatActivity {
             }
         });
 
-        ImageButton backHome = findViewById(R.id.backIcon);
-        backHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backHomePage(v);
-            }
-        });
     }
 
     public void backHomePage(View view){
-        Intent home = new Intent(ParcelPage.this, LoginPage.class);
+        Intent home = new Intent(ParcelPage.this, HomePage.class);
         startActivity(home);
     }
 
