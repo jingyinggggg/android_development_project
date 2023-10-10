@@ -121,6 +121,13 @@
             android:textSize="18sp"
             android:textColor="@color/white"/>
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/admin"
+            android:text="admin">
+
+        </Button>
 
 
     </LinearLayout>

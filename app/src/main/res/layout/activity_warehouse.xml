@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WarehouseAdmin">
+
+    <!--Header-->
+    <FrameLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#3D3F99"
+        android:gravity="center"
+        android:paddingTop="20sp"
+        android:paddingBottom="10sp">
+
+        <ImageButton
+            android:id="@+id/backArrow"
+            android:layout_width="32sp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00FFFFFF"
+            app:srcCompat="@drawable/baseline_arrow_back_24"
+            android:onClick="backAdminHomepage"/>
+
+
+        <TextView
+            android:layout_width="351dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="View Warehouse"
+            android:textColor="#FEFEFE"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+    </FrameLayout>
+
+    <!--Body-->
+    <RelativeLayout
+        android:layout_marginTop="2sp"
+        android:id="@+id/search_box"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/header"
+        android:gravity="center"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp">
+
+        <EditText
+            android:id="@+id/Search_cId"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:paddingLeft="10dp"
+            android:drawableLeft="@drawable/search_icon"
+            android:drawablePadding="5dp"
+            android:hint="Enter Track No"
+            android:fontFamily="@font/inter_regular"
+            android:background="@drawable/text_box"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/search_box"
+        android:layout_marginTop="5sp"
+        android:gravity="center_horizontal">
+
+
+    <!--China Warehouse-->
+        <LinearLayout
+            android:id="@+id/chn_warehouse_border"
+            android:layout_width="390dp"
+            android:layout_height="270dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/border_drop_shadow"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+
+                android:layout_gravity="center">
+
+                <!--Warehouse Title-->
+                <TextView
+                    android:id="@+id/chn_warehouse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="China Warehouse"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:fontFamily="@font/inter_bold"
+                    />
+
+                <TextView
+                    android:id="@+id/chn_warehouse_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="广东省佛山市 南海区狮山镇 狮岭村新马国际C仓黄生转ID0"
+                    android:fontFamily="@font/inter_regular"/>
+
+                <!--All Parcel button-->
+                <Button
+                    android:id="@+id/chn_allParcel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:textColor="@color/black"
+                    android:text="All Parcel"
+                    app:strokeWidth="1dp"
+                    app:cornerRadius="1dp"
+                    />
+
+                <!--Show Parcel Table-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+    >
+
+                    <!-- Row 1 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="38dp"
+                        android:backgroundTint="#D9D9D9"
+                        android:gravity="center">
+
+                        <!-- Column 1 -->
+                        <Button
+                            android:id="@+id/chn_trackNo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_regular"
+                            android:gravity="center_vertical"
+                            android:text="Track No: 000000"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:onClick="redirect_update_warehouse"
+                            android:backgroundTint="#D9D9D9"
+                            app:strokeWidth="1dp"
+                            app:cornerRadius="1dp"/>
+
+                    </LinearLayout>
+
+                    <!-- Row 2 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="38dp">
+
+                        <!-- Column 1 -->
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_regular"
+                            android:gravity="center_vertical"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:backgroundTint="#D9D9D9"
+                            app:strokeWidth="1dp"
+                            app:cornerRadius="1dp"/>
+
+                    </LinearLayout>
+
+                    <!-- Row 3 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="38dp">
+
+                        <!-- Column 1 -->
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_regular"
+                            android:gravity="center_vertical"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:backgroundTint="#D9D9D9"
+                            app:strokeWidth="1dp"
+                            app:cornerRadius="1dp"/>
+
+                    </LinearLayout>
+
+                    <!-- Row 4 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="38dp">
+
+                        <!-- Column 1 -->
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_regular"
+                            android:gravity="center_vertical"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:backgroundTint="#D9D9D9"
+                            app:strokeWidth="1dp"
+                            app:cornerRadius="1dp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <!--Malaysia Warehouse-->
+        <LinearLayout
+            android:id="@+id/msia_warehouse_border"
+            android:layout_width="390dp"
+            android:layout_height="270dp"
+            android:layout_below="@+id/chn_warehouse_border"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/border_drop_shadow"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+
+            <LinearLayout
+                android:layout_width="363sp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center">
+
+                <!--Warehouse Title-->
+                <TextView
+                    android:id="@+id/msia_warehouse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Malaysia Warehouse"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:fontFamily="@font/inter_bold"
+                    />
+
+                <TextView
+                    android:id="@+id/msia_warehouse_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bayan Lepas"
+                    android:fontFamily="@font/inter_regular"/>
+
+                <!--All Parcel button-->
+                <Button
+                    android:id="@+id/msia_allParcel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="All Parcel"
+                    android:textColor="@color/black"
+                    android:backgroundTint="@color/white"
+                    app:strokeWidth="1dp"
+                    app:cornerRadius="1dp"/>
+
+                <!--Show Parcel Table-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <!-- Row 1 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="38dp">
+
+                        <!-- Column 1 -->
+                        <Button
+                            android:id="@+id/msia_trackNo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_regular"
+                            android:gravity="center_vertical"
+                            android:text="Track No: 000000"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:backgroundTint="#D9D9D9"
+                            app:strokeWidth="1dp"
+                            app:cornerRadius="1dp"/>
+
+                    </LinearLayout>
+
+                    <!-- Row 2 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="38dp">
+
+                        <!-- Column 1 -->
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_regular"
+                            android:gravity="center_vertical"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:backgroundTint="#D9D9D9"
+                            app:strokeWidth="1dp"
+                            app:cornerRadius="1dp"/>
+
+                    </LinearLayout>
+
+                    <!-- Row 3 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="38dp">
+
+                        <!-- Column 1 -->
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_regular"
+                            android:gravity="center_vertical"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:backgroundTint="#D9D9D9"
+                            app:strokeWidth="1dp"
+                            app:cornerRadius="1dp"/>
+
+                    </LinearLayout>
+
+                    <!-- Row 4 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="38dp">
+
+                        <!-- Column 1 -->
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/inter_regular"
+                            android:gravity="center_vertical"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:backgroundTint="#D9D9D9"
+                            app:strokeWidth="1dp"
+                            app:cornerRadius="1dp"/>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -8,42 +8,35 @@
     tools:context=".AccountPage"
     android:orientation="vertical">
 
-    <GridLayout
-        android:paddingTop="20sp"
-        android:background="#3D3F99"
+    <FrameLayout
         android:id="@+id/gridLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#3D3F99"
         android:gravity="center"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        android:paddingTop="20sp"
+        android:paddingBottom="10sp">
 
         <ImageButton
             android:id="@+id/backArrow"
             android:layout_width="32sp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10sp"
-            android:layout_marginTop="10sp"
-            android:layout_marginRight="-35sp"
             android:backgroundTint="#00FFFFFF"
-            android:onClick="backPreviousActivity"
             app:srcCompat="@drawable/baseline_arrow_back_24"
-            />
+            android:onClick="backPreviousActivity"/>
 
 
         <TextView
             android:layout_width="351dp"
             android:layout_height="wrap_content"
-            android:text="Account"
             android:layout_gravity="center"
             android:gravity="center"
+            android:text="Account"
             android:textColor="#FEFEFE"
             android:textSize="19sp"
             android:textStyle="bold" />
 
-    </GridLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

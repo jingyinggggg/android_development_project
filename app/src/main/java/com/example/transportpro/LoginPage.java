@@ -36,7 +36,7 @@ public class LoginPage extends AppCompatActivity {
     TextView logo, signUp;
     CheckBox rememberUser;
     Button login;
-
+    Button admin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +83,15 @@ public class LoginPage extends AppCompatActivity {
                     editor.apply();
                     Toast.makeText(LoginPage.this, "Unchecked",Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        admin = (Button) findViewById(R.id.admin);
+        admin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent admin = new Intent(LoginPage.this,AdminHomePage.class);
+                startActivity(admin);
             }
         });
     }

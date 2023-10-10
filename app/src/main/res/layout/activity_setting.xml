@@ -8,28 +8,22 @@
     android:orientation="vertical"
     tools:context=".Setting">
 
-
-    <GridLayout
+    <FrameLayout
         android:id="@+id/gridLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#3D3F99"
         android:gravity="center"
         android:paddingTop="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:paddingBottom="10sp">
 
         <ImageButton
             android:id="@+id/backArrow"
             android:layout_width="32sp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10sp"
-            android:layout_marginTop="10sp"
-            android:layout_marginRight="-35sp"
             android:backgroundTint="#00FFFFFF"
-            android:onClick="backHomePage"
-            app:srcCompat="@drawable/baseline_arrow_back_24" />
+            app:srcCompat="@drawable/baseline_arrow_back_24"
+            android:onClick="backHomePage"/>
 
 
         <TextView
@@ -42,7 +36,7 @@
             android:textSize="19sp"
             android:textStyle="bold" />
 
-    </GridLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/goAccountButton"
@@ -198,6 +192,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -241,7 +236,6 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="end">
                 <ImageView
-                    android:id="@+id/logout"
                     android:layout_width="30sp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"

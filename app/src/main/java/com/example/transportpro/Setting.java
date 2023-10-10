@@ -46,6 +46,11 @@ public class Setting extends AppCompatActivity {
                 goDeleteAccountPage(view);
             }
         });
+        logout = (LinearLayout)findViewById(R.id.logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { logout(view); }
+        });
 
     }
     public void goAccountPage(View view){
@@ -66,5 +71,9 @@ public class Setting extends AppCompatActivity {
     public void backHomePage(View view){
         Intent loginPage = new Intent(this, HomePage.class);
         startActivity(loginPage);
+    }
+    public void logout(View view){
+        Intent logout = new Intent(this, LoginPage.class);
+        startActivity(logout);
     }
 }
