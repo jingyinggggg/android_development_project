@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +15,10 @@ import android.widget.TextView;
 
 public class UpdateWarehouseAdmin extends AppCompatActivity {
 
-    ImageButton header_button;
+    ImageButton backArrow;
 
     Button confirm_dialog;
-    Button cancel_dialog;
+    TextView cancel_dialog;
 
     Button update_order;
     Button update_warehouse;
@@ -30,16 +31,9 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
         setContentView(R.layout.activity_update_warehouse);
 
         // Find the TextView and Image Button in the header layout
-        TextView headerTitle = findViewById(R.id.header_title);
-        header_button = findViewById(R.id.header_btn);
-
-        // Set the text based on the current page or context
-        headerTitle.setText("Update Status");
-        // Set the image button based on the current page or context
-        header_button.setImageResource(R.drawable.back_button);
-
+        backArrow = findViewById(R.id.backArrow);
         /*Header Button function*/
-        header_button.setOnClickListener(new View.OnClickListener() {
+        backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 redirect_warehouse(view);
@@ -47,8 +41,6 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
         });
 
 
-        confirm_dialog = findViewById(R.id.confirm_dialog);
-        cancel_dialog = findViewById(R.id.cancel_dialog);
         update_order = findViewById(R.id.update_order_status);
         update_warehouse = findViewById(R.id.update_warehouse_status);
         update_ready = findViewById(R.id.update_ready_status);
@@ -83,7 +75,7 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
 
     public void showConfirmDialog(View v){
         // Inflate the custom layout
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.success_dialog, null);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.success_dialog_admin, null);
 
         // Find views in the custom layout
         ImageView dialogImage = dialogView.findViewById(R.id.dialog_image);
@@ -91,7 +83,7 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
 
         // Find the confirm_dialog button within the dialog view
         Button confirmDialogButton = dialogView.findViewById(R.id.confirm_dialog);
-
+        TextView cancelDialogText = dialogView.findViewById(R.id.cancel_dialog);
         // Set an OnClickListener for the confirm_dialog button
         confirmDialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,15 +99,19 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
 
                 // After update, change button background and disable it
                 if (clickedButton != null) {
-                    clickedButton.setBackgroundResource(R.drawable.btn_status_updated); // Replace with your desired background resource
+                    int color = Color.parseColor("#5FDF64");
+                    clickedButton.setBackgroundColor(color); // Replace with your desired background resource
                     clickedButton.setEnabled(false);
                     clickedButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.done_icon, 0, 0, 0);
                 }
             }
         });
-
-        // Customize the dialog content (e.g., set image and message)
-        dialogMessage.setText("You have successfully changed your password.");
+        cancelDialogText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(getIntent());
+            }
+        });
 
         // Create the custom dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

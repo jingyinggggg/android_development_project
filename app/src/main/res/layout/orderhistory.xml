@@ -61,6 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Racket,Laptop"
+                    android:textSize="17sp"
                     android:textStyle="bold"/>
             </LinearLayout>
 
@@ -169,6 +170,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Basketball"
+                    android:textSize="17sp"
                     android:textStyle="bold"/>
             </LinearLayout>
 
@@ -259,25 +261,6 @@
                         />
                 </LinearLayout>
             </GridLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="fill_vertical"
-            android:gravity="end|center_vertical">
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottombar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="@color/white"
-                android:foregroundGravity="fill_vertical"
-                android:gravity="end"
-                app:menu="@menu/bottom_nav"
-                >
-
-            </com.google.android.material.bottomnavigation.BottomNavigationView>
         </LinearLayout>
 
     </LinearLayout>

@@ -35,20 +35,22 @@
                 ></ImageView>
 
             <androidx.gridlayout.widget.GridLayout
-                android:layout_width="270sp"
+                android:layout_width="180sp"
                 android:layout_height="36sp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10sp"
                 android:background="@drawable/leftborder"
                 android:radius="10sp"
-                app:layout_column="3"
+                app:layout_column="2"
                 app:layout_row="1">
 
 
                 <LinearLayout
+                    android:id="@+id/topBar_wallet"
                     android:layout_width="90sp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
+                    android:onClick="homepage_redirect"
                     >
 
                     <ImageView
@@ -88,70 +90,13 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="90sp"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="40sp"
-                        android:layout_height="20sp"
-                        android:gravity="left|center_vertical"
-                        android:src="@drawable/voucher" ></ImageView>
-
-                    <LinearLayout
-                        android:layout_width="50sp"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="14sp"
-                            android:gravity="center"
-                            android:text="Voucher"
-                            android:textColor="#777777"
-                            android:textSize="11sp">
-
-
-                        </TextView>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="end"
-                            android:layout_marginRight="9sp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="14sp"
-                                android:gravity=""
-                                android:text="1"
-                                android:textColor="#000000"
-                                android:textSize="13sp"
-                                android:textStyle="bold">
-
-
-                            </TextView>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="14sp"
-                                android:gravity="end"
-                                android:text="Item"
-                                android:textColor="#777777"
-                                android:textSize="10sp">
-
-
-                            </TextView>
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/topBar_track"
                     android:layout_width="90sp"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:onClick="homepage_redirect">
 
                     <ImageView
                         android:layout_width="40sp"
@@ -211,15 +156,15 @@
             </androidx.gridlayout.widget.GridLayout>
 
             <ImageView
+                android:id="@+id/noti_btn"
                 android:layout_width="25sp"
                 android:layout_height="38sp"
                 android:layout_marginTop="30sp"
                 android:src="@drawable/noti"
                 android:layout_gravity="end"
                 android:layout_marginRight="21sp"
-                android:onClick="notificationPage">
-
-            </ImageView>
+                android:onClick="homepage_redirect"
+                ></ImageView>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -230,7 +175,7 @@
         </FrameLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="180dp"
             android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -302,7 +247,8 @@
                         android:layout_height="85sp"
                         android:background="@drawable/customborder"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:onClick="homepage_redirect">
 
 
                         <ImageView
@@ -335,7 +281,8 @@
                         android:layout_height="85sp"
                         android:background="@drawable/customborder"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:onClick="homepage_redirect">
 
 
                         <ImageView
@@ -368,7 +315,8 @@
                         android:layout_height="85sp"
                         android:background="@drawable/customborder"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:onClick="homepage_redirect">
 
 
                         <ImageView
@@ -401,7 +349,8 @@
                         android:layout_height="85sp"
                         android:background="@drawable/customborder"
                         android:gravity="center"
-                        android:orientation="vertical" >
+                        android:orientation="vertical"
+                        android:onClick="homepage_redirect">
 
 
                         <ImageView
@@ -434,7 +383,8 @@
                         android:layout_height="85sp"
                         android:background="@drawable/customborder"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:onClick="homepage_redirect">
 
 
                         <ImageView
@@ -467,7 +417,8 @@
                         android:layout_height="85sp"
                         android:background="@drawable/customborder"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:onClick="homepage_redirect">
 
 
                         <ImageView
@@ -500,11 +451,12 @@
                         android:layout_height="85sp"
                         android:background="@drawable/customborder"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:onClick="homepage_redirect">
 
 
                         <ImageView
-                            android:layout_width="60dp"
+                            android:layout_width="45dp"
                             android:layout_height="47dp"
                             android:src="@drawable/setting">
 
@@ -528,24 +480,26 @@
                     android:gravity="center">
 
                     <LinearLayout
+                        android:id="@+id/profile_btn"
                         android:layout_width="90sp"
                         android:layout_height="85sp"
                         android:background="@drawable/customborder"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:onClick="homepage_redirect">
 
 
                         <ImageView
                             android:layout_width="60dp"
                             android:layout_height="47dp"
-                            android:src="@drawable/voucher">
+                            android:src="@drawable/profile">
 
                         </ImageView>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="20sp"
-                            android:text="Voucher"
+                            android:text="Profile"
                             android:textColor="#3D3F99"
                             android:textSize="11.6sp"
                             android:textStyle="bold"></TextView>
@@ -648,19 +602,7 @@
 
             </TextView>
         </LinearLayout>
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottombar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:background="@color/white"
-            app:menu="@menu/bottom_nav"
-            >
-
-        </com.google.android.material.bottomnavigation.BottomNavigationView>
+        <include layout="@layout/bar_navigation" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -673,8 +615,5 @@
         android:layout_gravity="start"
         android:background="@color/white"
         />
-
-
-
 
 </androidx.drawerlayout.widget.DrawerLayout>

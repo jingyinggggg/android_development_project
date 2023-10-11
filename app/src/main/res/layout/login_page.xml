@@ -7,6 +7,7 @@
     tools:context=".LoginPage">
 
     <LinearLayout
+        android:id="@+id/login_icon_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -24,10 +25,9 @@
 
         <ImageView
             android:id="@+id/logoImage"
-            android:layout_width="163dp"
+            android:layout_width="150dp"
             android:layout_height="154dp"
             android:layout_marginTop="70dp"
-            android:scaleType="fitCenter"
             android:layout_gravity="center"
             app:srcCompat="@drawable/tansportpro_logo" />
 
@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="350dp"
+        android:layout_below="@+id/login_icon_container"
         android:layout_gravity="center">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -103,6 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
             android:layout_marginTop="10dp"
             android:text="Remember Me"
             style="@style/colored_checkBox"/>
@@ -120,32 +121,42 @@
             android:textSize="18sp"
             android:textColor="@color/white"/>
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/admin"
+            android:text="admin">
+
+        </Button>
 
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/noAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="700dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/linearLayout2"
         android:gravity="center"
-        android:text="Don't have an account?"
-        android:textColor="@color/purple"
-        android:textSize="16sp" />
+        android:paddingTop="50sp"
+        >
 
-    <TextView
-        android:id="@+id/signUp"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginTop="700dp"
-        android:layout_marginStart="255dp"
-        android:gravity="center"
-        android:text="@string/signup"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        android:textColor="@color/blue"
-        android:onClick="signUpPage"/>
+        <TextView
+            android:id="@+id/noAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't have an account?"
+            android:textColor="@color/purple"
+            android:textSize="16sp" />
 
+        <TextView
+            android:id="@+id/signUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/signup"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="@color/blue"
+            android:onClick="signUpPage"/>
+    </LinearLayout>
 </RelativeLayout>

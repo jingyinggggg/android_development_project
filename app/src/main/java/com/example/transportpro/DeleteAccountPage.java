@@ -36,7 +36,7 @@ public class DeleteAccountPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(DeleteAccountPage.this, "canceled", Toast.LENGTH_SHORT).show();
-                backSettingPage();
+
             }
 
             @Override
@@ -64,7 +64,7 @@ public class DeleteAccountPage extends AppCompatActivity {
 
     }
 
-    public void backSettingPage() {
+    public void backSettingPage(View view) {
         Intent settingPage = new Intent(this, Setting.class);
         startActivity(settingPage);
     }
@@ -85,7 +85,7 @@ public class DeleteAccountPage extends AppCompatActivity {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        backSettingPage();
+
                     }
                 });
 

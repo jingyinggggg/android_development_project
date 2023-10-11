@@ -11,7 +11,7 @@ import android.widget.ImageView;
 
 import com.google.android.material.tabs.TabLayout;
 
-public class NewOrder extends AppCompatActivity {
+public class neworder extends AppCompatActivity {
 
     TabLayout tabLayout;
     ViewPager2 viewPager2;
@@ -33,7 +33,7 @@ public class NewOrder extends AppCompatActivity {
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(NewOrder.this, HomePage.class);
+                Intent intent = new Intent(neworder.this, HomePage.class);
                 startActivity(intent);
             }
         });

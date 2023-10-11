@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     android:id="@+id/constraintLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -12,144 +12,187 @@
     >
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="#3D3F99"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="160dp"
-            android:text="Order Number:"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="160dp"
-            android:text="1512435151345"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="60dp"
-        android:text="Payment Method"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="90dp"
-        android:background="@drawable/payment_method_frame"
+        android:layout_height="350sp"
         android:orientation="vertical"
-        android:paddingBottom="30dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <RadioButton
-            android:id="@+id/transportPro_wallet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TransportPro Wallet"
-            android:onClick="goWalletPage"
-            android:drawablePadding="60dp"
-            android:drawableRight="@drawable/transportpro_wallet_icon"
-            android:textSize="16sp"
-            android:maxLines="1"
-            android:ellipsize="end"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="35dp"
-            android:text="10% discount are available"
-            android:textColor="#E54D4D"
-            android:textSize="10sp" />
-
-        <RadioButton
-            android:id="@+id/tng_wallet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:text="Tng Wallet"
-            android:drawableRight="@drawable/tng_wallet_icon"
-            android:drawablePadding="130dp"
-            android:textSize="16sp"
-            android:maxLines="1"
-            android:ellipsize="end" />
+        >
 
 
-        <RadioButton
-            android:id="@+id/onlineBanking"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="120dp"
-            android:text="Online Banking"
-            android:drawableRight="@drawable/onlinebanking_icon"
-            android:drawablePadding="95dp"
-            android:textSize="16sp"
-            android:maxLines="1"
-            android:ellipsize="end" />
-
-        <RadioButton
-            android:id="@+id/debit_credit_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="180dp"
-            android:text="Debit/Credit Card"
-            android:drawableRight="@drawable/card_icon"
-            android:drawablePadding="75dp"
-            android:textSize="16sp"
-            android:maxLines="1"
-            android:ellipsize="end"/>
-
-        <TextView
-            android:id="@+id/price"
+        <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="270dp"
-            android:text="RM 100"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:layout_gravity="top"
+            android:background="#3D3F99"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/payButton"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="160dp"
+                android:text="Order Number:"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="160dp"
+                android:text="1512435151345"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:text="Payment Method"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
             android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="260dp"
-            android:layout_marginEnd="11dp"
-            android:backgroundTint="#3D3F99"
-            android:text="Pay"
-            android:onClick="goWalletPage"
-            app:cornerRadius="8dp"
-            app:layout_constraintStart_toEndOf="@+id/price"
-            app:layout_constraintTop_toBottomOf="@+id/debit_credit_card" />
+            android:layout_height="350sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:paddingBottom="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="210sp"
+                android:orientation="vertical"
+                android:id="@+id/payment_method">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <RadioButton
+                        android:id="@+id/transportPro_wallet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="TransportPro Wallet"
+                        android:onClick="goWalletPage"
+                        android:drawableRight="@drawable/transportpro_wallet_icon"
+                        android:textSize="16sp"
+                        android:layout_marginRight="10sp"
+                        android:layout_marginLeft="10sp"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:text="10% discount are available"
+                        android:textColor="#E54D4D"
+                        android:textSize="10sp" />
+
+                    <RadioButton
+                        android:id="@+id/tng_wallet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tng Wallet"
+                        android:drawableRight="@drawable/tng_wallet_icon"
+                        android:textSize="16sp"
+                        android:layout_marginRight="10sp"
+                        android:layout_marginLeft="10sp"
+                        android:maxLines="1"
+                        android:ellipsize="end" />
+
+
+                    <RadioButton
+                        android:id="@+id/onlineBanking"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Online Banking"
+                        android:drawableRight="@drawable/onlinebanking_icon"
+                        android:textSize="16sp"
+                        android:layout_marginRight="10sp"
+                        android:layout_marginLeft="10sp"
+                        android:maxLines="1"
+                        android:ellipsize="end" />
+
+                    <RadioButton
+                        android:id="@+id/debit_credit_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Debit/Credit Card"
+                        android:drawableRight="@drawable/card_icon"
+                        android:textSize="16sp"
+                        android:layout_marginRight="10sp"
+                        android:layout_marginLeft="10sp"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
+                </RadioGroup>
+            </LinearLayout>
+
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="400dp"
+                android:layout_height="2dp"
+                android:background="#D3D3D3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.495"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.57"
+                android:layout_below="@+id/payment_method">
+            </View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/line">
+
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="RM 100"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:layout_gravity="center"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:layout_gravity="center"
+                    >
+
+                    <Button
+                        android:id="@+id/payButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="11dp"
+                        android:backgroundTint="#3D3F99"
+                        android:text="Pay"
+                        android:onClick="goWalletPage"
+                        app:cornerRadius="8dp"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>
 

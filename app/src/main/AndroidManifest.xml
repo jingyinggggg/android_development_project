@@ -61,7 +61,7 @@
             android:name=".Orderhistory"
             android:exported="false" />
         <activity
-            android:name=".NewOrder"
+            android:name=".neworder"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"/>
         <activity
