@@ -1,89 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CollectedParcel" >
+    tools:context=".CollectedParcel"
+    android:id="@+id/wrapper">
 
     <!-- TODO: Update blank fragment layout -->
-    <RelativeLayout
-        android:id="@+id/parcel2"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_parcel"
         android:layout_width="match_parent"
-        android:layout_height="105sp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/delivered_rec">
+        android:layout_height="wrap_content"
+        >
+    </androidx.recyclerview.widget.RecyclerView>
 
-        <TextView
-            android:id="@+id/productName2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bag"
-            android:textSize="17sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/productQuantity2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:gravity="right"
-            android:text="2"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/lightGrey"/>
-
-        <TextView
-            android:id="@+id/trackingNumber2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/productName2"
-            android:text="Track Number: 1512435151346"
-            android:textColor="@color/lightGrey"/>
-
-        <TextView
-            android:id="@+id/collect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/trackingNumber2"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:text="Collected"
-            android:textSize="16sp"
-            android:textColor="@color/lightGreen"/>
-
-        <ImageView
-            android:id="@+id/collectIcon"
-            android:layout_width="80sp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/collect"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/collected" />
-
-        <ImageButton
-            android:id="@+id/collectButton"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:scaleType="fitEnd"
-            android:src="@drawable/arrow_circle_right_collected"
-            android:background="@android:color/transparent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>
-
-        <TextView
-            android:id="@+id/date2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/collect"
-            android:layout_alignParentRight="true"
-            android:text="17/7/2023"
-            android:textSize="11.2sp"
-            android:textColor="@color/lightGrey"/>
-
-    </RelativeLayout>
-
-</FrameLayout>
+</RelativeLayout>
