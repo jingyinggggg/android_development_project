@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#E7E7E7">
+
+        <RelativeLayout
+            android:id="@+id/parcel1"
+            android:layout_width="match_parent"
+            android:layout_height="105sp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/requesting_rec">
+
+            <TextView
+                android:id="@+id/productName1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Racket"
+                android:textSize="17sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/productQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="right"
+                android:text="29"
+                android:textStyle="bold"
+                android:textColor="@color/lightGrey"/>
+
+            <LinearLayout
+                android:id="@+id/Linear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/productName1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Track Number: "
+                    android:textColor="@color/lightGrey"/>
+                <TextView
+                    android:id="@+id/trackingNumber1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1512435151345"
+                    android:textColor="@color/lightGrey"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/request"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/Linear"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="Requesting"
+                android:textSize="16sp"
+                android:textColor="@color/blue"/>
+
+            <ImageView
+                android:id="@+id/requestIcon"
+                android:layout_width="90sp"
+                android:layout_height="45dp"
+                android:layout_below="@+id/request"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/request" />
+
+            <ImageButton
+                android:id="@+id/editButton"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="fitEnd"
+                android:src="@drawable/arrow_circle_right"
+                android:background="@android:color/transparent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:id="@+id/date1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/request"
+                android:layout_alignParentRight="true"
+                android:text="17/7/2023"
+                android:textSize="11.2sp"
+                android:textColor="@color/lightGrey"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
