@@ -49,6 +49,7 @@
                 >
 
                 <TextView
+                    android:id="@+id/balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
@@ -57,10 +58,11 @@
                     android:gravity="center"/>
 
                 <TextView
+                    android:id="@+id/wallet_balance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:text="RM 0.0"
+                    android:text="RM 0.00"
                     android:textColor="#3D3F99"
                     android:textSize="24sp"
                     android:textStyle="bold" />
@@ -76,7 +78,8 @@
         android:background="#3D3F99"
         android:gravity="center"
         android:paddingTop="20sp"
-        android:paddingBottom="10sp">
+        android:paddingBottom="10sp"
+        >
 
         <ImageButton
             android:id="@+id/backArrow"
@@ -134,14 +137,17 @@
 
 
                 <Button
+                    android:id="@+id/five"
                     android:layout_width="100dp"
                     android:layout_height="39dp"
                     android:backgroundTint="#3D3F99"
                     android:text="RM 5"
                     android:textSize="12sp"
-                    app:cornerRadius="8dp" />
+                    app:cornerRadius="8dp"
+                    android:onClick="showSelectPaymentDialog"/>
 
                 <Button
+                    android:id="@+id/ten"
                     android:layout_width="100dp"
                     android:layout_height="39dp"
                     android:gravity="center"
@@ -150,15 +156,18 @@
                     android:textSize="12sp"
                     app:cornerRadius="8dp"
                     android:layout_marginLeft="30sp"
-                    android:layout_marginRight="30sp"/>
+                    android:layout_marginRight="30sp"
+                    android:onClick="showSelectPaymentDialog"/>
 
                 <Button
+                    android:id="@+id/twenty"
                     android:layout_width="100dp"
                     android:layout_height="39dp"
                     android:backgroundTint="#3D3F99"
                     android:text="RM 20"
                     android:textSize="12sp"
-                    app:cornerRadius="8dp"  />
+                    app:cornerRadius="8dp"
+                    android:onClick="showSelectPaymentDialog" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -168,14 +177,17 @@
 
 
                 <Button
+                    android:id="@+id/fifty"
                     android:layout_width="100dp"
                     android:layout_height="39dp"
                     android:backgroundTint="#3D3F99"
                     android:text="RM 50"
                     android:textSize="12sp"
-                    app:cornerRadius="8dp"  />
+                    app:cornerRadius="8dp"
+                    android:onClick="showSelectPaymentDialog"/>
 
                 <Button
+                    android:id="@+id/hundred"
                     android:layout_width="100dp"
                     android:layout_height="39dp"
                     android:backgroundTint="#3D3F99"
@@ -183,15 +195,18 @@
                     android:textSize="12sp"
                     app:cornerRadius="8dp"
                     android:layout_marginLeft="30sp"
-                    android:layout_marginRight="30sp"/>
+                    android:layout_marginRight="30sp"
+                    android:onClick="showSelectPaymentDialog"/>
 
                 <Button
+                    android:id="@+id/two_hundred"
                     android:layout_width="100dp"
                     android:layout_height="39dp"
                     android:backgroundTint="#3D3F99"
                     android:text="RM 200"
                     android:textSize="12sp"
-                    app:cornerRadius="8dp" />
+                    app:cornerRadius="8dp"
+                    android:onClick="showSelectPaymentDialog"/>
             </LinearLayout>
         </GridLayout>
     </RelativeLayout>
@@ -219,96 +234,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <RelativeLayout
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recent_activity"
         android:layout_width="match_parent"
-        android:layout_height="62dp"
+        android:layout_height="match_parent"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="368dp"
-        android:background="@drawable/wallet_topup_corner_border"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="80sp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="23dp"
-            android:layout_marginTop="8dp"
-            android:text="Top Up"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="22dp"
-            android:layout_marginBottom="15dp"
-            android:text="20/07/2023 18:49:23"
-            android:textColor="#6D6D6D"
-            android:textSize="12sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="18dp"
-            android:layout_marginBottom="21dp"
-            android:text="+ RM 50"
-            android:textColor="#3D3F99"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="62dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="444dp"
-        android:background="@drawable/wallet_topup_corner_border"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+    </androidx.recyclerview.widget.RecyclerView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="23dp"
-            android:layout_marginTop="8dp"
-            android:text="Pay Order"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="22dp"
-            android:layout_marginBottom="15dp"
-            android:text="20/07/2023 18:49:23"
-            android:textColor="#6D6D6D"
-            android:textSize="12sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="18dp"
-            android:layout_marginBottom="21dp"
-            android:text="- RM 25.40"
-            android:textColor="#3D3F99"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
-
-    <include layout="@layout/bar_navigation" />
+    <include android:id="@+id/bar_navigation" layout="@layout/bar_navigation" />
 </androidx.constraintlayout.widget.ConstraintLayout>

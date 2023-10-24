@@ -1,10 +1,13 @@
 package com.example.transportpro;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -16,6 +19,10 @@ public class Setting extends AppCompatActivity {
     public LinearLayout password;
     public LinearLayout delete;
     public LinearLayout logout;
+    SharedPreferences sharedPreferences;
+    private static final String SHARED_PREF_NAME = "localstorage";
+    private static final String KEY_ID = "userId";
+    private static final String KEY_USERNAME = "userName";
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -46,10 +53,25 @@ public class Setting extends AppCompatActivity {
                 goDeleteAccountPage(view);
             }
         });
+
+        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME,MODE_PRIVATE);
+        String userid = sharedPreferences.getString(KEY_ID,null);
+        String username = sharedPreferences.getString(KEY_USERNAME,null);
+
         logout = (LinearLayout)findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { logout(view); }
+            public void onClick(View view) {
+
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear();
+                editor.commit();
+
+                Intent intent = new Intent(Setting.this,LoginPage.class);
+                startActivity(intent);
+
+                logout(view);
+            }
         });
 
     }
