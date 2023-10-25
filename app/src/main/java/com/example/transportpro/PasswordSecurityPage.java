@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -24,9 +25,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class PasswordSecurityPage extends AppCompatActivity {
     public ImageButton setting;
     private Button confirm;
+    SharedPreferences sharedPreferences;
+    FirebaseDatabase db;
+    DatabaseReference reference;
+    private static final String SHARED_PREF_NAME = "localstorage";
+    private static final String KEY_ID = "userId";
+    private static final String KEY_USERNAME = "userName";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,18 +54,6 @@ public class PasswordSecurityPage extends AppCompatActivity {
                 backSettingPage();
             }
         });
-
-
-// Confirm change password
-        confirm = (Button) findViewById(R.id.confirm_button);
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showConfirmDialog(view);
-            }
-        });
-
-
 
 // Cancel change password
         TextView cancel = findViewById(R.id.cancel_button);
@@ -88,6 +89,57 @@ public class PasswordSecurityPage extends AppCompatActivity {
         currentPassword.addTextChangedListener(new PasswordTextWatcher(currentPassword, newPassword, passwordError, reenterNewPassword, reenterNewPasswordError));
         newPassword.addTextChangedListener(new PasswordTextWatcher(currentPassword, newPassword, passwordError, reenterNewPassword, reenterNewPasswordError));
         reenterNewPassword.addTextChangedListener(new PasswordTextWatcher(currentPassword, newPassword, passwordError, reenterNewPassword, reenterNewPasswordError));
+
+        confirm = (Button) findViewById(R.id.confirm_button);
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String currentPasswordText = currentPassword.getText().toString();
+                String newPasswordText = newPassword.getText().toString();
+                String reenterNewPasswordText = reenterNewPassword.getText().toString();
+
+                if(!currentPasswordText.isEmpty() && !newPasswordText.isEmpty() && !reenterNewPasswordText.isEmpty() && newPasswordText != reenterNewPasswordText){
+                    sharedPreferences = getSharedPreferences(SHARED_PREF_NAME,MODE_PRIVATE);
+                    String username = sharedPreferences.getString(KEY_USERNAME,null);
+
+                    db = FirebaseDatabase.getInstance();
+                    reference = db.getReference("User");
+
+                    reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.hasChild(username)){
+                                DatabaseReference userReference = reference.child(username);
+                                String storedPassword = snapshot.child(username).child("password").getValue(String.class);
+
+                                if(currentPasswordText.equals(storedPassword)){
+                                    if (passwordError.getVisibility() == View.GONE && reenterNewPasswordError.getVisibility() == View.GONE){
+                                        userReference.child("password").setValue(newPasswordText);
+                                        showConfirmDialog(view);
+                                    }
+                                    else{
+                                        Toast.makeText(PasswordSecurityPage.this, "Something is wrong, Please try again", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                                else {
+                                    Toast.makeText(PasswordSecurityPage.this, "Wrong Password", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+                else{
+                    Toast.makeText(PasswordSecurityPage.this, "Something is wrong, Please try again", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
     }
 
 

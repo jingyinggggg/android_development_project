@@ -21,15 +21,7 @@ public class OrderRequestAdmin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_request);
 
-        /*Header Button and Header Word*/
-        // Find the TextView and Image Button in the header layout
-        TextView headerTitle = findViewById(R.id.header_title);
-        header_button = findViewById(R.id.header_btn);
-
-        // Set the text based on the current page or context
-        headerTitle.setText("View Order");
-        // Set the image button based on the current page or context
-        header_button.setImageResource(R.drawable.back_button);
+        header_button = findViewById(R.id.backArrow);
 
         /*Header Button Function*/
         header_button.setOnClickListener(new View.OnClickListener() {

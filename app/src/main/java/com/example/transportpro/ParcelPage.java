@@ -52,13 +52,6 @@ public class ParcelPage extends AppCompatActivity {
             }
         });
 
-        ImageButton backHome = findViewById(R.id.backIcon);
-        backHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backHomePage(v);
-            }
-        });
     }
 
     public void backHomePage(View view){

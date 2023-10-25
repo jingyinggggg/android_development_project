@@ -15,7 +15,7 @@ public class NotificationPage extends AppCompatActivity {
     }
 
     public void backHomePage(View view) {
-        Intent homePage = new Intent(this, HomePage.class);
-        startActivity(homePage);
+        Intent loginPage = new Intent(this, HomePage.class);
+        startActivity(loginPage);
     }
 }

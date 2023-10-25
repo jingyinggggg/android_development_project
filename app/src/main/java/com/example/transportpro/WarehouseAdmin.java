@@ -8,12 +8,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class WarehouseAdmin extends AppCompatActivity {
 
-    ImageButton header_button;
-
+    ImageView header_button;
     Button chn_allParcel;
     Button msia_allParcel;
     Button chn_trackNo;
@@ -23,14 +23,9 @@ public class WarehouseAdmin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_warehouse);
 
-        // Find the TextView and Image Button in the header layout
-        TextView headerTitle = findViewById(R.id.header_title);
-        header_button = findViewById(R.id.header_btn);
-
-        // Set the text based on the current page or context
-        headerTitle.setText("View Warehouse");
         // Set the image button based on the current page or context
-        header_button.setImageResource(R.drawable.back_button);
+        header_button = findViewById(R.id.backArrow);
+
 
         chn_allParcel = findViewById(R.id.chn_allParcel);
         chn_allParcel.setPaintFlags(chn_allParcel.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);

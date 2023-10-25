@@ -7,11 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class OrderAdmin extends AppCompatActivity {
 
-    ImageButton header_button;
+    ImageView header_button;
 
     Button order;
 
@@ -22,13 +23,7 @@ public class OrderAdmin extends AppCompatActivity {
 
         /*Header Button and Header Word*/
         // Find the TextView and Image Button in the header layout
-        TextView headerTitle = findViewById(R.id.header_title);
-        header_button = findViewById(R.id.header_btn);
-
-        // Set the text based on the current page or context
-        headerTitle.setText("View Order");
-        // Set the image button based on the current page or context
-        header_button.setImageResource(R.drawable.back_button);
+        header_button = findViewById(R.id.backArrow);
 
         /*Header Button Function*/
         header_button.setOnClickListener(new View.OnClickListener() {

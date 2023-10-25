@@ -7,22 +7,41 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class HomePage extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
+    TextView username_text;
     ActionBarDrawerToggle actionBarDrawerToggle;
+    private BottomNavigationView bottomNavigationView;
+    SharedPreferences sharedPreferences;
+    FirebaseDatabase db;
+    DatabaseReference reference;
+    //sharedpreferences
+    private static final String SHARED_PREF_NAME = "localstorage";
+    private static final String KEY_ID = "userId";
+    private static final String KEY_USERNAME = "userName";
+    private static final String REMEMBER = "remember";
+    String username, userid;
 
-    private LinearLayout neworderBtn,orderHistory_btn,booking_btn,parcel_btn,payment_btn,pricing_btn,setting_btn;
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         if(actionBarDrawerToggle.onOptionsItemSelected(item)){
@@ -36,63 +55,8 @@ public class HomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage);
 
-        booking_btn = findViewById(R.id.booking_btn);
-        booking_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bookingPage(v);
-            }
-        });
-
-        parcel_btn = findViewById(R.id.parcel_btn);
-        parcel_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                parcelPage(v);
-            }
-        });
-
-        neworderBtn = findViewById(R.id.neworder_btn);
-        neworderBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomePage.this, NewOrder.class);
-                startActivity(intent);
-            }
-        });
-
-        orderHistory_btn = findViewById(R.id.orderHistory_btn);
-        orderHistory_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomePage.this,Orderhistory.class);
-                startActivity(intent);
-            }
-        });
-
-        payment_btn = findViewById(R.id.payment_btn);
-        payment_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                paymentPage(v);
-            }
-        });
-
-        pricing_btn = findViewById(R.id.pricing_btn);
-        pricing_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pricingPage(v);
-            }
-        });
-
-        setting_btn = findViewById(R.id.setting_btn);
-        setting_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                settingPage(v);
-            }
-        });
+        getUserDetail();
+        getTracking();
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigationView);
@@ -100,22 +64,128 @@ public class HomePage extends AppCompatActivity {
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
+        bottomNavigationView = findViewById(R.id.bottombar);
+
+        bottomNavigationView.setSelectedItemId(R.id.bar_home);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.bar_payment) {
+                Intent intent = new Intent(HomePage.this,Payment.class).putExtra("from","homepage");
+                startActivity(intent);
+            } else if (item.getItemId() == R.id.bar_wallet) {
+                Intent intent = new Intent(HomePage.this,WalletPage.class).putExtra("from","homepage");
+                startActivity(intent);
+            } else if (item.getItemId() == R.id.bar_profile) {
+                Intent intent = new Intent(HomePage.this,AccountPage.class).putExtra("from","homepage");
+                startActivity(intent);
+            }
+            return true;
+        });
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     if (item.getItemId() == R.id.sidebar_notification){
                         Log.i("Menu drawer Tag", "Notification is clicked");
+                        Intent intent = new Intent(HomePage.this,NotificationPage.class);
+                        startActivity(intent);
                         drawerLayout.closeDrawer(GravityCompat.START);
                     } else if (item.getItemId() == R.id.sidebar_setting) {
                         Log.i("Menu drawer tag", "Setting is clicked");
+                        Intent intent = new Intent(HomePage.this,Setting.class);
+                        startActivity(intent);
                         drawerLayout.closeDrawer(GravityCompat.START);
                     } else if (item.getItemId() == R.id.sidebar_logout) {
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.clear();
+                        editor.commit();
+
                         Log.i("Menu drawer tag", "log out is clicked");
+                        Intent intent = new Intent(HomePage.this,LoginPage.class);
+                        startActivity(intent);
                         drawerLayout.closeDrawer(GravityCompat.START);
                     }
                 return true;
             }
         });
+
+        username_text = findViewById(R.id.username);
+
+        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME,MODE_PRIVATE);
+        userid = sharedPreferences.getString(KEY_ID,null);
+        username = sharedPreferences.getString(KEY_USERNAME,null);
+
+        if(userid != null && username != null){
+            username_text.setText("Welcome " + username.toUpperCase());
+        }
+        db = FirebaseDatabase.getInstance();
+        reference = db.getReference("Wallet");
+
+        reference.child(username).child("wallet_balance").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // The "wallet_balance" exists for the user with the given userid
+                    double walletBalance = dataSnapshot.getValue(double.class);
+                    TextView wallet_balance= findViewById(R.id.walletBalance);
+
+                    String balance = String.format("%.2f", walletBalance);
+                    wallet_balance.setText("RM" + balance);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+    public void homepage_redirect(View view){
+        if (view.getId() == R.id.booking_btn){
+            Intent intent = new Intent(HomePage.this,BookingPage.class);
+            startActivity(intent);
+        }
+        else if (view.getId() == R.id.parcel_btn) {
+            Intent intent = new Intent(HomePage.this,ParcelPage.class);
+            startActivity(intent);
+        }
+        else if (view.getId() == R.id.neworder_btn) {
+            Intent intent = new Intent(HomePage.this, NewOrder.class);
+            startActivity(intent);
+        }
+        else if (view.getId() == R.id.orderHistory_btn) {
+            Intent intent = new Intent(HomePage.this,Orderhistory.class);
+            startActivity(intent);
+        }
+        else if (view.getId() == R.id.payment_btn) {
+            Intent intent = new Intent(HomePage.this,Payment.class).putExtra("from","homepage");
+            startActivity(intent);
+        }
+        else if (view.getId() == R.id.pricing_btn) {
+            Intent intent = new Intent(HomePage.this,PricingPage.class);
+            startActivity(intent);
+        }
+        else if (view.getId() == R.id.setting_btn) {
+            Intent intent = new Intent(HomePage.this,Setting.class);
+            startActivity(intent);
+        }
+        else if (view.getId() == R.id.profile_btn) {
+            Intent intent = new Intent(HomePage.this,AccountPage.class).putExtra("from","homepage");
+            startActivity(intent);
+        }
+        else if (view.getId() == R.id.noti_btn) {
+            Intent intent = new Intent(HomePage.this,NotificationPage.class);
+            startActivity(intent);
+        }
+        else if(view.getId() == R.id.topBar_wallet){
+            Intent intent = new Intent(HomePage.this,WalletPage.class).putExtra("from","homepage");
+            startActivity(intent);
+        }
+        else if(view.getId() == R.id.topBar_track){
+            Intent intent = new Intent(HomePage.this,Orderhistory.class);
+            startActivity(intent);
+        }
 
     }
     public void onOpensideBar(View view){
@@ -124,35 +194,75 @@ public class HomePage extends AppCompatActivity {
     public void onClosesideBar(View view){
         drawerLayout.closeDrawer(GravityCompat.START);
     }
+    public void getUserDetail(){
 
-    public void bookingPage(View view){
-        Intent bookingPage = new Intent(HomePage.this, BookingPage.class);
-        startActivity(bookingPage);
+        db = FirebaseDatabase.getInstance();
+        reference = db.getReference("User");
+
+        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME,MODE_PRIVATE);
+        userid = sharedPreferences.getString(KEY_ID,null);
+        username = sharedPreferences.getString(KEY_USERNAME,null);
+
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.hasChild(username)){
+                    String email = snapshot.child(username).child("email").getValue(String.class);
+
+                    NavigationView navigationView = findViewById(R.id.navigationView);
+                    View headerView = navigationView.getHeaderView(0);
+                    TextView usernameTextView = headerView.findViewById(R.id.username_text);
+                    TextView emailTextView = headerView.findViewById(R.id.email_text);
+
+                    usernameTextView.setText(username);
+                    emailTextView.setText(email);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
+    public void getTracking(){db = FirebaseDatabase.getInstance();
+        reference = db.getReference("OrderHistory");
 
-    public void parcelPage(View view){
-        Intent parcelPage = new Intent(HomePage.this, ParcelPage.class);
-        startActivity(parcelPage);
+        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+        userid = sharedPreferences.getString(KEY_ID, null);
+        username = sharedPreferences.getString(KEY_USERNAME, null);
+
+
+        final AtomicInteger notDeliveredCount = new AtomicInteger(0); // Initialize the count to zero
+
+        reference.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    // Iterate through each child under the "username" node
+                    for (DataSnapshot orderNumberSnapshot : snapshot.getChildren()) {
+                        // Check if the "order_status" field exists
+                        if (orderNumberSnapshot.child("order_status").exists()) {
+                            String orderStatus = orderNumberSnapshot.child("order_status").getValue(String.class);
+
+                            if (!"Delivered".equals(orderStatus)) {
+                                // The order is not delivered, increment the count
+                                notDeliveredCount.getAndIncrement();
+                            }
+                        }
+                    }
+                }
+                TextView track = findViewById(R.id.track_qty);
+                track.setText(notDeliveredCount.get() + " ");
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle errors here
+            }
+        });
+
     }
-
-    public void paymentPage(View view){
-        Intent paymentPage = new Intent(HomePage.this, Payment.class);
-        startActivity(paymentPage);
-    }
-
-    public void pricingPage(View view){
-        Intent pricingPage = new Intent(HomePage.this, PricingPage.class);
-        startActivity(pricingPage);
-    }
-
-    public void settingPage(View view){
-        Intent settingPage = new Intent(HomePage.this, Setting.class);
-        startActivity(settingPage);
-    }
-
-    public void notificationPage(View view){
-        Intent notificationPage = new Intent(HomePage.this, NotificationPage.class);
-        startActivity(notificationPage);
-    }
-
 }

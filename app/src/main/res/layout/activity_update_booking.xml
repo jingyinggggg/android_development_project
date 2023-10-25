@@ -3,13 +3,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".update_booking">
+    tools:context=".UpdateBookingAdmin">
 
     <!--Header-->
-    <include
-        layout="@layout/header_layout"
-        android:id="@+id/header"/>
+    <FrameLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#3D3F99"
+        android:gravity="center"
+        android:paddingTop="20sp"
+        android:paddingBottom="10sp">
+
+        <ImageButton
+            android:id="@+id/backArrow"
+            android:layout_width="32sp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00FFFFFF"
+            app:srcCompat="@drawable/baseline_arrow_back_24"
+            android:onClick="backHomePage"/>
+
+
+        <TextView
+            android:layout_width="351dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Update Booking"
+            android:textColor="#FEFEFE"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+    </FrameLayout>
 
     <!--Body-->
     <LinearLayout
@@ -252,7 +279,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="115dp"
             android:layout_gravity="center"
             android:gravity="center"
@@ -260,20 +287,22 @@
 
             <Button
                 android:id="@+id/accept_booking"
-                android:layout_width="350dp"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@drawable/btn_shape_update_booking"
+                android:backgroundTint="@color/purple"
                 android:textColor="@drawable/btn_txt_selector_update_booking"
-                android:text="Update and Accept"/>
+                android:text="Update and Accept"
+                app:cornerRadius="10dp"/>
 
             <Button
                 android:id="@+id/decline_booking"
-                android:layout_width="350dp"
+                android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/btn_decline"
+                android:backgroundTint="#F00000"
                 android:textColor="@drawable/btn_txt_selector_decline"
-                android:text="Decline"/>
+                android:text="Decline"
+                app:cornerRadius="10dp"/>
 
 
         </LinearLayout>

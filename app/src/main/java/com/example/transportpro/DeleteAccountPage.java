@@ -7,8 +7,10 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -20,8 +22,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class DeleteAccountPage extends AppCompatActivity {
     public Button delete;
+    SharedPreferences sharedPreferences;
+    FirebaseDatabase db;
+    DatabaseReference reference;
+    private static final String SHARED_PREF_NAME = "localstorage";
+    private static final String KEY_USERNAME = "userName";
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -36,7 +49,7 @@ public class DeleteAccountPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(DeleteAccountPage.this, "canceled", Toast.LENGTH_SHORT).show();
-                backSettingPage();
+
             }
 
             @Override
@@ -57,14 +70,47 @@ public class DeleteAccountPage extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                db = FirebaseDatabase.getInstance();
+                reference = db.getReference("User");
 
-                showDeleteAccountDialog();
+                sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
+                String username = sharedPreferences.getString(KEY_USERNAME,null);
+
+                reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.hasChild(username)){
+                            DatabaseReference userReference = reference.child(username);
+                            int delete = 1;
+                            userReference.child("isDeletedAcc").setValue(delete);
+
+                            showDeleteAccountDialog();
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.clear();
+                            editor.commit();
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Intent loginpage = new Intent(DeleteAccountPage. this, LoginPage.class);
+                                    startActivity(loginpage);
+                                }
+                            }, 2200);
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
         });
 
     }
 
-    public void backSettingPage() {
+    public void backSettingPage(View view) {
         Intent settingPage = new Intent(this, Setting.class);
         startActivity(settingPage);
     }
@@ -85,7 +131,7 @@ public class DeleteAccountPage extends AppCompatActivity {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        backSettingPage();
+
                     }
                 });
 

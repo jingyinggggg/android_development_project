@@ -3,6 +3,7 @@ package com.example.transportpro;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -18,6 +19,12 @@ public class WelcomePage extends AppCompatActivity {
 
     TextView logo;
     Button btn_getStarted;
+    SharedPreferences sharedPreferences;
+    private static final String SHARED_PREF_NAME = "localstorage";
+    private static final String KEY_ID = "userId";
+    private static final String KEY_USERNAME = "userName";
+    private static final String REMEMBER = "remember";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +48,22 @@ public class WelcomePage extends AppCompatActivity {
                 openLoginPage();
             }
         });
+
+        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME,MODE_PRIVATE);
+        String id = sharedPreferences.getString(KEY_ID,null);
+        String checkbox = sharedPreferences.getString(REMEMBER,null);
+
+        if (id != null && checkbox != null){
+            Intent home = new Intent(this, HomePage.class);
+            startActivity(home);
+        } else if (id != null && checkbox == null) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.commit();
+        } else if (id == "1") {
+            Intent signUpPage = new Intent(this, AdminHomePage.class);
+            startActivity(signUpPage);
+        }
     }
 
     public void openLoginPage(){

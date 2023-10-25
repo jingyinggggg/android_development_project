@@ -2,22 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/home"
+        android:id="@+id/bar_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/bottom_home"
         android:title="Home" />
     <item
+        android:id="@+id/bar_payment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/bottom_payment"
         android:title="Payment" />
     <item
+        android:id="@+id/bar_wallet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/bottom_wallet"
         android:title="Wallet" />
     <item
+        android:id="@+id/bar_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:icon="@drawable/bottom_profile"

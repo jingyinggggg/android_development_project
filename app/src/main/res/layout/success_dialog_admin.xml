@@ -46,23 +46,32 @@
         android:id="@+id/confirm_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:gravity="center"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:textAllCaps="false"
         android:text="Confirm Update"
-        android:background="@drawable/btn_shape_update_booking"
+        android:backgroundTint="@color/purple"
+        app:cornerRadius="8dp"
         android:textColor="@drawable/btn_txt_selector_update_booking" />
 
-    <Button
-        android:id="@+id/cancel_dialog"
-        android:layout_width="60dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="35dp"
+        android:gravity="center"
         android:layout_gravity="center"
-        android:text="Cancel"
-        android:textSize="16dp"
-        android:textAllCaps="false"
-        android:background="@color/white"/>
-
+        android:layout_marginBottom="30sp">
+        <TextView
+            android:id="@+id/cancel_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="Cancel"
+            android:textSize="16dp"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"/>
+    </LinearLayout>
 
 </LinearLayout>

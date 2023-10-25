@@ -88,7 +88,8 @@ public class PostAnnouncement extends AppCompatActivity {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        backAdminHomepage();
+                        Intent intent = new Intent(PostAnnouncement.this, AdminHomePage.class);
+                        startActivity(intent);
                     }
                 });
 
@@ -98,8 +99,8 @@ public class PostAnnouncement extends AppCompatActivity {
     }
 
     // back admin homepage
-    public void backAdminHomepage() {
-        Intent intent = new Intent(PostAnnouncement.this, Setting.class);
+    public void backAdminHomepage(View view) {
+        Intent intent = new Intent(PostAnnouncement.this, AdminHomePage.class);
         startActivity(intent);
     }
 }
