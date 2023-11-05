@@ -174,8 +174,8 @@ public class LoginPage extends AppCompatActivity {
         startActivity(signUpPage);
     }
     public void adminPage(){
-        Intent signUpPage = new Intent(this, AdminHomePage.class);
-        startActivity(signUpPage);
+        Intent adminPage = new Intent(this, AdminHomePage.class);
+        startActivity(adminPage);
     }
 
 

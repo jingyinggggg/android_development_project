@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -16,10 +17,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class PostAnnouncement extends AppCompatActivity {
     private Button uploadButton;
     private ImageView imageView;
     private Button post;
+
+    FirebaseDatabase db;
+    DatabaseReference reference;
+    SharedPreferences sharedPreferences;
+    private static final String SHARED_PREF_NAME = "localstorage";
+    private static final String KEY_ID = "userId";
+    private static final String KEY_USERNAME = "userName";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

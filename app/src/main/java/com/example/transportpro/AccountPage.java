@@ -38,7 +38,7 @@ public class AccountPage extends AppCompatActivity {
     FirebaseDatabase db;
     DatabaseReference reference;
     ActivityAccountPageBinding binding;
-    String fullname,mobile, email, postcode, add1, add2, add3;
+    String fullname, mobile, email, postcode, add1, add2, add3;
     private static final String SHARED_PREF_NAME = "localstorage";
     private static final String KEY_ID = "userId";
     private static final String KEY_USERNAME = "userName";

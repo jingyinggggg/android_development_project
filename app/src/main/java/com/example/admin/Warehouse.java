@@ -10,7 +10,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class warehouse extends AppCompatActivity {
+import com.example.transportpro.R;
+
+public class Warehouse extends AppCompatActivity {
 
     ImageButton header_button;
 
@@ -53,12 +55,12 @@ public class warehouse extends AppCompatActivity {
     }
 
     public void redirect_homepage(View v){
-        Intent homepageIntent = new Intent(warehouse.this, homepage.class);
+        Intent homepageIntent = new Intent(Warehouse.this, Homepage.class);
         startActivity(homepageIntent);
     }
 
     public void redirect_update_warehouse(View v){
-        Intent updateWarehouseIntent = new Intent(warehouse.this, update_warehouse.class);
+        Intent updateWarehouseIntent = new Intent(Warehouse.this, update_warehouse.class);
         startActivity(updateWarehouseIntent);
     }
 

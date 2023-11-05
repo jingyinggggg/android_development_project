@@ -9,16 +9,19 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class order extends AppCompatActivity {
+import com.example.transportpro.R;
+
+public class OrderRequest extends AppCompatActivity {
 
     ImageButton header_button;
 
-    Button order;
+    Button accept_order;
+    Button decline_order;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order);
+        setContentView(R.layout.activity_order_request);
 
         /*Header Button and Header Word*/
         // Find the TextView and Image Button in the header layout
@@ -34,26 +37,35 @@ public class order extends AppCompatActivity {
         header_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                redirect_homepage(view);
+                redirect_order(view);
             }
         });
 
-        order = findViewById(R.id.order_id);
-        order.setOnClickListener(new View.OnClickListener() {
+        accept_order = findViewById(R.id.accept_order);
+        decline_order = findViewById(R.id.decline_order);
+
+        /*accept order button function */
+        accept_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                redirect_order_request(view);
+                //accept order function here
+                redirect_order(view);
+            }
+        });
+
+        /*decline order button function*/
+        decline_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //decline order function
+                redirect_order(view);
             }
         });
     }
 
-    public void redirect_homepage(View v){
-        Intent homepageIntent = new Intent(order.this, homepage.class);
-        startActivity(homepageIntent);
+    public void redirect_order(View v){
+        Intent orderIntent = new Intent(OrderRequest.this, Order.class);
+        startActivity(orderIntent);
     }
 
-    public void redirect_order_request(View v){
-        Intent orderRequestIntent = new Intent(order.this, order_request.class);
-        startActivity(orderRequestIntent);
-    }
 }

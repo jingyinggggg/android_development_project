@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <ImageButton
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="130dp"
             android:layout_marginTop="75dp" />
@@ -27,11 +27,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:id="@+id/PostAnnouncement"
+        android:id="@+id/announcement_layout"
         android:layout_below="@+id/image"
         android:layout_marginTop="20sp">
 
         <Button
+            android:id="@+id/post_announcement"
             android:layout_width="390dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
@@ -50,10 +51,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ViewAndUpdateWarehouse"
+        android:id="@+id/warehouse_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/PostAnnouncement"
+        android:layout_below="@+id/announcement_layout"
         android:layout_marginTop="21dp"
         android:gravity="center">
 
@@ -77,10 +78,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/BookingRequest"
+        android:id="@+id/booking_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ViewAndUpdateWarehouse"
+        android:layout_below="@+id/warehouse_layout"
         android:layout_marginTop="21dp"
         android:gravity="center">
 
@@ -105,10 +106,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/OrderRequest"
+        android:id="@+id/order_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/BookingRequest"
+        android:layout_below="@+id/booking_layout"
         android:layout_marginTop="21dp"
         android:gravity="center">
 

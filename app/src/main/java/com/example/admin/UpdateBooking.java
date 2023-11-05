@@ -10,9 +10,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.transportpro.R;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-public class update_booking extends AppCompatActivity {
+public class UpdateBooking extends AppCompatActivity {
 
 
     ImageButton header_button;
@@ -96,7 +98,7 @@ public class update_booking extends AppCompatActivity {
     }
 
         public void redirect_view_booking(View v){
-            Intent viewBookingIntent = new Intent(update_booking.this, CustomerBookingPage.class);
+            Intent viewBookingIntent = new Intent(UpdateBooking.this, CustomerBookingPage.class);
             startActivity(viewBookingIntent);
         }
 }

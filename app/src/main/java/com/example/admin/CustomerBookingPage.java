@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.transportpro.R;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class CustomerBookingPage extends AppCompatActivity {
@@ -18,18 +20,6 @@ public class CustomerBookingPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_booking);
-
-        // Find the TextView and Image Button in the header layout
-        TextView headerTitle = findViewById(R.id.header_title);
-        ImageButton headerButton = findViewById(R.id.header_btn);
-
-        // Set the text based on the current page or context
-        headerTitle.setText("View Booking");
-        // Set the image button based on the current page or context
-        headerButton.setImageResource(R.drawable.back_button);
-
-        header_button = (ImageButton) findViewById(R.id.header_btn);
-        view_customer_details = (Button) findViewById(R.id.view_details);
 
         header_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,12 +36,12 @@ public class CustomerBookingPage extends AppCompatActivity {
     }
 
     public void redirect_homepage(View v){
-        Intent homepageIntent = new Intent(CustomerBookingPage.this, homepage.class);
+        Intent homepageIntent = new Intent(CustomerBookingPage.this, Homepage.class);
         startActivity(homepageIntent);
     }
 
     public void redirect_updateBooking(View v){
-        Intent updateBookingIntent = new Intent(CustomerBookingPage.this, update_booking.class);
+        Intent updateBookingIntent = new Intent(CustomerBookingPage.this, UpdateBooking.class);
         startActivity(updateBookingIntent);
     }
 }

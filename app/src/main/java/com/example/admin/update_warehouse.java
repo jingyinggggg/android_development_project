@@ -1,25 +1,18 @@
 package com.example.admin;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextPaint;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.transportpro.R;
 
 public class update_warehouse extends AppCompatActivity {
 
@@ -140,7 +133,7 @@ public class update_warehouse extends AppCompatActivity {
     }
 
     public void redirect_warehouse(View v){
-        Intent warehouseIntent = new Intent(update_warehouse.this, warehouse.class);
+        Intent warehouseIntent = new Intent(update_warehouse.this, Warehouse.class);
         startActivity(warehouseIntent);
     }
 

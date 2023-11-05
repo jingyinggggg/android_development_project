@@ -226,7 +226,8 @@ public class HomePage extends AppCompatActivity {
             }
         });
     }
-    public void getTracking(){db = FirebaseDatabase.getInstance();
+    public void getTracking() {
+        db = FirebaseDatabase.getInstance();
         reference = db.getReference("OrderHistory");
 
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
