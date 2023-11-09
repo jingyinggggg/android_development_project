@@ -3,45 +3,73 @@ package com.example.transportpro;
 public class NotificationClass {
 
     int userId;
-    int booking_status;
-    int parcel_status;
-    int order_status;
-    int is_maintainence;
+    String image;
+    String title;
+    String content;
+    String type;
+    int is_read;
 
 
     public NotificationClass(){
         // Default constructor required for Firebase
     }
 
-    public NotificationClass(int userId, int booking_status, int parcel_status, int order_status, int is_maintainence){
+    public NotificationClass(int userId, String title, String content, String type, int is_read){
         this.userId = userId;
-        this.booking_status = booking_status;
-        this.parcel_status = parcel_status;
-        this.order_status = order_status;
-        this.is_maintainence = is_maintainence;
+        this.title = title;
+        this.content = content;
+        this.type = type;
+        this.is_read = is_read;
     }
 
     //Getter
-    public int getUserId() {return userId; }
+    public int getUserId() {
+        return userId;
+    }
 
-    public int getBooking_status() { return booking_status; }
+    public String getImage() {
+        return image;
+    }
 
-    public int getParcel_status() { return parcel_status; }
+    public String getTitle() {
+        return title;
+    }
 
-    public int getOrder_status() { return order_status; }
+    public String getContent() {
+        return content;
+    }
 
-    public int getIs_maintainence() { return is_maintainence; }
+    public String getType() {
+        return type;
+    }
 
-
+    public int getIs_read() {
+        return is_read;
+    }
 
     //Setter
-    public void setUserId(int userId) {this.userId = userId;}
 
-    public void setBooking_status(int booking_status) {this.booking_status = booking_status;}
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
-    public void setParcel_status(int parcel_status) {this.parcel_status = parcel_status;}
+    public void setImage(String image) {
+        this.image = image;
+    }
 
-    public void setOrder_status(int order_status) {this.order_status = order_status;}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public void setIs_maintainence(int is_maintainence) {this.is_maintainence = is_maintainence;}
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setIs_read(int is_read) {
+        this.is_read = is_read;
+    }
 }

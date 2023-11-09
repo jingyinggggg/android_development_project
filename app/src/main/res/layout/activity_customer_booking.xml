@@ -74,7 +74,8 @@
         <TableRow
             android:layout_width="390dp"
             android:layout_height="44dp"
-            android:background="@drawable/table_header">
+            android:background="@drawable/table_header"
+            android:layout_marginTop="10dp">
 
             <!-- Header Column -->
             <TextView
@@ -89,159 +90,170 @@
 
         </TableRow>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/viewBooking"
+            android:layout_width="390dp"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </androidx.recyclerview.widget.RecyclerView>
         <!-- Row 1 -->
-        <TableRow
-            android:layout_width="390dp"
-            android:layout_height="48dp"
-            android:background="@drawable/table_row"
-            android:orientation="vertical"
-            >
 
-            <!-- Column 1 -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center">
-                <TextView
-                    android:id="@+id/customerId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/black"
-                    android:text="Customer ID: 000000"
-                    android:fontFamily="@font/inter_regular" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="right|center"
-                android:layout_marginRight="10sp">
-                <Button
-                    android:id="@+id/view_details"
-                    android:layout_width="120dp"
-                    android:layout_height="35sp"
-                    android:backgroundTint="@color/purple"
-                    android:textColor="@color/white"
-                    android:text="View Details"
-                    android:textAllCaps="false"
-                    android:textSize="12dp"
-                    android:fontFamily="@font/inter_medium"/>
-            </LinearLayout>
-        </TableRow>
 
-        <!-- Row 2 -->
-        <TableRow
-            android:layout_width="390dp"
-            android:layout_height="48dp"
-            android:background="@drawable/table_row">
+<!--        <TableRow-->
+<!--            android:layout_width="390dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:background="@drawable/table_row"-->
+<!--            android:orientation="vertical"-->
+<!--            >-->
 
-            <!-- Column 1 -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/black"
-                    android:text="Customer ID: 000000"
-                    android:fontFamily="@font/inter_regular" />
-            </LinearLayout>
+<!--            &lt;!&ndash; Column 1 &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:gravity="center">-->
+<!--                <TextView-->
+<!--                    android:id="@+id/customerId"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:text="Customer ID: 000000"-->
+<!--                    android:fontFamily="@font/inter_regular" />-->
+<!--            </LinearLayout>-->
+<!--            -->
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:gravity="right|center"-->
+<!--                android:layout_marginRight="10sp">-->
+<!--                <Button-->
+<!--                    android:id="@+id/view_details"-->
+<!--                    android:layout_width="120dp"-->
+<!--                    android:layout_height="35sp"-->
+<!--                    android:backgroundTint="@color/purple"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:text="View Details"-->
+<!--                    android:textAllCaps="false"-->
+<!--                    android:textSize="12dp"-->
+<!--                    android:fontFamily="@font/inter_medium"/>-->
+<!--            </LinearLayout>-->
+<!--        </TableRow>-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="right|center"
-                android:layout_marginRight="10sp">
-                <Button
-                    android:layout_width="120dp"
-                    android:layout_height="35sp"
-                    android:backgroundTint="@color/purple"
-                    android:textColor="@color/white"
-                    android:text="View Details"
-                    android:textAllCaps="false"
-                    android:textSize="12dp"
-                    android:fontFamily="@font/inter_medium"/>
-            </LinearLayout>
+<!--        &lt;!&ndash; Row 2 &ndash;&gt;-->
+<!--        <TableRow-->
+<!--            android:layout_width="390dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:background="@drawable/table_row">-->
 
-        </TableRow>
+<!--            &lt;!&ndash; Column 1 &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:gravity="center">-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:text="Customer ID: 000000"-->
+<!--                    android:fontFamily="@font/inter_regular" />-->
+<!--            </LinearLayout>-->
 
-        <!-- Row 3 -->
-        <TableRow
-            android:layout_width="390dp"
-            android:layout_height="48dp"
-            android:background="@drawable/table_row">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:gravity="right|center"-->
+<!--                android:layout_marginRight="10sp">-->
+<!--                <Button-->
+<!--                    android:layout_width="120dp"-->
+<!--                    android:layout_height="35sp"-->
+<!--                    android:backgroundTint="@color/purple"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:text="View Details"-->
+<!--                    android:textAllCaps="false"-->
+<!--                    android:textSize="12dp"-->
+<!--                    android:fontFamily="@font/inter_medium"/>-->
+<!--            </LinearLayout>-->
 
-            <!-- Column 1 -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/black"
-                    android:text="Customer ID: 000000"
-                    android:fontFamily="@font/inter_regular" />
-            </LinearLayout>
+<!--        </TableRow>-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="right|center"
-                android:layout_marginRight="10sp">
-                <Button
-                    android:layout_width="120dp"
-                    android:layout_height="35sp"
-                    android:backgroundTint="@color/purple"
-                    android:textColor="@color/white"
-                    android:text="View Details"
-                    android:textAllCaps="false"
-                    android:textSize="12dp"
-                    android:fontFamily="@font/inter_medium"/>
-            </LinearLayout>
+<!--        &lt;!&ndash; Row 3 &ndash;&gt;-->
+<!--        <TableRow-->
+<!--            android:layout_width="390dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:background="@drawable/table_row">-->
 
-        </TableRow>
+<!--            &lt;!&ndash; Column 1 &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:gravity="center">-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:text="Customer ID: 000000"-->
+<!--                    android:fontFamily="@font/inter_regular" />-->
+<!--            </LinearLayout>-->
 
-        <!-- Row 4 -->
-        <TableRow
-            android:layout_width="390dp"
-            android:layout_height="48dp"
-            android:background="@drawable/table_row">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:gravity="right|center"-->
+<!--                android:layout_marginRight="10sp">-->
+<!--                <Button-->
+<!--                    android:layout_width="120dp"-->
+<!--                    android:layout_height="35sp"-->
+<!--                    android:backgroundTint="@color/purple"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:text="View Details"-->
+<!--                    android:textAllCaps="false"-->
+<!--                    android:textSize="12dp"-->
+<!--                    android:fontFamily="@font/inter_medium"/>-->
+<!--            </LinearLayout>-->
 
-            <!-- Column 1 -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/black"
-                    android:text="Customer ID: 000000"
-                    android:fontFamily="@font/inter_regular" />
-            </LinearLayout>
+<!--        </TableRow>-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="right|center"
-                android:layout_marginRight="10sp">
-                <Button
-                    android:layout_width="120dp"
-                    android:layout_height="35sp"
-                    android:backgroundTint="@color/purple"
-                    android:textColor="@color/white"
-                    android:text="View Details"
-                    android:textAllCaps="false"
-                    android:textSize="12dp"
-                    android:fontFamily="@font/inter_medium"/>
-            </LinearLayout>
+<!--        &lt;!&ndash; Row 4 &ndash;&gt;-->
+<!--        <TableRow-->
+<!--            android:layout_width="390dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:background="@drawable/table_row">-->
 
-        </TableRow>
+<!--            &lt;!&ndash; Column 1 &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:gravity="center">-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="10dp"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:text="Customer ID: 000000"-->
+<!--                    android:fontFamily="@font/inter_regular" />-->
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:gravity="right|center"-->
+<!--                android:layout_marginRight="10sp">-->
+<!--                <Button-->
+<!--                    android:layout_width="120dp"-->
+<!--                    android:layout_height="35sp"-->
+<!--                    android:backgroundTint="@color/purple"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:text="View Details"-->
+<!--                    android:textAllCaps="false"-->
+<!--                    android:textSize="12dp"-->
+<!--                    android:fontFamily="@font/inter_medium"/>-->
+<!--            </LinearLayout>-->
+
+<!--        </TableRow>-->
 
     </LinearLayout>
 

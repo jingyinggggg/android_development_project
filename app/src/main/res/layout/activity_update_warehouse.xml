@@ -27,7 +27,6 @@
 
 
         <TextView
-
             android:layout_width="351dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
