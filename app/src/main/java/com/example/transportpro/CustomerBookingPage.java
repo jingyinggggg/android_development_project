@@ -56,10 +56,10 @@ public class CustomerBookingPage extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         bookingClassArrayList = new ArrayList<>();
-        adapterBooking = new AdapterBooking(this, bookingClassArrayList,activity);
+        adapterBooking = new AdapterBooking(this, bookingClassArrayList,this);
         recyclerView.setAdapter(adapterBooking);
 
-        usersReference = FirebaseDatabase.getInstance("https://transportpro-13407-default-rtdb.firebaseio.com/").getReference("User");
+        usersReference = FirebaseDatabase.getInstance().getReference("User");
 
         ArrayList<String> users = new ArrayList<>();
         usersReference.addListenerForSingleValueEvent(new ValueEventListener(){
@@ -107,11 +107,6 @@ public class CustomerBookingPage extends AppCompatActivity {
             }
         });
 
-//        view_customer_details.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) { redirect_updateBooking(view); }
-//        });
-
     }
 
 
@@ -120,8 +115,4 @@ public class CustomerBookingPage extends AppCompatActivity {
         startActivity(homepageIntent);
     }
 
-    public void redirect_updateBooking(View v){
-        Intent updateBookingIntent = new Intent(CustomerBookingPage.this, UpdateBookingAdmin.class);
-        startActivity(updateBookingIntent);
-    }
 }

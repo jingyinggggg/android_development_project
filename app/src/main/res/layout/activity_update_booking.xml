@@ -53,6 +53,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/customerId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_bold"
@@ -62,6 +63,7 @@
                 android:textSize="20dp" />
 
             <TextView
+                android:id="@+id/customerName"
                 android:layout_width="250dp"
                 android:layout_height="20dp"
                 android:fontFamily="@font/inter_regular"
@@ -108,7 +110,7 @@
                         android:layout_gravity="bottom">
 
                         <TextView
-                            android:id="@+id/trackNo"
+                            android:id="@+id/trackNo_display"
                             android:layout_width="267dp"
                             android:layout_height="23dp"
                             android:background="@color/white"

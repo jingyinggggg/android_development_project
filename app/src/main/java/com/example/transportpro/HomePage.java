@@ -118,6 +118,7 @@ public class HomePage extends AppCompatActivity {
         if(userid != null && username != null){
             username_text.setText("Welcome " + username.toUpperCase());
         }
+
         db = FirebaseDatabase.getInstance();
         reference = db.getReference("Wallet");
 

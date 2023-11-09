@@ -85,6 +85,7 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
         Button confirmDialogButton = dialogView.findViewById(R.id.confirm_dialog);
         TextView cancelDialogText = dialogView.findViewById(R.id.cancel_dialog);
         // Set an OnClickListener for the confirm_dialog button
+
         confirmDialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

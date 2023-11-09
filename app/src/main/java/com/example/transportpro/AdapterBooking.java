@@ -1,6 +1,7 @@
 package com.example.transportpro;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,10 @@ public class AdapterBooking extends RecyclerView.Adapter<AdapterBooking.ViewHold
         BookingClass booking = bookingClassList.get(position);
         int id = booking.getUserId();
         holder.customerId.setText("Customer ID: " + id);
+        holder.viewDetailsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { redirect_updateBooking(booking); }
+        });
 
     }
 
@@ -58,5 +63,13 @@ public class AdapterBooking extends RecyclerView.Adapter<AdapterBooking.ViewHold
             customerId = itemView.findViewById(R.id.customerId);
             viewDetailsButton = itemView.findViewById(R.id.view_details);
         }
+    }
+
+    private void redirect_updateBooking(BookingClass booking){
+        Intent updateBookingIntent = new Intent(activity,UpdateBookingAdmin.class);
+        updateBookingIntent.putExtra("userId", booking.userId);
+        updateBookingIntent.putExtra("trackNo", booking.track_number);
+
+        activity.startActivity(updateBookingIntent);
     }
 }
