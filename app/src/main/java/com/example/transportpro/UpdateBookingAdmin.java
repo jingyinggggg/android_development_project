@@ -36,7 +36,7 @@ public class UpdateBookingAdmin extends AppCompatActivity {
     int userId;
     String trackNo;
     String username;
-    double previousWeight;
+    double currentWeight;
     double weight;
 
     @Override
@@ -111,7 +111,7 @@ public class UpdateBookingAdmin extends AppCompatActivity {
                                 String cat = snapshot.child("category").getValue(String.class);
                                 String deli_by = snapshot.child("delivery_by").getValue(String.class);
                                 String desc = snapshot.child("delivery_by").getValue(String.class);
-                                double currentWeight = snapshot.child("weight").getValue(double.class);
+                                currentWeight = snapshot.child("weight").getValue(double.class);
 
                                 trackNo_display.setText(trackNo);
                                 category.setText(cat);
@@ -141,9 +141,10 @@ public class UpdateBookingAdmin extends AppCompatActivity {
                                                 Toast.makeText(UpdateBookingAdmin.this, "Weight has changed", Toast.LENGTH_SHORT).show();
                                                 // Update the value of 'weight' in the database
                                                 snapshot.child("weight").getRef().setValue(weight + " KG");
+                                                snapshot.child("collected").getRef().setValue(1);
 
                                                 // Update the previousWeight variable
-                                                previousWeight = weight;
+                                                currentWeight = weight;
                                             }
 
                                             // Hide the error message
