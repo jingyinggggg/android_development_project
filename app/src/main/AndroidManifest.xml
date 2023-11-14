@@ -13,6 +13,33 @@
         android:theme="@style/Theme.TransportPro"
         tools:targetApi="31">
         <activity
+            android:name=".sidebar"
+            android:exported="true"/>
+        <activity
+            android:name=".InvoicePage"
+            android:exported="false" />
+        <activity
+            android:name=".AdminHomePage"
+            android:exported="false" />
+        <activity
+            android:name=".CustomerBookingPage"
+            android:exported="false" />
+        <activity
+            android:name=".OrderAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".OrderRequestAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateBookingAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateWarehouseAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".WarehouseAdmin"
+            android:exported="false" />
+        <activity
             android:name=".WalletPage"
             android:exported="false" />
         <activity
@@ -40,12 +67,12 @@
             android:name=".Orderhistory"
             android:exported="false" />
         <activity
-            android:name=".neworder"
+            android:name=".NewOrder"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".MainActivity"
-            android:exported="false"/>
+            android:name=".HomePage"
+            android:exported="false" />
         <activity
             android:name=".ParcelViewPage"
             android:exported="false" />
@@ -86,4 +113,3 @@
     </application>
 
 </manifest>
-

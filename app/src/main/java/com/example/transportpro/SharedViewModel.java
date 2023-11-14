@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 public class SharedViewModel extends ViewModel {
 
     private final MutableLiveData<String> transportData = new MutableLiveData<>();
+    private final MutableLiveData<String> sensitiveItem = new MutableLiveData<>();
     private final MutableLiveData<String> textData = new MutableLiveData<>();
 
     // Create a LiveData for receiver data using a data class
@@ -27,11 +28,19 @@ public class SharedViewModel extends ViewModel {
         return transportData;
     }
 
-    public void setTextData(String data) {
-        textData.setValue(data);
+    public void setSensitiveItem(String data) {
+        sensitiveItem.setValue(data);
     }
 
-    public LiveData<String> getTextData() {
-        return textData;
+    public LiveData<String> getSensitiveItem() {
+        return sensitiveItem;
     }
+
+//    public void setTextData(String data) {
+//        textData.setValue(data);
+//    }
+//
+//    public LiveData<String> getTextData() {
+//        return textData;
+//    }
 }

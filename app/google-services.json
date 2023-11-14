@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1026743409255",
+    "firebase_url": "https://transportpro-13407-default-rtdb.firebaseio.com",
+    "project_id": "transportpro-13407",
+    "storage_bucket": "transportpro-13407.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1026743409255:android:442fc3a445509acda252c2",
+        "android_client_info": {
+          "package_name": "com.example.transportpro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCS_eSSHJKgJz_OzOzduUVdRqgZMZDvUhU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

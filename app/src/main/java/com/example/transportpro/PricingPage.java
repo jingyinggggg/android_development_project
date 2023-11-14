@@ -197,8 +197,8 @@ public class PricingPage extends AppCompatActivity {
 
     }
 
-    public void backLoginPage(View view){
-        Intent loginPage = new Intent(this, LoginPage.class);
+    public void backHomePage(View view){
+        Intent loginPage = new Intent(this, HomePage.class);
         startActivity(loginPage);
     }
 

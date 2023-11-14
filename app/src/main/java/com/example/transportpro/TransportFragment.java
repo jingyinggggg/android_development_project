@@ -64,9 +64,9 @@ public class TransportFragment extends Fragment {
         yesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 yesButton.setBackgroundResource(R.drawable.order_selected);
                 noButton.setBackgroundResource(R.drawable.order_rectangle);
+                sharedViewModel.setSensitiveItem("Yes");
             }
         });
 
@@ -75,6 +75,7 @@ public class TransportFragment extends Fragment {
             public void onClick(View v) {
                 noButton.setBackgroundResource(R.drawable.order_selected);
                 yesButton.setBackgroundResource(R.drawable.order_rectangle);
+                sharedViewModel.setSensitiveItem("No");
             }
         });
 
