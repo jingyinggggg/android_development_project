@@ -72,7 +72,7 @@ public class Payment extends AppCompatActivity {
         });
     }
 
-    public void backPreviousActivity(View view){
+    public void  backPreviousActivity(View view){
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottombar);
 
         if(getIntent().getStringExtra("from").equals("homepage")){

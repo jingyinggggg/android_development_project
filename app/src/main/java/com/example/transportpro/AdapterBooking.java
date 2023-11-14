@@ -18,7 +18,6 @@ public class AdapterBooking extends RecyclerView.Adapter<AdapterBooking.ViewHold
 
     Context context;
     ArrayList<BookingClass> bookingClassList;
-
     private AppCompatActivity activity;
 
     public AdapterBooking(Context context, ArrayList<BookingClass> bookingClassList, AppCompatActivity activity){

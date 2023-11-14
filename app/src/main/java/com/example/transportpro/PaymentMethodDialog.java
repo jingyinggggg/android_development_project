@@ -119,6 +119,8 @@ public class PaymentMethodDialog extends DialogFragment {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
+                                                updateLowBalanceNotifications(username);
+
                                                 ((PaymentCompleteListener) requireActivity()).onPaymentComplete();
                                             } else {
                                                 // Handle the case where the update was not successful
@@ -329,6 +331,31 @@ public class PaymentMethodDialog extends DialogFragment {
 
         return view;
     }
+
+    private void updateLowBalanceNotifications(String username) {
+        DatabaseReference notificationRef = FirebaseDatabase.getInstance().getReference("Notification").child(username).child("wallet");
+
+        // Check for low balance notifications and update or remove them
+        notificationRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot notificationSnapshot : snapshot.getChildren()) {
+                    NotificationClass notification = notificationSnapshot.getValue(NotificationClass.class);
+                    if (notification != null && notification.getType().equals("low balance") && notification.getIs_read() == 0) {
+                        // Since the balance has been topped up, we can remove the notification
+                        notificationSnapshot.getRef().removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("updateNotification", "Error updating notification", error.toException());
+            }
+        });
+    }
+
+
 
     public interface PaymentCompleteListener {
         void onPaymentComplete();

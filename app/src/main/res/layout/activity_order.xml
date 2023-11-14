@@ -81,7 +81,17 @@
           android:text="All Order"
           android:textStyle="bold"/>
 
-      <!--Show Parcel Table-->
+      <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/viewOrder"
+          android:layout_width="350dp"
+          android:layout_height="match_parent"
+          android:layout_marginBottom="30dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          />
+
+      <!--Show Parcel Table
       <LinearLayout
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -90,13 +100,13 @@
           android:layout_gravity="center">
 
 
-        <!-- Row 1 -->
+        &lt;!&ndash; Row 1 &ndash;&gt;
         <LinearLayout
             android:layout_width="350dp"
             android:layout_height="38dp"
             >
 
-          <!-- Column 1 -->
+          &lt;!&ndash; Column 1 &ndash;&gt;
           <Button
               android:id="@+id/order_id"
               android:layout_width="match_parent"
@@ -113,12 +123,12 @@
 
         </LinearLayout>
 
-        <!-- Row 2 -->
+        &lt;!&ndash; Row 2 &ndash;&gt;
         <LinearLayout
             android:layout_width="350dp"
             android:layout_height="38dp">
 
-          <!-- Column 1 -->
+          &lt;!&ndash; Column 1 &ndash;&gt;
           <Button
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -133,12 +143,12 @@
 
         </LinearLayout>
 
-        <!-- Row 3 -->
+        &lt;!&ndash; Row 3 &ndash;&gt;
         <LinearLayout
             android:layout_width="350dp"
             android:layout_height="38dp">
 
-          <!-- Column 1 -->
+          &lt;!&ndash; Column 1 &ndash;&gt;
           <Button
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -153,12 +163,12 @@
 
         </LinearLayout>
 
-        <!-- Row 4 -->
+        &lt;!&ndash; Row 4 &ndash;&gt;
         <LinearLayout
             android:layout_width="350dp"
             android:layout_height="38dp">
 
-          <!-- Column 1 -->
+          &lt;!&ndash; Column 1 &ndash;&gt;
           <Button
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -173,7 +183,7 @@
 
         </LinearLayout>
 
-      </LinearLayout>
+      </LinearLayout>-->
 
     </LinearLayout>
 

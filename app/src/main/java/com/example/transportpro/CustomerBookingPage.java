@@ -3,6 +3,7 @@ package com.example.transportpro;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -31,12 +32,12 @@ public class CustomerBookingPage extends AppCompatActivity {
     ArrayList<BookingClass> bookingClassArrayList;
 
     DatabaseReference usersReference;
-    DatabaseReference reference;
+    DatabaseReference bookingReference;
 
-    RecyclerView recyclerView;
+    RecyclerView bookingRecyclerView;
     AdapterBooking adapterBooking;
     String username;
-    ArrayList users;
+    ArrayList<String> users;
 
     private AppCompatActivity activity;
 
@@ -45,23 +46,22 @@ public class CustomerBookingPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_booking);
 
-        header_button = (ImageButton) findViewById(R.id.backArrow);
+        header_button = findViewById(R.id.backArrow);
 
 
-        recyclerView = findViewById(R.id.viewBooking);
+        bookingRecyclerView = findViewById(R.id.viewBooking);
 
-        reference = FirebaseDatabase.getInstance().getReference("Booking");
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        bookingRecyclerView.setHasFixedSize(true);
+        bookingRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         bookingClassArrayList = new ArrayList<>();
         adapterBooking = new AdapterBooking(this, bookingClassArrayList,this);
-        recyclerView.setAdapter(adapterBooking);
+        bookingRecyclerView.setAdapter(adapterBooking);
 
         usersReference = FirebaseDatabase.getInstance().getReference("User");
+        bookingReference = FirebaseDatabase.getInstance().getReference("Booking");
 
-        ArrayList<String> users = new ArrayList<>();
+        users = new ArrayList<>();
         usersReference.addListenerForSingleValueEvent(new ValueEventListener(){
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -73,8 +73,8 @@ public class CustomerBookingPage extends AppCompatActivity {
                     }
                 }
                 bookingClassArrayList.clear();
-                for (String username : users){
-                    reference.child(username).addValueEventListener(new ValueEventListener() {
+                for (String currentUser : users){
+                    bookingReference.child(currentUser).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             for(DataSnapshot dataSnapshot : snapshot.getChildren()){

@@ -1,6 +1,9 @@
 package com.example.transportpro;
 
+import static android.app.PendingIntent.getActivity;
+
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -15,6 +18,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,12 +36,12 @@ public class UpdateBookingAdmin extends AppCompatActivity {
     Button decline_booking;
 
     DatabaseReference usersReference;
-    DatabaseReference reference;
+    DatabaseReference bookingReference;
 
     int userId;
     String trackNo;
     String username;
-    double currentWeight;
+    double previousWeight;
     double weight;
 
     @Override
@@ -44,7 +49,6 @@ public class UpdateBookingAdmin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_booking);
 
-        // Set the image button based on the current page or context
         header_button = findViewById(R.id.backArrow);
 
         /*Header Button Function*/
@@ -87,7 +91,7 @@ public class UpdateBookingAdmin extends AppCompatActivity {
         accept_booking = findViewById(R.id.accept_booking);
         decline_booking = findViewById(R.id.decline_booking);
 
-        reference = FirebaseDatabase.getInstance().getReference("Booking");
+        bookingReference = FirebaseDatabase.getInstance().getReference("Booking");
         usersReference = FirebaseDatabase.getInstance().getReference("User");
 
         usersReference.addValueEventListener(new ValueEventListener() {
@@ -95,67 +99,77 @@ public class UpdateBookingAdmin extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot ) {
                 for(DataSnapshot userSnapshot : snapshot.getChildren())
                 {
-                    String currentUsername = userSnapshot.child("username").getValue(String.class);
                     int uId  = userSnapshot .child("userId").getValue(int.class);
-
                     if(userId == uId)
                     {
                         username = userSnapshot.child("username").getValue(String.class);
                         customerId.setText("Customer ID: " + userId);
                         customerName.setText("Customer name : "+username);
 
-                        reference.child(username).child(trackNo).addValueEventListener(new ValueEventListener() {
+                        bookingReference.child(username).child(trackNo).addValueEventListener(new ValueEventListener() {
 
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 String cat = snapshot.child("category").getValue(String.class);
                                 String deli_by = snapshot.child("delivery_by").getValue(String.class);
                                 String desc = snapshot.child("delivery_by").getValue(String.class);
-                                currentWeight = snapshot.child("weight").getValue(double.class);
+                                previousWeight = snapshot.child("weight").getValue(double.class);
 
                                 trackNo_display.setText(trackNo);
                                 category.setText(cat);
                                 deliveryType.setText(deli_by);
                                 descTextView.setText(desc);
-                                if (currentWeight != 0){
-                                    DecimalFormat decimalFormat = new DecimalFormat("#.##");
-                                    String formattedWeight = decimalFormat.format(currentWeight);
-
-                                    weightEditText.setText(formattedWeight + " KG");
-                                }
 
 
                                 accept_booking.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
+
                                         // Check for validation of the edit text of weight
                                         String weightString = weightEditText.getText().toString().trim();
                                         weightString = weightString.replace(" ", "");
-
-                                        if (!TextUtils.isEmpty(weightString) && !"0".equals(weightString))
+                                        if (!TextUtils.isEmpty(weightString) && !"0".equals(previousWeight))
                                         {
-
+                                            // Convert the weight to an integer before storing in the database
                                             weight = Double.parseDouble(weightString);
-                                            if (weight != currentWeight) {
+
+                                            if (weight != previousWeight) {
                                                 // Display a Toast indicating that the weight has changed
                                                 Toast.makeText(UpdateBookingAdmin.this, "Weight has changed", Toast.LENGTH_SHORT).show();
-                                                // Update the value of 'weight' in the database
-                                                snapshot.child("weight").getRef().setValue(weight + " KG");
-                                                snapshot.child("collected").getRef().setValue(1);
+
+                                                // Update the value of 'weight' in the database with the integer value
+                                                bookingReference.child(username).child(trackNo).child("weight").setValue(weight);
+                                                bookingReference.child(username).child(trackNo).child("collected").setValue(1);
 
                                                 // Update the previousWeight variable
-                                                currentWeight = weight;
+                                                previousWeight = weight;
                                             }
 
                                             // Hide the error message
                                             errorMessageTextView.setVisibility(View.GONE);
-                                            redirect_view_booking(view);
+
+                                            if (username!=null){
+                                                String title = "booking";
+                                                String type = "parcel_collected";
+                                                String content = trackNo;
+                                                String imageResId  = String.valueOf(R.drawable.reminder);
+
+                                                int is_read = 0;
+                                                int is_system = 0;
+                                                DatabaseReference notificationReference = FirebaseDatabase.getInstance().getReference("Notification").child(username).child(title).child(content);
+
+                                                NotificationClass notificationClass = new NotificationClass(userId,imageResId ,title,type,content,is_read,is_system);
+                                                notificationReference.setValue(notificationClass);
+                                                redirect_view_booking(view);
+
+                                            }
+
+
 
                                         }
                                         else
                                         {
                                             // Set the error message to be visible with red-colored text
-                                            accept_booking.setOnClickListener(null);
                                             errorMessageTextView.setVisibility(View.VISIBLE);
                                         }
                                     }
