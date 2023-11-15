@@ -5,26 +5,24 @@ import android.graphics.drawable.Drawable;
 public class NotificationClass {
 
     int userId;
-    String  image;
+    String image;
     String title;
     String type;
     String content;
     int is_read;
-    int is_system;
 
 
     public NotificationClass(){
         // Default constructor required for Firebase
     }
 
-    public NotificationClass(int userId,String  image, String title, String type, String content, int is_read,int is_system){
+    public NotificationClass(int userId,String  image, String title, String type, String content, int is_read){
         this.userId = userId;
         this.image = image;
         this.title = title;
         this.type = type;
         this.content = content;
         this.is_read = is_read;
-        this.is_system = is_system;
     }
 
     //Getter
@@ -42,7 +40,6 @@ public class NotificationClass {
     public int getIs_read() {
         return is_read;
     }
-    public int getIs_system(){return is_system;}
 
     //Setter
 
@@ -68,7 +65,4 @@ public class NotificationClass {
         this.is_read = is_read;
     }
 
-    public void setIs_system(int is_system) {
-        this.is_system = is_system;
-    }
 }

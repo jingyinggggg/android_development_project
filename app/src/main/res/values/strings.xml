@@ -32,7 +32,12 @@
         <item>Online Banking</item>
         <item>Debit/Credit Card</item>
 
+    </string-array>
 
+    <string-array name="announcement_types">
+        <item>Maintenance</item>
+        <!--<item>Type 2</item>
+        <item>Type 3</item>-->
     </string-array>
 
 </resources>

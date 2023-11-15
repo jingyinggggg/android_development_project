@@ -143,28 +143,30 @@ public class UpdateBookingAdmin extends AppCompatActivity {
 
                                                 // Update the previousWeight variable
                                                 previousWeight = weight;
+
+                                                if (username!=null){
+                                                    String title = "booking";
+                                                    String type = "parcel_collected";
+                                                    String content = trackNo;
+                                                    String imageResId  = String.valueOf(R.drawable.reminder);
+
+                                                    int is_read = 0;
+                                                    DatabaseReference notificationReference = FirebaseDatabase.getInstance().getReference("Notification").child(username).child(title).child(content);
+
+                                                    NotificationClass notificationClass = new NotificationClass(userId,imageResId ,title,type,content,is_read);
+                                                    notificationReference.setValue(notificationClass);
+                                                    redirect_view_booking(view);
+
+                                                }
+                                            }
+                                            else
+                                            {
+                                                errorMessageTextView.setVisibility(View.VISIBLE);
+                                                errorMessageTextView.setText("Please enter a different weight");
                                             }
 
                                             // Hide the error message
                                             errorMessageTextView.setVisibility(View.GONE);
-
-                                            if (username!=null){
-                                                String title = "booking";
-                                                String type = "parcel_collected";
-                                                String content = trackNo;
-                                                String imageResId  = String.valueOf(R.drawable.reminder);
-
-                                                int is_read = 0;
-                                                int is_system = 0;
-                                                DatabaseReference notificationReference = FirebaseDatabase.getInstance().getReference("Notification").child(username).child(title).child(content);
-
-                                                NotificationClass notificationClass = new NotificationClass(userId,imageResId ,title,type,content,is_read,is_system);
-                                                notificationReference.setValue(notificationClass);
-                                                redirect_view_booking(view);
-
-                                            }
-
-
 
                                         }
                                         else

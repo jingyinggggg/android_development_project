@@ -59,6 +59,7 @@ public class OrderRequestAdmin extends AppCompatActivity {
 
         bindViews();
 
+
         Intent from_order = getIntent();
         if (from_order != null)
         {
@@ -157,26 +158,25 @@ public class OrderRequestAdmin extends AppCompatActivity {
         customer_email.setText(user.getEmail());
     }
 
-    private void setNotification(OrderHistoryClass orderhist, String username){
+    private void setNotification(OrderHistoryClass orderHist, String username){
 
         if (username!=null) {
             String title = "order";
             String type = "order_delivering";
-            String content = orderhist.getOrder_number();
+            String content = orderHist.getOrder_number();
             String imageResId = String.valueOf(R.drawable.ship);
 
-            if (orderhist.getTransport_type().equals("sea")) {
+            if (orderHist.getTransport_type().equals("sea")) {
                 imageResId = String.valueOf(R.drawable.order_ship);
-            } else if (orderhist.getTransport_type().equals("air")) {
+            } else if (orderHist.getTransport_type().equals("air")) {
                 imageResId = String.valueOf(R.drawable.order_air);
             }
 
             int is_read = 0;
-            int is_system = 0;
 
             DatabaseReference notificationReference = FirebaseDatabase.getInstance().getReference("Notification").child(username).child(title).child(content);
 
-            NotificationClass notificationClass = new NotificationClass(orderhist.getUserId(), imageResId, title, type, content, is_read, is_system);
+            NotificationClass notificationClass = new NotificationClass(orderHist.getUserId(), imageResId, title, type, content, is_read);
             notificationReference.setValue(notificationClass);
         }
 
@@ -283,6 +283,17 @@ public class OrderRequestAdmin extends AppCompatActivity {
 
 
         total_weight = findViewById(R.id.total_weight );
+
+        customer_Id.setText("Customer ID : Loading..");
+        customer_name.setText("Loading Customer Details..");
+        customer_phoneNo.setText("Loading..");
+        customer_email.setText("Loading..");
+
+        customer_postCode.setText("Loading Addresses..");
+        customer_add.setText("Loading..");
+
+        /*Total Track Items*/
+        total_weight.setText("N/A");
     }
 
     public void redirect_order(View v){

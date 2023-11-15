@@ -86,6 +86,9 @@ public class OrderAdmin extends AppCompatActivity {
                                         if(orderHist != null) {
                                             orderHistoryClassArrayList.add(orderHist);
                                         }
+                                    }else {
+                                        orderHistoryClassArrayList.clear();
+                                        orderHistoryClassArrayList.add(null);
                                     }
                                 }
                                 if (pendingAsyncOperations.decrementAndGet() == 0) {

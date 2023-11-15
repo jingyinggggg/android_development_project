@@ -36,14 +36,23 @@ public class AdapterBooking extends RecyclerView.Adapter<AdapterBooking.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         BookingClass booking = bookingClassList.get(position);
-        int id = booking.getUserId();
-        holder.customerId.setText("Customer ID: " + id);
-        holder.viewDetailsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) { redirect_updateBooking(booking); }
-        });
+        if (booking != null){
+
+            int id = booking.getUserId();
+            String trackNo = booking.track_number;
+
+            holder.customerId.setText("Customer ID: " + id + "\nTrack No: " + trackNo);
+            holder.viewDetailsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) { redirect_updateBooking(booking); }
+            });
+        }else {
+            holder.customerId.setText("No Booking Request already");
+            holder.viewDetailsButton.setVisibility(View.GONE);
+            holder.viewDetailsButton.setOnClickListener(null);
+        }
+
 
     }
 
