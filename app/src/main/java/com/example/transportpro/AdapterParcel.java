@@ -48,7 +48,7 @@ public class AdapterParcel extends RecyclerView.Adapter<AdapterParcel.MyViewHold
         BookingClass bookingClass = bookingClassArrayList.get(position);
         int collected = 1;
         // Check if the item belongs to the current user
-        if (currentUserId != null && currentUserId.equals(String.valueOf(bookingClass.getUserId()))) {
+        if (currentUserId != null && currentUserId.equals(String.valueOf(bookingClass.getUserId())) && bookingClass.getIsPackOrder() == 0) {
             // Check the value of the 'parcel' variable and display items accordingly
             if (parcel.equals("A") || (parcel.equals("R") && bookingClass.getCollected() == 0) || (parcel.equals("C") && bookingClass.getCollected() == 1)) {
                 holder.category.setText(bookingClass.getCategory());

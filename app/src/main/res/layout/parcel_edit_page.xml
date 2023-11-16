@@ -257,7 +257,7 @@
             android:text="New order"
             android:textSize="18sp"
             android:textColor="@color/white"
-            android:onClick="backParcelPage"/>
+            android:onClick="toNewOrder"/>
 
     </LinearLayout>
 

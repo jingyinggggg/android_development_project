@@ -1,39 +1,85 @@
 package com.example.transportpro;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.UUID;
 
 public class PostAnnouncement extends AppCompatActivity {
-    private Button uploadButton;
+
+    private Spinner uploadImage;
     private ImageView imageView;
     private Button post;
+    EditText announcement_title,announcement_content;
+    int userId;
+    String username;
+    String selectedItem;
+    int drawableResId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_announcement);
 
-        uploadButton = findViewById(R.id.uploadImage);
-        imageView = findViewById(R.id.imageView);
+        announcement_title = findViewById(R.id.announcement_title);
+        announcement_content = findViewById(R.id.announcement_content);
 
-        uploadButton.setOnClickListener(new View.OnClickListener() {
+        imageView = findViewById(R.id.imageView);
+        uploadImage = findViewById(R.id.uploadImage);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.announcement_types, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        uploadImage.setAdapter(adapter);
+
+        uploadImage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                Intent imageView = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(imageView, 1);
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Get the selected item
+                selectedItem = parent.getItemAtPosition(position).toString();
+                // Use the selected value
+                Toast.makeText(PostAnnouncement.this, "Selected: " + selectedItem, Toast.LENGTH_SHORT).show();
+                if (selectedItem.equals("Maintenance")){
+                    drawableResId = getResources().getIdentifier("maintenance", "drawable", getPackageName());
+                    imageView.setImageResource(drawableResId);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Another interface callback
             }
         });
 
@@ -41,33 +87,71 @@ public class PostAnnouncement extends AppCompatActivity {
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPostedDialog();
+                String title = announcement_title.getText().toString();
+                String content = announcement_content.getText().toString();
+                if (!title.isEmpty() && !content.isEmpty() && drawableResId != 0) {
+                    saveAnnouncementToDatabase(drawableResId);
+                } else {
+                    Toast.makeText(PostAnnouncement.this, "Please fill in all fields and select an image", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
     }
 
-    // show uploaded image
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private void saveAnnouncementToDatabase(int drawableResId) {
 
-        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
-            Uri selectedImage = data.getData();
-            if (selectedImage != null) {
-                try {
-                    // Decode the image from the Uri
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inSampleSize = 8;
-                    Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, options);
+        String type = announcement_title.getText().toString(); // Retrieve text from EditText
+        String content = announcement_content.getText().toString(); // Retrieve text from EditText
+        String image = getResources().getResourceEntryName(drawableResId);
 
-                    // Set the resized Bitmap to the ImageView
-                    imageView.setImageBitmap(bitmap);
-                } catch (Exception e) {
-                    e.printStackTrace();
+        ArrayList<String> userArrayList;
+        int is_read = 0;
+
+        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("User");
+
+        userArrayList = new ArrayList<>();
+        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    User user = dataSnapshot.getValue(User.class);
+                    userId = user.getUserId();
+                    username = user.getUsername();
+                    if (dataSnapshot.child("isAdminAcc").getValue(int.class) == 0 ){
+                        userArrayList.add(username);
+                    }
                 }
+                for (String currentUser : userArrayList){
+                    DatabaseReference notificationReference = FirebaseDatabase.getInstance().getReference("Notification")
+                            .child(currentUser)
+                            .child("admin_announcement").child(content);
+
+                    NotificationClass notificationClass = new NotificationClass(userId, image, "admin_announcement", type, content, is_read);
+                    notificationReference.setValue(notificationClass).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            showPostedDialog();
+                            Toast.makeText(PostAnnouncement.this, "Announcement Post Successful!", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Handle failure to post announcement
+                            Toast.makeText(PostAnnouncement.this, "Announcement not posted Failed!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+
             }
-        }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     public void showPostedDialog() {

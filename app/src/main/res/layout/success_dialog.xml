@@ -41,7 +41,7 @@
         android:layout_marginBottom="10dp"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:text="Confirm update the current status to customer (Track No: 00000), Ng Jing Ying?" />
+        android:text="" />
 
     <Button
         android:id="@+id/confirm_dialog"

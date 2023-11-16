@@ -23,6 +23,7 @@ public class AdapterWallet extends RecyclerView.Adapter<AdapterWallet.MyViewHold
         this.walletActivityClassArrayList = walletActivityClassArrayList;
         this.activity = activity;
     }
+
     public void setCurrentUserId(String currentUserId) {
         this.currentUserId = currentUserId;
     }
@@ -59,4 +60,5 @@ public class AdapterWallet extends RecyclerView.Adapter<AdapterWallet.MyViewHold
             amount = itemView.findViewById(R.id.wallet_amount);
         }
     }
+
 }

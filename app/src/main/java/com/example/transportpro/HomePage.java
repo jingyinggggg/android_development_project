@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +16,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
@@ -29,7 +33,7 @@ public class HomePage extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
-    TextView username_text;
+    TextView username_text, copy;
     ActionBarDrawerToggle actionBarDrawerToggle;
     private BottomNavigationView bottomNavigationView;
     SharedPreferences sharedPreferences;
@@ -85,26 +89,26 @@ public class HomePage extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    if (item.getItemId() == R.id.sidebar_notification){
-                        Log.i("Menu drawer Tag", "Notification is clicked");
-                        Intent intent = new Intent(HomePage.this,NotificationPage.class);
-                        startActivity(intent);
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                    } else if (item.getItemId() == R.id.sidebar_setting) {
-                        Log.i("Menu drawer tag", "Setting is clicked");
-                        Intent intent = new Intent(HomePage.this,Setting.class);
-                        startActivity(intent);
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                    } else if (item.getItemId() == R.id.sidebar_logout) {
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.clear();
-                        editor.commit();
+                if (item.getItemId() == R.id.sidebar_notification){
+                    Log.i("Menu drawer Tag", "Notification is clicked");
+                    Intent intent = new Intent(HomePage.this,NotificationPage.class);
+                    startActivity(intent);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                } else if (item.getItemId() == R.id.sidebar_setting) {
+                    Log.i("Menu drawer tag", "Setting is clicked");
+                    Intent intent = new Intent(HomePage.this,Setting.class);
+                    startActivity(intent);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                } else if (item.getItemId() == R.id.sidebar_logout) {
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.clear();
+                    editor.commit();
 
-                        Log.i("Menu drawer tag", "log out is clicked");
-                        Intent intent = new Intent(HomePage.this,LoginPage.class);
-                        startActivity(intent);
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                    }
+                    Log.i("Menu drawer tag", "log out is clicked");
+                    Intent intent = new Intent(HomePage.this,LoginPage.class);
+                    startActivity(intent);
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }
                 return true;
             }
         });
@@ -137,6 +141,19 @@ public class HomePage extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        copy = findViewById(R.id.copy);
+
+        copy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("Warehouse", "广东省佛山市 南海区狮山镇 狮岭村新马国际C仓黄生转ID0");
+                clipboardManager.setPrimaryClip(clipData);
+
+                Toast.makeText(HomePage.this, "Warehouse address copied", Toast.LENGTH_SHORT).show();
             }
         });
 

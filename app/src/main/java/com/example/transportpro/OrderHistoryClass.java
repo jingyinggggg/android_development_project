@@ -3,6 +3,7 @@ package com.example.transportpro;
 public class OrderHistoryClass {
     int userId;
     String order_number;
+    String order_location;
     String category;
     String transport_type;
     int sensitive_item;
@@ -25,11 +26,12 @@ public class OrderHistoryClass {
     public OrderHistoryClass(){
 
     };
-    public OrderHistoryClass(int userId, String order_number, String category, String transport_type, int sensitive_item, String receiver_name, String receiver_contact, String receiver_email, String receiver_state, String eastORwest, String receiver_postcode,
+    public OrderHistoryClass(int userId, String order_number, String order_location, String category, String transport_type, int sensitive_item, String receiver_name, String receiver_contact, String receiver_email, String receiver_state, String eastORwest, String receiver_postcode,
                              String receiver_add1, String receiver_add2, String receiver_add3, String order_status, double weight, String date, int parcel_quantity,
                              double price, int isPay) {
         this.userId = userId;
         this.order_number = order_number;
+        this.order_location = order_location;
         this.category = category;
         this.transport_type = transport_type;
         this.sensitive_item = sensitive_item;
@@ -48,6 +50,10 @@ public class OrderHistoryClass {
         this.parcel_quantity = parcel_quantity;
         this.price = price;
         this.isPay = isPay;
+    }
+
+    public String getOrder_location() {
+        return order_location;
     }
 
     public String getReceiver_state() {

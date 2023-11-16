@@ -37,155 +37,18 @@
 
     </FrameLayout>
 
-    <RelativeLayout
-        android:id="@+id/announcementContainer"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/notification_list"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
-        android:layout_below="@id/gridLayout"
-        android:background="@color/white"
-        android:gravity="center">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gridLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-        <ImageView
-            android:id="@+id/announcement"
-            android:layout_width="94dp"
-            android:layout_height="70dp"
-            android:src="@drawable/maintenance"
-            android:layout_marginLeft="20dp" />
 
-        <TextView
-            android:id="@+id/announcementText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/announcement"
-            android:layout_marginLeft="20dp"
-            android:text="Announcement"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"/>
 
-        <TextView
-            android:id="@+id/announcementDescription"
-            android:layout_width="260dp"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/announcement"
-            android:layout_below="@+id/announcementText"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
-            android:justificationMode="inter_word"
-            android:text="TransportPro will have maintenance tomorrow!"
-            android:textSize="14sp"
-            android:lineSpacingExtra="5sp"/>
 
-    </RelativeLayout>
-
-    <View
-        android:id="@+id/containerSeparator"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@+id/announcementContainer"
-        android:background="@color/grey">
-    </View>
-
-    <RelativeLayout
-        android:id="@+id/reminderContainer"
-        android:layout_width="match_parent"
-        android:layout_height="110dp"
-        android:layout_below="@id/containerSeparator"
-        android:background="@color/white"
-        android:gravity="center">
-
-        <ImageView
-            android:id="@+id/reminder"
-            android:layout_width="94dp"
-            android:layout_height="70dp"
-            android:src="@drawable/reminder"
-            android:layout_marginLeft="20dp" />
-
-        <TextView
-            android:id="@+id/reminderText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/reminder"
-            android:layout_marginLeft="20dp"
-            android:text="Reminder"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"/>
-
-        <TextView
-            android:id="@+id/reminderDescription"
-            android:layout_width="260dp"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/reminder"
-            android:layout_below="@+id/reminderText"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
-            android:justificationMode="inter_word"
-            android:text="Your parcel is collected at warehouse!Start ship to Malaysia now!"
-            android:textSize="14sp"
-            android:lineSpacingExtra="5sp"/>
-
-    </RelativeLayout>
-
-    <View
-        android:id="@+id/containerSeparator2"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@+id/reminderContainer"
-        android:background="@color/grey">
-    </View>
-
-    <RelativeLayout
-        android:id="@+id/walletContainer"
-        android:layout_width="match_parent"
-        android:layout_height="110dp"
-        android:layout_below="@id/containerSeparator2"
-        android:background="@color/white"
-        android:gravity="center">
-
-        <ImageView
-            android:id="@+id/wallet"
-            android:layout_width="94dp"
-            android:layout_height="70dp"
-            android:src="@drawable/wallet2"
-            android:layout_marginLeft="20dp" />
-
-        <TextView
-            android:id="@+id/walletText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/wallet"
-            android:layout_marginLeft="20dp"
-            android:text="Wallet Top Up"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"/>
-
-        <TextView
-            android:id="@+id/walletDescription"
-            android:layout_width="260dp"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/wallet"
-            android:layout_below="@+id/walletText"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
-            android:justificationMode="inter_word"
-            android:text="Insufficient balance in your wallet! Top up and enjoy our services now!"
-            android:textSize="14sp"
-            android:lineSpacingExtra="5sp"/>
-
-    </RelativeLayout>
-
-    <View
-        android:id="@+id/containerSeparator3"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@+id/walletContainer"
-        android:background="@color/grey">
-    </View>
 
 
 

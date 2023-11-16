@@ -30,12 +30,12 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginTop="2sp"  >
+
                 <TextView
                     android:id="@+id/username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    />
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <ImageView
@@ -587,6 +587,7 @@
             </TextView>
 
             <TextView
+                android:id="@+id/copy"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"

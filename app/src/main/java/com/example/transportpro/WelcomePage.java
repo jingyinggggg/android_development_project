@@ -54,15 +54,27 @@ public class WelcomePage extends AppCompatActivity {
         String checkbox = sharedPreferences.getString(REMEMBER,null);
 
         if (id != null && checkbox != null){
-            Intent home = new Intent(this, HomePage.class);
-            startActivity(home);
-        } else if (id != null && checkbox == null) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.clear();
-            editor.commit();
-        } else if (id == "1") {
-            Intent signUpPage = new Intent(this, AdminHomePage.class);
-            startActivity(signUpPage);
+            try {
+                int userId = Integer.parseInt(id);
+                if (checkbox != null) {
+                    if (userId == 1) {
+                        Intent adminPage = new Intent(this, AdminHomePage.class);
+                        startActivity(adminPage);
+                    } else {
+                        Intent home = new Intent(this, HomePage.class);
+                        startActivity(home);
+                    }
+                } else {
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.clear();
+                    editor.apply();
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                // Handle the exception, possibly by going to the login activity
+                Intent login = new Intent(this, LoginPage.class);
+                startActivity(login);
+            }
         }
     }
 

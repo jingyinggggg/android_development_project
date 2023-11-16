@@ -65,7 +65,6 @@ public class BookingPage extends AppCompatActivity {
                     double weight = 0.000;
                     int isPackOrder = 0;
 
-
                     BookingClass booking = new BookingClass(user_id, trackNumber, category, deliveryBy, amount, description, collected, formattedDate, isChecked, weight, isPackOrder);
 
                     reference.child(username).child(trackNumber).setValue(booking).addOnCompleteListener(new OnCompleteListener<Void>() {

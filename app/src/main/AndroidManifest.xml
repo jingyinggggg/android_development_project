@@ -98,6 +98,9 @@
             android:name=".LoginPage"
             android:exported="false" />
         <activity
+            android:name=".WarehouseSuccessDialog"
+            android:exported="false" />
+        <activity
             android:name=".WelcomePage"
             android:exported="true">
             <intent-filter>
