@@ -41,6 +41,8 @@ public class OrderAdmin extends AppCompatActivity {
     String username;
     int userId;
 
+    private boolean foundPackingOrder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +71,7 @@ public class OrderAdmin extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 AtomicInteger pendingAsyncOperations = new AtomicInteger(0);
                 orderHistoryClassArrayList.clear();
+                foundPackingOrder = false;
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     String currentUsername  = dataSnapshot.child("username").getValue(String.class);
                     int currentUserId = dataSnapshot.child("userId").getValue(int.class);
@@ -78,17 +81,27 @@ public class OrderAdmin extends AppCompatActivity {
                         orderHistReference.child(currentUsername).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                boolean hasPackingOrder = false;
+
                                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                                     String order_status = dataSnapshot.child("order_status").getValue(String.class);
                                     int order_user = dataSnapshot.child("userId").getValue(int.class);
                                     if("Packing".equals(order_status)  && currentUserId == order_user ){
                                         OrderHistoryClass orderHist = dataSnapshot.getValue(OrderHistoryClass.class);
                                         if(orderHist != null) {
+                                            hasPackingOrder = true;
                                             orderHistoryClassArrayList.add(orderHist);
                                         }
                                     }
                                 }
+                                if (hasPackingOrder) {
+                                    // Add only one null object if no order is in "Packing" status
+                                    foundPackingOrder = true;
+                                }
                                 if (pendingAsyncOperations.decrementAndGet() == 0) {
+                                    if (!foundPackingOrder) {
+                                        orderHistoryClassArrayList.add(null); // Add null if no packing orders found
+                                    }
                                     // All asynchronous operations are done, update the adapter
                                     adapterOrderAdmin.notifyDataSetChanged();
                                 }

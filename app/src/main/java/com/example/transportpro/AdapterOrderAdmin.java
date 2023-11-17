@@ -49,17 +49,24 @@ public class AdapterOrderAdmin extends RecyclerView.Adapter<AdapterOrderAdmin.Vi
     public void onBindViewHolder(@NonNull AdapterOrderAdmin.ViewHolder holder, int position) {
 
         OrderHistoryClass order = orderHistoryClassArrayList.get(position);
-        orderNo = order.getOrder_number();
-        parcel_qty = order.getParcel_quantity();
+        if (order != null){
+            orderNo = order.getOrder_number();
+            parcel_qty = order.getParcel_quantity();
 
-        holder.order_id.setText("Order ID: " + orderNo + "\nNo of Tracks: " +parcel_qty+ "\nCustomer ID: " +order.userId );
+            holder.order_id.setText("Order ID: " + orderNo + "\nNo of Tracks: " +parcel_qty+ "\nCustomer ID: " +order.userId );
 
-        holder.order_id.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                redirect_updateOrder(order);
-            }
-        });
+            holder.order_id.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    redirect_updateOrder(order);
+                }
+            });
+        }else {
+            holder.order_id.setText("No Order found" );
+
+            holder.order_id.setOnClickListener(null);
+        }
+
 
     }
 

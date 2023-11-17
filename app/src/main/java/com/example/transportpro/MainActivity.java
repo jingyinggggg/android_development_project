@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         neworderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,neworder.class);
+                Intent intent = new Intent(MainActivity.this,NewOrder.class);
                 startActivity(intent);
             }
         });

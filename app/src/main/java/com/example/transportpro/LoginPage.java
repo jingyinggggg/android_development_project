@@ -117,17 +117,17 @@ public class LoginPage extends AppCompatActivity {
 
                                 if (getPassword.equals(password)){
                                     if (getDeletedAcc == 0){
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        editor.putString(KEY_ID, String.valueOf(getId));
+                                        editor.putString(KEY_USERNAME, username);
+                                        if(rememberUser.isChecked()){
+                                            editor.putString(REMEMBER, "true");
+                                        }
+                                        editor.apply();
                                         if(getAdmin == 1){
                                             adminPage();
                                         }
                                         else{
-                                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                                            editor.putString(KEY_ID, String.valueOf(getId));
-                                            editor.putString(KEY_USERNAME, username);
-                                            if(rememberUser.isChecked()){
-                                                editor.putString(REMEMBER, "true");
-                                            }
-                                            editor.apply();
                                             openHomePage();
                                         }
                                         Toast.makeText(LoginPage.this, "Welcome "+ username, Toast.LENGTH_SHORT).show();

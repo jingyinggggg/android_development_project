@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -73,6 +74,13 @@ public class ParcelEditPage extends AppCompatActivity {
             updateButton.setVisibility(View.GONE);
             deleteButton.setVisibility(View.GONE);
             orderButton.setVisibility(View.VISIBLE);
+            if (orderButton.getVisibility() == View.VISIBLE){
+                trackingNumberInput.setInputType(InputType.TYPE_NULL);
+                categoryInput.setInputType(InputType.TYPE_NULL);
+                deliveryInput.setInputType(InputType.TYPE_NULL);
+                quantityInput.setInputType(InputType.TYPE_NULL);
+                descriptionInput.setInputType(InputType.TYPE_NULL);
+            }
         }
         else {
             db = FirebaseDatabase.getInstance();
@@ -197,6 +205,11 @@ public class ParcelEditPage extends AppCompatActivity {
 
     public void backParcelPage(View view){
         Intent parcelPage = new Intent(this, ParcelPage.class);
+        startActivity(parcelPage);
+    }
+
+    public void toNewOrder(View view){
+        Intent parcelPage = new Intent(this, NewOrder.class);
         startActivity(parcelPage);
     }
 

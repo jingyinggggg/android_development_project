@@ -1,9 +1,14 @@
 package com.example.transportpro;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,24 +16,135 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UpdateWarehouseAdmin extends AppCompatActivity {
 
+    private LinearLayout orderContainer;
+    ArrayList<BookingClass> bookingClassArrayList;
+    ArrayList<OrderClass> orderClassArrayList;
+    ArrayList<OrderHistoryClass> orderHistoryClassArrayList;
+
+    int userId;
+    String username;
+
+    private DatabaseReference usersRef;
+    private DatabaseReference orderHistRef;
+    private DatabaseReference orderRef;
+    private DatabaseReference bookingRef;
+
+    RecyclerView orderlist, updateWarehouseList;
+    AdapterUpdateWarehouse adapterUpdateWarehouseBooking;
+    AdapterUpdateWarehouse adapterUpdateWarehouseOrder;
+
     ImageButton backArrow;
-
     Button confirm_dialog;
-    TextView cancel_dialog;
+    TextView cancel_dialog,customerId,customerName,ItemName,ItemNumber,order_status,TotalItems;
+    SharedPreferences sharedPreferences;
 
-    Button update_order;
-    Button update_warehouse;
-    Button update_ready;
-    Button clickedButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_warehouse);
+
+        orderContainer = findViewById(R.id.orderContainer);
+
+        sharedPreferences = getSharedPreferences("WarehousePrefs", Context.MODE_PRIVATE);
+        userId = Integer.parseInt(sharedPreferences.getString("warehouse:UserID",null));
+        username = sharedPreferences.getString("warehouse:username", null);
+
+        customerId = findViewById(R.id.customerId);
+        customerName = findViewById(R.id.customerName);
+
+        customerId.setText("Customer Id : " + userId);
+        customerName.setText("Customer name : "+username);
+
+        updateWarehouseList = findViewById(R.id.updateWarehouseList);
+        orderlist = findViewById(R.id.orderlist);
+
+
+        updateWarehouseList.setHasFixedSize(true);
+        updateWarehouseList.setLayoutManager(new LinearLayoutManager(this));
+        orderlist.setHasFixedSize(true);
+        orderlist.setLayoutManager(new LinearLayoutManager(this));
+
+        bookingClassArrayList = new ArrayList<>();
+        orderHistoryClassArrayList = new ArrayList<>();
+        adapterUpdateWarehouseBooking = new AdapterUpdateWarehouse(this, bookingClassArrayList,null,username,this, "Booking");
+        adapterUpdateWarehouseOrder = new AdapterUpdateWarehouse(this, null,orderHistoryClassArrayList,username,this, "Order");
+        updateWarehouseList.setAdapter(adapterUpdateWarehouseBooking);
+        orderlist.setAdapter(adapterUpdateWarehouseOrder);
+
+        usersRef = FirebaseDatabase.getInstance().getReference("User");
+        orderHistRef = FirebaseDatabase.getInstance().getReference("OrderHistory");
+        orderRef = FirebaseDatabase.getInstance().getReference("Order");
+        bookingRef = FirebaseDatabase.getInstance().getReference("Booking");
+
+
+        bookingRef.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot bookingDataSnapshot : snapshot.getChildren()) {
+                    BookingClass booking = bookingDataSnapshot.getValue(BookingClass.class);
+                    if (booking.getCollected() == 1) {
+                        bookingClassArrayList.add(booking);
+                    }
+                }
+                adapterUpdateWarehouseBooking.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+        orderHistRef.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot orderHistSnapshot : snapshot.getChildren()) {
+                    OrderHistoryClass orderHistoryClass = orderHistSnapshot.getValue(OrderHistoryClass.class);
+                    if (orderHistoryClass != null && !orderHistoryClass.getOrder_status().equals("Packing")) {
+                        if (!orderHistoryClassArrayList.contains(orderHistoryClass)) {
+                            // A new child or changed child is found
+                            orderHistoryClassArrayList.add(orderHistoryClass);
+                        }
+                        if(!orderHistoryClass.getOrder_location().equals("Complete Ship to Receiver Address")){
+                            addOrderView(orderHistoryClass);
+                        }
+
+                        adapterUpdateWarehouseOrder.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle onCancelled
+            }
+        });
+
+
+
 
         // Find the TextView and Image Button in the header layout
         backArrow = findViewById(R.id.backArrow);
@@ -41,99 +157,32 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
         });
 
 
-        update_order = findViewById(R.id.update_order_status);
-        update_warehouse = findViewById(R.id.update_warehouse_status);
-        update_ready = findViewById(R.id.update_ready_status);
-
-
-        /*Update Order, Update Warehouse and Update ready to ship button function*/
-        update_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickedButton = update_order; // Store the clicked button
-                showConfirmDialog(view);
-            }
-        });
-
-        update_warehouse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickedButton = update_warehouse; // Store the clicked button
-                showConfirmDialog(view);
-            }
-        });
-
-        update_ready.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickedButton = update_ready; // Store the clicked button
-                showConfirmDialog(view);
-            }
-        });
-
     }
 
-    public void showConfirmDialog(View v){
-        // Inflate the custom layout
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.success_dialog_admin, null);
+    private void addOrderView(OrderHistoryClass order) {
+        // Inflate or create a view for the order
+        View orderView = LayoutInflater.from(this).inflate(R.layout.order_item_layout, null, false);
 
-        // Find views in the custom layout
-        ImageView dialogImage = dialogView.findViewById(R.id.dialog_image);
-        TextView dialogMessage = dialogView.findViewById(R.id.dialog_message);
+        // Set the details of the order to the view
+        TextView ItemName = orderView.findViewById(R.id.orderItems);
+        TextView ItemNumber = orderView.findViewById(R.id.order_number);
+        TextView order_status = orderView.findViewById(R.id.order_status);
+        TextView TotalItems = orderView.findViewById(R.id.parcelQty);
 
-        // Find the confirm_dialog button within the dialog view
-        Button confirmDialogButton = dialogView.findViewById(R.id.confirm_dialog);
-        TextView cancelDialogText = dialogView.findViewById(R.id.cancel_dialog);
-        // Set an OnClickListener for the confirm_dialog button
-
-        confirmDialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Perform the action when the confirm button is clicked
-                // add code for updating the status
-
-                // Dismiss the dialog
-                AlertDialog dialog = (AlertDialog) view.getTag();
-                if (dialog != null && dialog.isShowing()) {
-                    dialog.dismiss();
-                }
-
-                // After update, change button background and disable it
-                if (clickedButton != null) {
-                    int color = Color.parseColor("#5FDF64");
-                    clickedButton.setBackgroundColor(color); // Replace with your desired background resource
-                    clickedButton.setEnabled(false);
-                    clickedButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.done_icon, 0, 0, 0);
-                }
-            }
-        });
-        cancelDialogText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(getIntent());
-            }
-        });
-
-        // Create the custom dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(dialogView);
+        ItemNumber.setText("Order No : " + order.getOrder_number());
+        ItemName.setText("Item Name : " + order.getCategory());
+        order_status.setText("Order Status : " + order.getOrder_status());
+        TotalItems.setText(String.valueOf(order.getParcel_quantity()));
 
 
-        // Show the dialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
 
-        // Attach the dialog to the confirm_dialog button to dismiss it later
-        confirmDialogButton.setTag(dialog);
+        // Add the view to the container
+        orderContainer.addView(orderView);
     }
+
 
     public void redirect_warehouse(View v){
         Intent warehouseIntent = new Intent(UpdateWarehouseAdmin.this, WarehouseAdmin.class);
         startActivity(warehouseIntent);
-    }
-
-    public void return_page(View v){
-        Intent backIntent = new Intent(this, UpdateWarehouseAdmin.class);
-        startActivity(backIntent);
     }
 }

@@ -74,7 +74,7 @@
         <LinearLayout
             android:id="@+id/chn_warehouse_border"
             android:layout_width="390dp"
-            android:layout_height="270dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
@@ -83,7 +83,7 @@
             android:gravity="center_vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="365dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
 
@@ -94,7 +94,7 @@
                     android:id="@+id/chn_warehouse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="China Warehouse"
+                    android:text="Warehouse"
                     android:textColor="@color/black"
                     android:textSize="18dp"
                     android:fontFamily="@font/inter_bold"
@@ -104,14 +104,15 @@
                     android:id="@+id/chn_warehouse_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="广东省佛山市 南海区狮山镇 狮岭村新马国际C仓黄生转ID0"
+                    android:text="View all Warehouse details Here"
                     android:fontFamily="@font/inter_regular"/>
 
                 <!--All Parcel button-->
-                <Button
+                <TextView
                     android:id="@+id/chn_allParcel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:backgroundTint="@color/white"
                     android:textColor="@color/black"
                     android:text="All Parcel"
@@ -119,94 +120,28 @@
                     app:cornerRadius="1dp"
                     />
 
+                <View
+                    android:id="@+id/containerSeparator"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_below="@+id/announcementContainer"
+                    android:background="@color/grey">
+                </View>
+
+
                 <!--Show Parcel Table-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:orientation="vertical"
-                    android:layout_gravity="center"
-    >
+                    android:layout_gravity="center">
 
-                    <!-- Row 1 -->
-                    <LinearLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/warehouse_list"
                         android:layout_width="match_parent"
-                        android:layout_height="38dp"
-                        android:backgroundTint="#D9D9D9"
-                        android:gravity="center">
-
-                        <!-- Column 1 -->
-                        <Button
-                            android:id="@+id/chn_trackNo"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:fontFamily="@font/inter_regular"
-                            android:gravity="center_vertical"
-                            android:text="Track No: 000000"
-                            android:textAllCaps="false"
-                            android:textColor="@color/black"
-                            android:onClick="redirect_update_warehouse"
-                            android:backgroundTint="#D9D9D9"
-                            app:strokeWidth="1dp"
-                            app:cornerRadius="1dp"/>
-
-                    </LinearLayout>
-
-                    <!-- Row 2 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="38dp">
-
-                        <!-- Column 1 -->
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:fontFamily="@font/inter_regular"
-                            android:gravity="center_vertical"
-                            android:textAllCaps="false"
-                            android:textColor="@color/black"
-                            android:backgroundTint="#D9D9D9"
-                            app:strokeWidth="1dp"
-                            app:cornerRadius="1dp"/>
-
-                    </LinearLayout>
-
-                    <!-- Row 3 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="38dp">
-
-                        <!-- Column 1 -->
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:fontFamily="@font/inter_regular"
-                            android:gravity="center_vertical"
-                            android:textAllCaps="false"
-                            android:textColor="@color/black"
-                            android:backgroundTint="#D9D9D9"
-                            app:strokeWidth="1dp"
-                            app:cornerRadius="1dp"/>
-
-                    </LinearLayout>
-
-                    <!-- Row 4 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="38dp">
-
-                        <!-- Column 1 -->
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:fontFamily="@font/inter_regular"
-                            android:gravity="center_vertical"
-                            android:textAllCaps="false"
-                            android:textColor="@color/black"
-                            android:backgroundTint="#D9D9D9"
-                            app:strokeWidth="1dp"
-                            app:cornerRadius="1dp"/>
-
-                    </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"/>
 
                 </LinearLayout>
 
@@ -216,7 +151,7 @@
 
 
         <!--Malaysia Warehouse-->
-        <LinearLayout
+        <!--<LinearLayout
             android:id="@+id/msia_warehouse_border"
             android:layout_width="390dp"
             android:layout_height="270dp"
@@ -234,7 +169,7 @@
                 android:orientation="vertical"
                 android:layout_gravity="center">
 
-                <!--Warehouse Title-->
+                &lt;!&ndash;Warehouse Title&ndash;&gt;
                 <TextView
                     android:id="@+id/msia_warehouse"
                     android:layout_width="wrap_content"
@@ -252,7 +187,7 @@
                     android:text="Bayan Lepas"
                     android:fontFamily="@font/inter_regular"/>
 
-                <!--All Parcel button-->
+                &lt;!&ndash;All Parcel button&ndash;&gt;
                 <Button
                     android:id="@+id/msia_allParcel"
                     android:layout_width="wrap_content"
@@ -263,19 +198,19 @@
                     app:strokeWidth="1dp"
                     app:cornerRadius="1dp"/>
 
-                <!--Show Parcel Table-->
+                &lt;!&ndash;Show Parcel Table&ndash;&gt;
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center">
 
-                    <!-- Row 1 -->
+                    &lt;!&ndash; Row 1 &ndash;&gt;
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="38dp">
 
-                        <!-- Column 1 -->
+                        &lt;!&ndash; Column 1 &ndash;&gt;
                         <Button
                             android:id="@+id/msia_trackNo"
                             android:layout_width="match_parent"
@@ -291,12 +226,12 @@
 
                     </LinearLayout>
 
-                    <!-- Row 2 -->
+                    &lt;!&ndash; Row 2 &ndash;&gt;
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="38dp">
 
-                        <!-- Column 1 -->
+                        &lt;!&ndash; Column 1 &ndash;&gt;
                         <Button
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -310,12 +245,12 @@
 
                     </LinearLayout>
 
-                    <!-- Row 3 -->
+                    &lt;!&ndash; Row 3 &ndash;&gt;
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="38dp">
 
-                        <!-- Column 1 -->
+                        &lt;!&ndash; Column 1 &ndash;&gt;
                         <Button
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -329,12 +264,12 @@
 
                     </LinearLayout>
 
-                    <!-- Row 4 -->
+                    &lt;!&ndash; Row 4 &ndash;&gt;
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="38dp">
 
-                        <!-- Column 1 -->
+                        &lt;!&ndash; Column 1 &ndash;&gt;
                         <Button
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -353,7 +288,7 @@
 
             </LinearLayout>
 
-        </LinearLayout>
+        </LinearLayout>-->
     </LinearLayout>
 
 

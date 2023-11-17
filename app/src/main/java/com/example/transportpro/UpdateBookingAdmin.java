@@ -2,6 +2,8 @@ package com.example.transportpro;
 
 import static android.app.PendingIntent.getActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,6 +23,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -106,7 +110,7 @@ public class UpdateBookingAdmin extends AppCompatActivity {
                         customerId.setText("Customer ID: " + userId);
                         customerName.setText("Customer name : "+username);
 
-                        bookingReference.child(username).child(trackNo).addValueEventListener(new ValueEventListener() {
+                        bookingReference.child(username).child(trackNo).addListenerForSingleValueEvent(new ValueEventListener() {
 
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -143,28 +147,30 @@ public class UpdateBookingAdmin extends AppCompatActivity {
 
                                                 // Update the previousWeight variable
                                                 previousWeight = weight;
+
+                                                if (username!=null){
+                                                    String title = "booking";
+                                                    String type = "parcel_collected";
+                                                    String content = trackNo;
+                                                    String imageResId  = String.valueOf(R.drawable.reminder);
+
+                                                    int is_read = 0;
+                                                    DatabaseReference notificationReference = FirebaseDatabase.getInstance().getReference("Notification").child(username).child(title).child(content);
+
+                                                    NotificationClass notificationClass = new NotificationClass(userId,imageResId ,title,type,content,is_read);
+                                                    notificationReference.setValue(notificationClass);
+                                                    redirect_view_booking(view);
+
+                                                }
+                                            }
+                                            else
+                                            {
+                                                errorMessageTextView.setVisibility(View.VISIBLE);
+                                                errorMessageTextView.setText("Please enter a different weight");
                                             }
 
                                             // Hide the error message
                                             errorMessageTextView.setVisibility(View.GONE);
-
-                                            if (username!=null){
-                                                String title = "booking";
-                                                String type = "parcel_collected";
-                                                String content = trackNo;
-                                                String imageResId  = String.valueOf(R.drawable.reminder);
-
-                                                int is_read = 0;
-                                                int is_system = 0;
-                                                DatabaseReference notificationReference = FirebaseDatabase.getInstance().getReference("Notification").child(username).child(title).child(content);
-
-                                                NotificationClass notificationClass = new NotificationClass(userId,imageResId ,title,type,content,is_read,is_system);
-                                                notificationReference.setValue(notificationClass);
-                                                redirect_view_booking(view);
-
-                                            }
-
-
 
                                         }
                                         else
@@ -174,6 +180,59 @@ public class UpdateBookingAdmin extends AppCompatActivity {
                                         }
                                     }
                                 });
+
+                                decline_booking.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+
+                                        // Create an AlertDialog.Builder with this context
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(UpdateBookingAdmin.this);
+                                        builder.setTitle("Confirm Action");
+                                        builder.setMessage("Are you sure you want to decline this booking?");
+
+                                        // Set up the buttons
+                                        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                // User clicked 'Yes' button, perform the action
+                                                if (username != null) {
+                                                    String title = "booking";
+                                                    String type = "parcel_declined";
+                                                    String content = trackNo;
+                                                    String imageResId = String.valueOf(R.drawable.reminder);
+
+                                                    int is_read = 0;
+                                                    DatabaseReference notificationReference = FirebaseDatabase.getInstance().getReference("Notification").child(username).child(title).child(content);
+
+                                                    NotificationClass notificationClass = new NotificationClass(userId, imageResId, title, type, content, is_read);
+                                                    notificationReference.setValue(notificationClass);
+                                                }
+
+                                                bookingReference.child(username).child(trackNo).getRef().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        Toast.makeText(UpdateBookingAdmin.this, "The Booking " + trackNo + " has been declined", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+
+                                                redirect_view_booking(view);
+                                            }
+                                        });
+
+                                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.cancel();
+                                            }
+                                        });
+
+                                        // Show the AlertDialog
+                                        builder.show();
+
+                                    }
+                                });
+
+
                             }
 
                             @Override

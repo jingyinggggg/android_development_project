@@ -74,6 +74,7 @@ public class AdapterOrderHistory extends RecyclerView.Adapter<AdapterOrderHistor
                 }
 
                 holder.order_status.setText("Order is " + orderHistoryClass.getOrder_status());
+                holder.order_location.setText("Order location : " + orderHistoryClass.getOrder_location());
                 holder.order_date.setText(orderHistoryClass.getDate());
 
                 if(orderHistoryClass.getTransport_type().equals("Air")){
@@ -110,7 +111,7 @@ public class AdapterOrderHistory extends RecyclerView.Adapter<AdapterOrderHistor
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         LinearLayout history_container;
-        TextView category, order_number,track_item_qty, order_status, order_date;
+        TextView category, order_number,track_item_qty, order_status, order_date, order_location;
         ImageView transport_type, status_image;
 
 
@@ -124,6 +125,7 @@ public class AdapterOrderHistory extends RecyclerView.Adapter<AdapterOrderHistor
             order_date = itemView.findViewById(R.id.order_date);
             transport_type = itemView.findViewById(R.id.transport_type);
             status_image = itemView.findViewById(R.id.status_image);
+            order_location = itemView.findViewById(R.id.order_location);
         }
     }
 }
