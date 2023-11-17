@@ -131,7 +131,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
 
                             if (type.equals("order_packing")) {
                                 holder.notification_title.setText("Reminder for "+"( Order No " + notificationClass.getContent() +" )");
-                                message = "Your order of " + category + " is Packing from "+ warehouse +" and ready to be ship!";
+                                message = "Your order of " + category + " is Requesting for approval at "+ warehouse +" Please wait for more!";
                             } else if (type.equals("order_delivering")) {
                                 holder.notification_title.setText("Reminder for "+"( Order No " + notificationClass.getContent() +" )");
                                 message = "Your order of " + category + " is Delivering from warehouse ! \nPlease Wait until it arrives !";
