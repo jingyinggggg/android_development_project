@@ -18,11 +18,14 @@ public class AdminHomePage extends AppCompatActivity {
     Button warehouse_page;
     Button order_page;
     Button post_announcement;
-
+    SharedPreferences sharedPreferences;
+    private static final String SHARED_PREF_NAME = "localstorage";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_homepage);
+
+        sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
 
         booking_page = (Button) findViewById(R.id.booking_page);
         warehouse_page = (Button)findViewById(R.id.warehouse);
@@ -56,6 +59,9 @@ public class AdminHomePage extends AppCompatActivity {
         log_out.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear();
+                editor.commit();
                 Intent bookingIntent = new Intent(AdminHomePage.this, LoginPage.class);
                 startActivity(bookingIntent);
             }

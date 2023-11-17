@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DatabaseReference;
@@ -32,13 +34,18 @@ public class AdapterUpdateWarehouse extends RecyclerView.Adapter<AdapterUpdateWa
     ArrayList<OrderHistoryClass> orderHistoryClassArrayList;
     String username;
     private AppCompatActivity activity;
+    FirebaseDatabase db;
+    DatabaseReference orderReference;
+    FragmentManager fragmentManager;
+    String callfrom;
 
-    public AdapterUpdateWarehouse(Context context, ArrayList<BookingClass> bookingClassList, ArrayList<OrderHistoryClass> orderHistoryClassArrayList,String username,AppCompatActivity activity){
+    public AdapterUpdateWarehouse(Context context, ArrayList<BookingClass> bookingClassList, ArrayList<OrderHistoryClass> orderHistoryClassArrayList,String username,AppCompatActivity activity,String callfrom){
         this.context = context;
-        this.bookingClassList = bookingClassList;
-        this.orderHistoryClassArrayList = orderHistoryClassArrayList;
+        this.bookingClassList = (bookingClassList != null) ? bookingClassList : new ArrayList<>();
+        this.orderHistoryClassArrayList = (orderHistoryClassArrayList != null) ? orderHistoryClassArrayList : new ArrayList<>();
         this.activity = activity;
         this.username =username;
+        this.callfrom = callfrom;
     }
 
     @NonNull
@@ -58,38 +65,29 @@ public class AdapterUpdateWarehouse extends RecyclerView.Adapter<AdapterUpdateWa
         holder.status_image.setImageDrawable(null);
         holder.order_status_date.setText("");
         holder.order_status_title.setText("");
-        holder.from_warehouse.setText("");
 
         // Check if the position index is within the bounds of both lists
-        if (position < bookingClassList.size() ) {
+        if (callfrom.equals("Booking")) {
             BookingClass booking = bookingClassList.get(position);
             processBooking(booking, sdf, currentDate, holder);
         }
-
-        if (position < orderHistoryClassArrayList.size()) {
+        else {
             OrderHistoryClass orderHist = orderHistoryClassArrayList.get(position);
             processOrderHistory(orderHist, sdf, currentDate, holder);
         }
-
-        holder.update_status_button.setOnClickListener(view -> {
-            showConfirmDialog(view, holder.update_status_button);
-        });
 
     }
     private void processBooking(BookingClass booking, SimpleDateFormat sdf, Date currentDate, ViewHolder holder) {
         try {
             Date bookingDate = sdf.parse(booking.getDate());
-            long diff = currentDate.getTime() - bookingDate.getTime();
-            if (TimeUnit.MILLISECONDS.toDays(diff) > 1 && booking.getCollected() == 1) {
+            if (booking.getCollected() == 1) {
+                int color = Color.parseColor("#5FDF64");
                 holder.status_image.setImageResource(R.drawable.arr_warehouse);
                 holder.order_status_date.setText(sdf.format(bookingDate));
                 holder.order_status_title.setText(booking.getCategory() + " has arrived at warehouse");
-                holder.from_warehouse.setText("From - China Warehouse");
-            } else {
-                holder.status_image.setImageResource(R.drawable.order_place);
-                holder.order_status_date.setText(sdf.format(bookingDate));
-                holder.order_status_title.setText("Booking for " + booking.getCategory() + " has been placed");
-                holder.from_warehouse.setText("From - China Warehouse");
+                holder.update_status_button.setBackgroundColor(color);
+                holder.update_status_button.setText("Completed");
+                holder.update_status_button.setEnabled(false);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -98,31 +96,58 @@ public class AdapterUpdateWarehouse extends RecyclerView.Adapter<AdapterUpdateWa
 
     private void processOrderHistory(OrderHistoryClass orderHist, SimpleDateFormat sdf, Date currentDate, ViewHolder holder) {
         try {
-            Date orderHistDate = sdf.parse(orderHist.getDate());
-            long diff = currentDate.getTime() - orderHistDate.getTime();
-            if(orderHist.getOrder_status().equals("Packing") || orderHist.getOrder_status().equals("Delivering")){
-                if (orderHist.getOrder_status().equals("Packing")){
-                    holder.status_image.setImageResource(R.drawable.ready);
-                    holder.order_status_date.setText(sdf.format(orderHistDate));
-                    holder.order_status_title.setText("Shipping order " + orderHist.getOrder_number() + " has been placed");
-                    holder.from_warehouse.setText("From - China Warehouse");
-                }
-                else if (orderHist.getOrder_status().equals("Delivering")){
+            int color = Color.parseColor("#A9A9A9");
+            holder.update_status_button.setBackgroundColor(color);
+            holder.update_status_button.setText("Update");
+            holder.update_status_button.setEnabled(true);
 
-                }
-                if (TimeUnit.MILLISECONDS.toDays(diff) > 1) {
-                    holder.status_image.setImageResource(R.drawable.ready);
-                    holder.order_status_date.setText(sdf.format(orderHistDate));
-                    holder.order_status_title.setText("Shipping order " + orderHist.getOrder_number() + orderHist.getCategory() +" is " + orderHist.getOrder_status());
-                    holder.from_warehouse.setText("From - China Warehouse");
-                }
-
+            if (orderHist.getIsPay() == 0){
+                holder.pay_status.setText("Unpaid");
+                holder.pay_status.setTextColor(Color.parseColor("#F50000"));
             }else {
-                holder.status_image.setImageResource(R.drawable.delivered);
-                holder.order_status_date.setText(sdf.format(orderHistDate));
-                holder.order_status_title.setText("Shipping order " + orderHist.getOrder_number() + " is " + orderHist.getOrder_status());
-                holder.from_warehouse.setText("From - China Warehouse");
+                holder.pay_status.setText("Paid");
+                holder.pay_status.setTextColor(Color.parseColor("#17FF00"));
             }
+
+            Date orderHistDate = sdf.parse(orderHist.getDate());
+            if(orderHist.getOrder_location().equals("China Warehouse")){
+
+                holder.status_image.setImageResource(R.drawable.ready);
+                holder.order_status_date.setText(sdf.format(orderHistDate));
+                holder.order_status_title.setText("Shipping order " + orderHist.getOrder_number() + " is at China Warehouse");
+
+
+            }else if(orderHist.getOrder_location().equals("Malaysia Warehouse")) {
+                holder.status_image.setImageResource(R.drawable.ready);
+                holder.order_status_date.setText(sdf.format(orderHistDate));
+                holder.order_status_title.setText("Shipping order " + orderHist.getOrder_number() + " is at Malaysia Warehouse");
+
+            } else if (orderHist.getOrder_location().equals("Shipping Receiver Address")) {
+                holder.status_image.setImageResource(R.drawable.ready);
+                holder.order_status_date.setText(sdf.format(orderHistDate));
+                holder.order_status_title.setText("Shipping order " + orderHist.getOrder_number() + " is Shipping to Receiver Address");
+
+            } else{
+                int gcolor = Color.parseColor("#5FDF64");
+                holder.update_status_button.setBackgroundColor(gcolor);
+                holder.update_status_button.setText("Completed");
+                holder.update_status_button.setEnabled(false);
+                holder.status_image.setImageResource(R.drawable.ready);
+                holder.order_status_date.setText(sdf.format(orderHistDate));
+                holder.order_status_title.setText("Shipping order " + orderHist.getOrder_number() + " is " + orderHist.getOrder_status() + " at Receiver Address");
+
+            }
+            holder.update_status_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, WarehouseSuccessDialog.class);
+                    intent.putExtra("ordernumber", orderHist.getOrder_number());
+                    intent.putExtra("order_location", orderHist.getOrder_location());
+                    intent.putExtra("username", username);
+                    context.startActivity(intent);
+                }
+            });
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -130,19 +155,19 @@ public class AdapterUpdateWarehouse extends RecyclerView.Adapter<AdapterUpdateWa
 
     @Override
     public int getItemCount() {
-        return Math.max(bookingClassList.size(), orderHistoryClassArrayList.size());
+        return (bookingClassList != null ? bookingClassList.size() : 0) + (orderHistoryClassArrayList != null ? orderHistoryClassArrayList.size() : 0);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView status_image;
-        TextView from_warehouse,order_status_title,order_status_date;
+        TextView order_status_title,order_status_date,pay_status;
         Button update_status_button,clickedButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            pay_status = itemView.findViewById(R.id.pay_status);
             status_image = itemView.findViewById(R.id.status_image);
-            from_warehouse = itemView.findViewById(R.id.from_warehouse);
             order_status_title = itemView.findViewById(R.id.order_status_title);
             order_status_date = itemView.findViewById(R.id.order_status_date);
             update_status_button = itemView.findViewById(R.id.update_status_button);
@@ -156,62 +181,5 @@ public class AdapterUpdateWarehouse extends RecyclerView.Adapter<AdapterUpdateWa
         updateBookingIntent.putExtra("trackNo", booking.track_number);*/
 
         activity.startActivity(updateBookingIntent);
-    }
-
-    public void showConfirmDialog(View v,Button clickedButton){
-        // Inflate the custom layout
-        View dialogView = LayoutInflater.from(activity).inflate(R.layout.success_dialog_admin, null);
-
-        // Find views in the custom layout
-        ImageView dialogImage = dialogView.findViewById(R.id.dialog_image);
-        TextView dialogMessage = dialogView.findViewById(R.id.dialog_message);
-
-        // Find the confirm_dialog button within the dialog view
-        Button confirmDialogButton = dialogView.findViewById(R.id.confirm_dialog);
-        TextView cancelDialogText = dialogView.findViewById(R.id.cancel_dialog);
-        // Set an OnClickListener for the confirm_dialog button
-
-        confirmDialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // add code for updating the status
-
-                redirect_updateBooking();
-                // Dismiss the dialog
-                AlertDialog dialog = (AlertDialog) view.getTag();
-                if (dialog != null && dialog.isShowing()) {
-                    dialog.dismiss();
-                }
-
-                // After update, change button background and disable it
-                if (clickedButton != null) {
-                    int color = Color.parseColor("#5FDF64");
-                    clickedButton.setBackgroundColor(color); // Replace with your desired background resource
-                    clickedButton.setEnabled(false);
-                    clickedButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.done_icon, 0, 0, 0);
-                }
-            }
-        });
-        cancelDialogText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog dialog = (AlertDialog) confirmDialogButton.getTag();
-                if (dialog != null && dialog.isShowing()) {
-                    dialog.dismiss();
-                }
-            }
-        });
-
-        // Create the custom dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setView(dialogView);
-
-
-        // Show the dialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-        // Attach the dialog to the confirm_dialog button to dismiss it later
-        confirmDialogButton.setTag(dialog);
     }
 }

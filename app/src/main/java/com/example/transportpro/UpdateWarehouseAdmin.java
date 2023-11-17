@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UpdateWarehouseAdmin extends AppCompatActivity {
 
@@ -47,12 +50,15 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
     private DatabaseReference orderRef;
     private DatabaseReference bookingRef;
 
-    RecyclerView updateWarehouseList;
-    AdapterUpdateWarehouse adapterUpdateWarehouse;
+    RecyclerView orderlist, updateWarehouseList;
+    AdapterUpdateWarehouse adapterUpdateWarehouseBooking;
+    AdapterUpdateWarehouse adapterUpdateWarehouseOrder;
 
     ImageButton backArrow;
     Button confirm_dialog;
     TextView cancel_dialog,customerId,customerName,ItemName,ItemNumber,order_status,TotalItems;
+    SharedPreferences sharedPreferences;
+
 
 
     @Override
@@ -62,16 +68,10 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
 
         orderContainer = findViewById(R.id.orderContainer);
 
-        Intent from_order = getIntent();
-        if (from_order != null)
-        {
-            Bundle extras = from_order.getExtras();
-            if (extras != null)
-            {
-                userId = extras.getInt("userId", 0);
-                username = extras.getString("username");
-            }
-        }
+        sharedPreferences = getSharedPreferences("WarehousePrefs", Context.MODE_PRIVATE);
+        userId = Integer.parseInt(sharedPreferences.getString("warehouse:UserID",null));
+        username = sharedPreferences.getString("warehouse:username", null);
+
         customerId = findViewById(R.id.customerId);
         customerName = findViewById(R.id.customerName);
 
@@ -79,14 +79,20 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
         customerName.setText("Customer name : "+username);
 
         updateWarehouseList = findViewById(R.id.updateWarehouseList);
+        orderlist = findViewById(R.id.orderlist);
+
 
         updateWarehouseList.setHasFixedSize(true);
         updateWarehouseList.setLayoutManager(new LinearLayoutManager(this));
+        orderlist.setHasFixedSize(true);
+        orderlist.setLayoutManager(new LinearLayoutManager(this));
 
         bookingClassArrayList = new ArrayList<>();
         orderHistoryClassArrayList = new ArrayList<>();
-        adapterUpdateWarehouse = new AdapterUpdateWarehouse(this, bookingClassArrayList,orderHistoryClassArrayList,username,this);
-        updateWarehouseList.setAdapter(adapterUpdateWarehouse);
+        adapterUpdateWarehouseBooking = new AdapterUpdateWarehouse(this, bookingClassArrayList,null,username,this, "Booking");
+        adapterUpdateWarehouseOrder = new AdapterUpdateWarehouse(this, null,orderHistoryClassArrayList,username,this, "Order");
+        updateWarehouseList.setAdapter(adapterUpdateWarehouseBooking);
+        orderlist.setAdapter(adapterUpdateWarehouseOrder);
 
         usersRef = FirebaseDatabase.getInstance().getReference("User");
         orderHistRef = FirebaseDatabase.getInstance().getReference("OrderHistory");
@@ -99,36 +105,44 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot bookingDataSnapshot : snapshot.getChildren()) {
                     BookingClass booking = bookingDataSnapshot.getValue(BookingClass.class);
-                    if (booking != null && booking.getCollected() == 0) {
+                    if (booking.getCollected() == 1) {
                         bookingClassArrayList.add(booking);
                     }
                 }
-                adapterUpdateWarehouse.notifyDataSetChanged();
+                adapterUpdateWarehouseBooking.notifyDataSetChanged();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
+
 
         orderHistRef.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot orderHistSnapshot : snapshot.getChildren()){
+                for (DataSnapshot orderHistSnapshot : snapshot.getChildren()) {
                     OrderHistoryClass orderHistoryClass = orderHistSnapshot.getValue(OrderHistoryClass.class);
-                    if (orderHistoryClass != null ){
-                        addOrderView(orderHistoryClass);
-                        orderHistoryClassArrayList.add(orderHistoryClass);
+                    if (orderHistoryClass != null && !orderHistoryClass.getOrder_status().equals("Packing")) {
+                        if (!orderHistoryClassArrayList.contains(orderHistoryClass)) {
+                            // A new child or changed child is found
+                            orderHistoryClassArrayList.add(orderHistoryClass);
+                        }
+                        if(!orderHistoryClass.getOrder_location().equals("Complete Ship to Receiver Address")){
+                            addOrderView(orderHistoryClass);
+                        }
+
+                        adapterUpdateWarehouseOrder.notifyDataSetChanged();
                     }
                 }
-                adapterUpdateWarehouse.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Handle onCancelled
             }
         });
+
 
 
 
@@ -155,10 +169,10 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
         TextView order_status = orderView.findViewById(R.id.order_status);
         TextView TotalItems = orderView.findViewById(R.id.parcelQty);
 
-            ItemNumber.setText("Order No : " + order.getOrder_number());
-            ItemName.setText("Item Name : " + order.getCategory());
-            order_status.setText("Order Status : " + order.getOrder_status());
-            TotalItems.setText(String.valueOf(order.getParcel_quantity()));
+        ItemNumber.setText("Order No : " + order.getOrder_number());
+        ItemName.setText("Item Name : " + order.getCategory());
+        order_status.setText("Order Status : " + order.getOrder_status());
+        TotalItems.setText(String.valueOf(order.getParcel_quantity()));
 
 
 
@@ -170,10 +184,5 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
     public void redirect_warehouse(View v){
         Intent warehouseIntent = new Intent(UpdateWarehouseAdmin.this, WarehouseAdmin.class);
         startActivity(warehouseIntent);
-    }
-
-    public void return_page(View v){
-        Intent backIntent = new Intent(this, UpdateWarehouseAdmin.class);
-        startActivity(backIntent);
     }
 }

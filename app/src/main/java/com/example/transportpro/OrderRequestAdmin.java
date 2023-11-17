@@ -5,13 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -131,6 +136,28 @@ public class OrderRequestAdmin extends AppCompatActivity {
 
                 orderHistReference.child(username).child(orderNo).child("order_status").setValue("Delivering");
 
+                orderHistReference.child(username).child(orderNo).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot orderHistorySnapshot) {
+                        if (orderHistorySnapshot.exists()) {
+                            OrderHistoryClass orderHist = orderHistorySnapshot.getValue(OrderHistoryClass.class);
+                            String notification_type;
+                            if (orderHist != null) {
+                                if (orderHist.getOrder_status().equals("Delivering")){
+                                    notification_type = "order_delivering";
+                                    setNotification(orderHist,username,notification_type);
+                                }
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle errors here
+                    }
+                });
+
 
                 redirect_order(view);
             }
@@ -140,13 +167,89 @@ public class OrderRequestAdmin extends AppCompatActivity {
         decline_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //decline order function
-                redirect_order(view);
+
+                // Create an EditText for the user to enter description
+                final EditText input = new EditText(OrderRequestAdmin.this);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                input.setLayoutParams(lp);
+
+                // Build the AlertDialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(OrderRequestAdmin.this);
+                builder.setView(input); // Add the EditText to the dialog
+                builder.setTitle("Enter Description");
+                builder.setMessage("Please enter the reason for declining the order:");
+
+                // Set up the buttons
+                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String description = input.getText().toString(); // Get user input
+                        // Proceed with the rest of the logic only if description is not empty
+                        if (!description.isEmpty()) {
+                            declineOrder(description,orderNo,username,userId); // Call the decline order function
+                            redirect_order(view);
+                        } else {
+                            Toast.makeText(OrderRequestAdmin.this, "You must enter a description.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
     }
 
-    private void getUserDetails(int userId) {
+    private void declineOrder(String description, String orderNo, String username, int userId) {
+
+        if (username != null) {
+            String title = "order";
+            String type = description;
+            String content = orderNo;
+            String imageResId = String.valueOf(R.drawable.reminder);
+
+            int is_read = 0;
+            DatabaseReference notificationReference = FirebaseDatabase.getInstance().getReference("Notification").child(username).child(title).child(content);
+
+            NotificationClass notificationClass = new NotificationClass(userId, imageResId, title, type, content, is_read);
+            notificationReference.setValue(notificationClass);
+        }
+
+        ArrayList<String> track_number_list = new ArrayList<>();
+
+        orderReference.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                track_number_list.clear();
+                for (DataSnapshot orderSnapshot : snapshot.getChildren()){
+                    String currentOrderNo = orderSnapshot.child("order_number").getValue(String.class);
+                    if (currentOrderNo.equals(orderNo)){
+                        String trackNo = orderSnapshot.child("track_number").getValue(String.class);
+                        track_number_list.add(trackNo);
+                        for (String currentTrackNo : track_number_list){
+                            bookingReference.child(username).child(currentTrackNo)
+                                    .child("isPackOrder")
+                                    .getRef()
+                                    .setValue(0);
+                            orderReference.child(username).child(currentTrackNo).getRef().removeValue();
+                        }
+                        orderHistReference.child(username).child(orderNo).getRef().removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(OrderRequestAdmin.this, "Error for decline order", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -158,11 +261,11 @@ public class OrderRequestAdmin extends AppCompatActivity {
         customer_email.setText(user.getEmail());
     }
 
-    private void setNotification(OrderHistoryClass orderHist, String username){
+    private void setNotification(OrderHistoryClass orderHist, String username,String notification_type){
 
         if (username!=null) {
             String title = "order";
-            String type = "order_delivering";
+            String type = notification_type;
             String content = orderHist.getOrder_number();
             String imageResId = String.valueOf(R.drawable.ship);
 
@@ -188,10 +291,9 @@ public class OrderRequestAdmin extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot orderHistorySnapshot) {
                 if (orderHistorySnapshot.exists()) {
                     OrderHistoryClass orderHist = orderHistorySnapshot.getValue(OrderHistoryClass.class);
+                    String notification_type;
                     if (orderHist != null) {
                         updateOrderHistoryUI(orderHist);
-                        setNotification(orderHist,username);
-
                     }
                     getOrder(username,orderNo);
                 }

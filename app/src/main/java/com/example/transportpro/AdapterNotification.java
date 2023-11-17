@@ -92,33 +92,72 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
             });
         }else if (title.equals("booking") || title.equals("order")){
             DatabaseReference ref = title.equals("booking") ? bookingReference : orderHistReference;
-            ref.child(username).child(notificationClass.getContent()).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        String category = snapshot.child("category").getValue(String.class);
-                        String message;
 
-                        if (title.equals("booking")) {
-                            holder.notification_title.setText("Reminder for "+"( Track No " + notificationClass.getContent() +" )");
-                            message ="Your parcel of " + category + " is collected at warehouse ! \nStart ship to Malaysia now !";
-                        } else if (title.equals("order")) {
-                            holder.notification_title.setText("Reminder for "+"( Order No " + notificationClass.getContent() +" )");
-                            message = "Your order of " + category + " is delivering from warehouse ! \nPlease Wait until it arrives !";
-                        }else {
-                            message = "Error!!";
+            if (ref.equals(bookingReference)){
+                ref.child(username).child(notificationClass.getContent()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            String category = snapshot.child("category").getValue(String.class);
+                            String message;
+
+                            if (title.equals("booking")) {
+                                holder.notification_title.setText("Reminder for "+"( Track No " + notificationClass.getContent() +" )");
+                                message ="Your parcel of " + category + " is collected at warehouse ! \nStart ship to Malaysia now !";
+                            } else {
+                                message = "Error!!";
+                            }
+
+                            holder.notification_content.setText(message);
                         }
-
-                        holder.notification_content.setText(message);
                     }
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    holder.notification_content.setText("Error loading notification details.");
-                }
-            });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        holder.notification_content.setText("Error loading notification details.");
+                    }
+                });
+            }
+            else
+            {
+
+                ref.child(username).child(notificationClass.getContent()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            String warehouse = snapshot.child("order_location").getValue(String.class);
+                            String category = snapshot.child("category").getValue(String.class);
+                            String message;
+
+                            if (type.equals("order_packing")) {
+                                holder.notification_title.setText("Reminder for "+"( Order No " + notificationClass.getContent() +" )");
+                                message = "Your order of " + category + " is Packing from "+ warehouse +" and ready to be ship!";
+                            } else if (type.equals("order_delivering")) {
+                                holder.notification_title.setText("Reminder for "+"( Order No " + notificationClass.getContent() +" )");
+                                message = "Your order of " + category + " is Delivering from warehouse ! \nPlease Wait until it arrives !";
+                            }else if(type.equals("order_delivered")) {
+                                holder.notification_title.setText("Reminder for "+"( Order No " + notificationClass.getContent() +" )");
+                                message = "Your order of " + category + " has been " + warehouse +" ! It has arrived !!";
+                            }else {
+                                message = "Error!!";
+                            }
+
+                            holder.notification_content.setText(message);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        holder.notification_content.setText("Error loading notification details.");
+                    }
+                });
+
+            }
+
         }else if (title.equals("admin_announcement")) {
+            holder.notification_title.setText(type);
+            holder.notification_content.setText(content);
+        }else {
             holder.notification_title.setText(type);
             holder.notification_content.setText(content);
         }

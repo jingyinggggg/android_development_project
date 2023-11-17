@@ -213,9 +213,10 @@ public class Edit_order extends AppCompatActivity {
                     DecimalFormat df = new DecimalFormat("#.##");
 
                     String formattedPrice = df.format(price);
+                    String order_location = "China Warehouse";
 
                     double roundedPrice = Double.parseDouble(formattedPrice);
-                    OrderHistoryClass orderHistoryClass = new OrderHistoryClass(user_id, order_number, category_name, transport_type, isSensitive, name,
+                    OrderHistoryClass orderHistoryClass = new OrderHistoryClass(user_id, order_number,order_location, category_name, transport_type, isSensitive, name,
                             mobile, email, state, eastORwest, postcode, add1, add2, add3, order_status, totalweight, formattedDate, parcel_quantity, roundedPrice, isPay);
 
                     orderhistory.child(order_number).setValue(orderHistoryClass).addOnSuccessListener(new OnSuccessListener<Void>() {

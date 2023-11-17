@@ -87,9 +87,6 @@ public class CustomerBookingPage extends AppCompatActivity {
                                 if(collected == 0){
                                     BookingClass booking = dataSnapshot.getValue(BookingClass.class);
                                     bookingClassArrayList.add(booking);
-                                }else {
-                                    bookingClassArrayList.clear();
-                                    bookingClassArrayList.add(null);
                                 }
                             }
                             adapterBooking.notifyDataSetChanged();
