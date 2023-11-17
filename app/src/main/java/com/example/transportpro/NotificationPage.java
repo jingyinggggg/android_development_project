@@ -22,14 +22,17 @@ import java.util.ArrayList;
 public class NotificationPage extends AppCompatActivity {
 
     AdapterNotification adapterNotification;
+    AdapterNotification adapterSystemNotification;
     ArrayList<NotificationClass> notificationClassArrayList;
-    DatabaseReference notificationReference;
+    ArrayList<SystemNotification> systemNotificationArrayList;
+    DatabaseReference notificationRef;
+    DatabaseReference systemNotificationRef;
     SharedPreferences sharedPreferences;
     private static final String SHARED_PREF_NAME = "localstorage";
     private static final String KEY_ID = "userId";
     private static final String KEY_USERNAME = "userName";
 
-    RecyclerView notificationRecycle;
+    RecyclerView notificationRecycle,systemNotificationRecycle;
     String username, userid;
 
     @Override
@@ -42,17 +45,50 @@ public class NotificationPage extends AppCompatActivity {
         username = sharedPreferences.getString(KEY_USERNAME,null);
 
         notificationRecycle = findViewById(R.id.notification_list);
+        systemNotificationRecycle = findViewById(R.id.system_notification_list);
 
         notificationRecycle.setHasFixedSize(true);
         notificationRecycle.setLayoutManager(new LinearLayoutManager(this));
+        systemNotificationRecycle.setHasFixedSize(true);
+        systemNotificationRecycle.setLayoutManager(new LinearLayoutManager(this));
 
         notificationClassArrayList = new ArrayList<>();
-        adapterNotification = new AdapterNotification(this, notificationClassArrayList,username,this);
+        systemNotificationArrayList = new ArrayList<>();
+        adapterNotification = new AdapterNotification(this, notificationClassArrayList,systemNotificationArrayList,username,this,"Notification");
+        adapterSystemNotification = new AdapterNotification(this, notificationClassArrayList,systemNotificationArrayList,username,this,"systemNotification");
         notificationRecycle.setAdapter(adapterNotification);
+        systemNotificationRecycle.setAdapter(adapterSystemNotification);
 
-        notificationReference = FirebaseDatabase.getInstance().getReference("Notification");
 
-        notificationReference.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+        notificationRef = FirebaseDatabase.getInstance().getReference("Notification");
+        systemNotificationRef = FirebaseDatabase.getInstance().getReference("SystemNotification");
+
+        systemNotificationRef.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    if (dataSnapshot.exists()){
+                        int isRead = dataSnapshot.child("is_read").getValue(int.class);
+                        if (isRead == 0) {
+                            SystemNotification systemNotification = dataSnapshot.getValue(SystemNotification.class);
+                            if (systemNotification != null) {
+                                systemNotificationArrayList.add(systemNotification);
+                                // Here you can notify an adapter if you are using a RecyclerView or ListView to display the notifications
+                                adapterSystemNotification.notifyDataSetChanged();
+                            }
+                        }
+                    }
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle possible errors
+            }
+        });
+
+
+        notificationRef.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot categorySnapshot : snapshot.getChildren()) {
@@ -75,6 +111,7 @@ public class NotificationPage extends AppCompatActivity {
                 // Handle possible errors
             }
         });
+
 
     }
 

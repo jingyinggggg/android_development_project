@@ -101,34 +101,31 @@ public class PostAnnouncement extends AppCompatActivity {
 
     private void saveAnnouncementToDatabase(int drawableResId) {
 
-        String type = announcement_title.getText().toString(); // Retrieve text from EditText
-        String content = announcement_content.getText().toString(); // Retrieve text from EditText
-        String image = getResources().getResourceEntryName(drawableResId);
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("User");
 
-        ArrayList<String> userArrayList;
-        int is_read = 0;
-
-        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference("User");
-
-        userArrayList = new ArrayList<>();
-        userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        ArrayList<String> user = new ArrayList<>();
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    User user = dataSnapshot.getValue(User.class);
-                    userId = user.getUserId();
-                    username = user.getUsername();
-                    if (dataSnapshot.child("isAdminAcc").getValue(int.class) == 0 ){
-                        userArrayList.add(username);
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    int isAdmin = dataSnapshot.child("isAdminAcc").getValue(Integer.class);
+                    String username = dataSnapshot.child("username").getValue(String.class);
+                    if (isAdmin == 0){
+                        user.add(username);
                     }
                 }
-                for (String currentUser : userArrayList){
-                    DatabaseReference notificationReference = FirebaseDatabase.getInstance().getReference("Notification")
-                            .child(currentUser)
-                            .child("admin_announcement").child(content);
+                for (String currentUser : user){
+                    String type = getResources().getResourceEntryName(drawableResId);
+                    String title = announcement_title.getText().toString(); // Retrieve text from EditText
+                    String content = announcement_content.getText().toString(); // Retrieve text from EditText
+                    String image = String.valueOf(drawableResId);
 
-                    NotificationClass notificationClass = new NotificationClass(userId, image, "admin_announcement", type, content, is_read);
-                    notificationReference.setValue(notificationClass).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    int is_read = 0;
+
+                    DatabaseReference systemNotificationReference = FirebaseDatabase.getInstance().getReference("SystemNotification");
+
+                    SystemNotification systemNotificationClass = new SystemNotification(image, title, type, content, is_read);
+                    systemNotificationReference.child(currentUser).child(type).setValue(systemNotificationClass).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             showPostedDialog();
@@ -142,8 +139,6 @@ public class PostAnnouncement extends AppCompatActivity {
                         }
                     });
                 }
-
-
             }
 
             @Override

@@ -21,20 +21,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AdapterNotification extends RecyclerView.Adapter<AdapterNotification.ViewHolder>{
 
     Context context;
     ArrayList<NotificationClass> notificationClassArrayList;
+    ArrayList<SystemNotification> systemNotificationArrayList;
     private AppCompatActivity activity;
     String username;
+    String callFrom;
 
-    public AdapterNotification(Context context, ArrayList<NotificationClass> notificationClassArrayList,String username, AppCompatActivity activity){
+    public AdapterNotification(Context context, ArrayList<NotificationClass> notificationClassArrayList,ArrayList<SystemNotification> systemNotificationArrayList,String username, AppCompatActivity activity, String callFrom){
         this.context = context;
-        this.notificationClassArrayList = notificationClassArrayList;
+        this.notificationClassArrayList = (notificationClassArrayList != null) ? notificationClassArrayList : new ArrayList<>();
+        this.systemNotificationArrayList = (systemNotificationArrayList != null) ? systemNotificationArrayList : new ArrayList<>();
         this.username = username;
         this.activity = activity;
+        this.callFrom = callFrom;
     }
     @NonNull
     @Override
@@ -45,27 +51,71 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
 
     @Override
     public void onBindViewHolder(@NonNull AdapterNotification.ViewHolder holder, int position) {
-        NotificationClass notificationClass = notificationClassArrayList.get(position);
-
-        String type = notificationClass.getType();
-        String title = notificationClass.getTitle();
-        String content = notificationClass.getContent();
-        int is_read = notificationClass.getIs_read();
 
         holder.notification_image.setImageResource(R.drawable.track); // Use a placeholder drawable
         holder.notification_title.setText("Loading...");
         holder.notification_content.setText("Please wait...");
 
-
         int resId;
-        try {
-            resId = Integer.parseInt(notificationClass.getImage());
-        } catch (NumberFormatException e) {
-            resId = R.drawable.track; // Default drawable if parsing fails
+
+        if (callFrom.equals("systemNotification")) {
+            if (position < systemNotificationArrayList.size()){
+                SystemNotification systemNotification = systemNotificationArrayList.get(position);
+
+                String type = systemNotification.getType();
+                String title = systemNotification.getTitle();
+                String content = systemNotification.getContent();
+
+                try {
+                    resId = Integer.parseInt(systemNotification.getImage());
+                } catch (NumberFormatException e) {
+                    resId = R.drawable.track; // Default drawable if parsing fails
+                }
+
+                Drawable image = ContextCompat.getDrawable(context, resId);
+                holder.notification_image.setImageDrawable(image);
+
+                holder.notification_title.setText(title);
+                holder.notification_content.setText(content);
+
+                holder.itemView.setOnClickListener(view -> {
+                    DatabaseReference systemNotificationRef = FirebaseDatabase.getInstance().getReference("SystemNotification");
+                    systemNotificationRef.child(username).child(type).child("is_read").getRef().setValue(1);
+                    // Remove the notification from the list
+                    systemNotificationArrayList.remove(holder.getAdapterPosition());
+                    // Notify the adapter of the item removal
+                    notifyItemRemoved(holder.getAdapterPosition());
+
+
+                });
+            }
+
+        }else {
+            if (position < notificationClassArrayList.size()){
+                NotificationClass notificationClass = notificationClassArrayList.get(position);
+
+                try {
+                    resId = Integer.parseInt(notificationClass.getImage());
+                } catch (NumberFormatException e) {
+                    resId = R.drawable.track; // Default drawable if parsing fails
+                }
+
+                Drawable image = ContextCompat.getDrawable(context, resId);
+                holder.notification_image.setImageDrawable(image);
+
+                processNotification(notificationClass, holder);
+            }
+
         }
 
-        Drawable image = ContextCompat.getDrawable(context, resId);
-        holder.notification_image.setImageDrawable(image);
+
+    }
+
+    private void processNotification(NotificationClass notificationClass, AdapterNotification.ViewHolder holder){
+
+        String type = notificationClass.getType();
+        String title = notificationClass.getTitle();
+        String content = notificationClass.getContent();
 
         DatabaseReference bookingReference = FirebaseDatabase.getInstance().getReference("Booking");
         DatabaseReference orderHistReference = FirebaseDatabase.getInstance().getReference("OrderHistory");
@@ -79,7 +129,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                         double balance = snapshot.child("wallet_balance").getValue(double.class);
                         holder.notification_title.setText("Insufficient Balance");
                         holder.notification_content.setText("Insufficient balance in your wallet! Top up and enjoy our services now!" +
-                                                            "\nYour current wallet balance is: RM" + balance );
+                                "\nYour current wallet balance is: RM" + balance );
                     } else {
                         holder.notification_content.setText("Wallet details not available.");
                     }
@@ -153,10 +203,6 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                 });
 
             }
-
-        }else if (title.equals("admin_announcement")) {
-            holder.notification_title.setText(type);
-            holder.notification_content.setText(content);
         }else {
             holder.notification_title.setText(type);
             holder.notification_content.setText(content);
@@ -175,12 +221,16 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
             }
 
         });
-
     }
+
 
     @Override
     public int getItemCount() {
-        return notificationClassArrayList.size() ;
+        if (callFrom.equals("systemNotification")) {
+            return systemNotificationArrayList.size();
+        } else {
+            return notificationClassArrayList.size();
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
