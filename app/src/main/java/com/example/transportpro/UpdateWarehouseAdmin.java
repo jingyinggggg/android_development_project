@@ -50,8 +50,9 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
     private DatabaseReference orderRef;
     private DatabaseReference bookingRef;
 
-    RecyclerView updateWarehouseList;
-    AdapterUpdateWarehouse adapterUpdateWarehouse;
+    RecyclerView orderlist, updateWarehouseList;
+    AdapterUpdateWarehouse adapterUpdateWarehouseBooking;
+    AdapterUpdateWarehouse adapterUpdateWarehouseOrder;
 
     ImageButton backArrow;
     Button confirm_dialog;
@@ -78,14 +79,20 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
         customerName.setText("Customer name : "+username);
 
         updateWarehouseList = findViewById(R.id.updateWarehouseList);
+        orderlist = findViewById(R.id.orderlist);
+
 
         updateWarehouseList.setHasFixedSize(true);
         updateWarehouseList.setLayoutManager(new LinearLayoutManager(this));
+        orderlist.setHasFixedSize(true);
+        orderlist.setLayoutManager(new LinearLayoutManager(this));
 
         bookingClassArrayList = new ArrayList<>();
         orderHistoryClassArrayList = new ArrayList<>();
-        adapterUpdateWarehouse = new AdapterUpdateWarehouse(this, bookingClassArrayList,orderHistoryClassArrayList,username,this);
-        updateWarehouseList.setAdapter(adapterUpdateWarehouse);
+        adapterUpdateWarehouseBooking = new AdapterUpdateWarehouse(this, bookingClassArrayList,null,username,this, "Booking");
+        adapterUpdateWarehouseOrder = new AdapterUpdateWarehouse(this, null,orderHistoryClassArrayList,username,this, "Order");
+        updateWarehouseList.setAdapter(adapterUpdateWarehouseBooking);
+        orderlist.setAdapter(adapterUpdateWarehouseOrder);
 
         usersRef = FirebaseDatabase.getInstance().getReference("User");
         orderHistRef = FirebaseDatabase.getInstance().getReference("OrderHistory");
@@ -102,7 +109,7 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
                         bookingClassArrayList.add(booking);
                     }
                 }
-                adapterUpdateWarehouse.notifyDataSetChanged();
+                adapterUpdateWarehouseBooking.notifyDataSetChanged();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -110,7 +117,6 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
             }
         });
 
-        final AtomicBoolean dataChanged = new AtomicBoolean(false);
 
         orderHistRef.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -126,7 +132,7 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
                             addOrderView(orderHistoryClass);
                         }
 
-                        adapterUpdateWarehouse.notifyDataSetChanged();
+                        adapterUpdateWarehouseOrder.notifyDataSetChanged();
                     }
                 }
             }
@@ -163,10 +169,10 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
         TextView order_status = orderView.findViewById(R.id.order_status);
         TextView TotalItems = orderView.findViewById(R.id.parcelQty);
 
-            ItemNumber.setText("Order No : " + order.getOrder_number());
-            ItemName.setText("Item Name : " + order.getCategory());
-            order_status.setText("Order Status : " + order.getOrder_status());
-            TotalItems.setText(String.valueOf(order.getParcel_quantity()));
+        ItemNumber.setText("Order No : " + order.getOrder_number());
+        ItemName.setText("Item Name : " + order.getCategory());
+        order_status.setText("Order Status : " + order.getOrder_status());
+        TotalItems.setText(String.valueOf(order.getParcel_quantity()));
 
 
 

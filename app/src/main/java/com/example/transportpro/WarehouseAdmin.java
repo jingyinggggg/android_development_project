@@ -67,48 +67,26 @@ public class WarehouseAdmin extends AppCompatActivity {
                 users.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     User currentUser = dataSnapshot.getValue(User.class);
-                    if (currentUser != null){
-                        int isAdmin = dataSnapshot.child("isAdminAcc").getValue(Integer.class);
-                        if(isAdmin == 0){
-                            nonAdminUsers.add(currentUser);
-                        }
-                    }
-                }
-                for (User nonAdminUser : nonAdminUsers){
-                    String username = nonAdminUser.getUsername();
-                    bookingRef.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot bookingDataSnapshot : snapshot.getChildren()) {
-                                BookingClass booking = bookingDataSnapshot.getValue(BookingClass.class);
-                                if (booking != null ) {
-                                    orderHistRef.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            for (DataSnapshot orderHistSnapshot : snapshot.getChildren()){
-                                                if (orderHistSnapshot != null){
-                                                    users.add(nonAdminUser);
-                                                    adapterWarehouse.notifyDataSetChanged();
-                                                    break;
-                                                }
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-                                    });
-                                    ;
-                                    break; // Break if at least one uncollected booking is found for this user
+                    if (currentUser != null && dataSnapshot.child("isAdminAcc").getValue(Integer.class) == 0) {
+                        String userId = dataSnapshot.getKey(); // Assuming the user ID is the key
+                        orderHistRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
+                                    if (orderSnapshot.exists()) {
+                                        users.add(currentUser);
+                                        adapterWarehouse.notifyDataSetChanged();
+                                        break;
+                                    }
                                 }
                             }
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
 
-                        }
-                    });
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
                 }
             }
 

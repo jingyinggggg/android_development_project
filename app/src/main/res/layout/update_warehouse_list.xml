@@ -27,7 +27,7 @@
             android:layout_width="198dp"
             android:layout_height="80dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="15dp"
             android:background="@drawable/status_box"
             android:orientation="vertical"
             android:gravity="center_vertical">
@@ -47,20 +47,37 @@
                 android:text="Shipping order has been placed. " />
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+            <Button
+                android:id="@+id/update_status_button"
+                android:layout_width="match_parent"
+                android:layout_height="35sp"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="@color/grey"
+                android:enabled="true"
+                android:fontFamily="@font/inter_medium"
+                android:text="Update"
+                android:textSize="11sp"
+                android:textAllCaps="false"
+                app:cornerRadius="7dp"
+                android:layout_marginLeft="2sp"/>
+            <TextView
+                android:id="@+id/pay_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text=""
+                android:textColor="@color/blue"
+                />
 
-        <Button
-            android:id="@+id/update_status_button"
-            android:layout_width="match_parent"
-            android:layout_height="35sp"
-            android:layout_gravity="center_vertical"
-            android:backgroundTint="@color/grey"
-            android:enabled="true"
-            android:fontFamily="@font/inter_medium"
-            android:text="Update"
-            android:textSize="11sp"
-            android:textAllCaps="false"
-            app:cornerRadius="7dp"
-            android:layout_marginLeft="2sp"/>
+        </LinearLayout>
+
+
+
 
 
     </LinearLayout>

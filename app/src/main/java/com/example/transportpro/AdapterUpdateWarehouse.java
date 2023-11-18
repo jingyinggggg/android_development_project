@@ -37,13 +37,15 @@ public class AdapterUpdateWarehouse extends RecyclerView.Adapter<AdapterUpdateWa
     FirebaseDatabase db;
     DatabaseReference orderReference;
     FragmentManager fragmentManager;
+    String callfrom;
 
-    public AdapterUpdateWarehouse(Context context, ArrayList<BookingClass> bookingClassList, ArrayList<OrderHistoryClass> orderHistoryClassArrayList,String username,AppCompatActivity activity){
+    public AdapterUpdateWarehouse(Context context, ArrayList<BookingClass> bookingClassList, ArrayList<OrderHistoryClass> orderHistoryClassArrayList,String username,AppCompatActivity activity,String callfrom){
         this.context = context;
-        this.bookingClassList = bookingClassList;
-        this.orderHistoryClassArrayList = orderHistoryClassArrayList;
+        this.bookingClassList = (bookingClassList != null) ? bookingClassList : new ArrayList<>();
+        this.orderHistoryClassArrayList = (orderHistoryClassArrayList != null) ? orderHistoryClassArrayList : new ArrayList<>();
         this.activity = activity;
         this.username =username;
+        this.callfrom = callfrom;
     }
 
     @NonNull
@@ -65,12 +67,11 @@ public class AdapterUpdateWarehouse extends RecyclerView.Adapter<AdapterUpdateWa
         holder.order_status_title.setText("");
 
         // Check if the position index is within the bounds of both lists
-        if (position < bookingClassList.size() ) {
+        if (callfrom.equals("Booking")) {
             BookingClass booking = bookingClassList.get(position);
             processBooking(booking, sdf, currentDate, holder);
         }
-
-        if (position < orderHistoryClassArrayList.size()) {
+        else {
             OrderHistoryClass orderHist = orderHistoryClassArrayList.get(position);
             processOrderHistory(orderHist, sdf, currentDate, holder);
         }
@@ -99,6 +100,14 @@ public class AdapterUpdateWarehouse extends RecyclerView.Adapter<AdapterUpdateWa
             holder.update_status_button.setBackgroundColor(color);
             holder.update_status_button.setText("Update");
             holder.update_status_button.setEnabled(true);
+
+            if (orderHist.getIsPay() == 0){
+                holder.pay_status.setText("Unpaid");
+                holder.pay_status.setTextColor(Color.parseColor("#F50000"));
+            }else {
+                holder.pay_status.setText("Paid");
+                holder.pay_status.setTextColor(Color.parseColor("#17FF00"));
+            }
 
             Date orderHistDate = sdf.parse(orderHist.getDate());
             if(orderHist.getOrder_location().equals("China Warehouse")){
@@ -146,18 +155,18 @@ public class AdapterUpdateWarehouse extends RecyclerView.Adapter<AdapterUpdateWa
 
     @Override
     public int getItemCount() {
-        int total_size = bookingClassList.size() + orderHistoryClassArrayList.size();
-        return total_size;
+        return (bookingClassList != null ? bookingClassList.size() : 0) + (orderHistoryClassArrayList != null ? orderHistoryClassArrayList.size() : 0);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView status_image;
-        TextView order_status_title,order_status_date;
+        TextView order_status_title,order_status_date,pay_status;
         Button update_status_button,clickedButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            pay_status = itemView.findViewById(R.id.pay_status);
             status_image = itemView.findViewById(R.id.status_image);
             order_status_title = itemView.findViewById(R.id.order_status_title);
             order_status_date = itemView.findViewById(R.id.order_status_date);

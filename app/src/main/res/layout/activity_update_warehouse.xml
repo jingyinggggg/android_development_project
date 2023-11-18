@@ -15,7 +15,7 @@
 
 
 
-    <!--Header-->
+        <!--Header-->
         <FrameLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
@@ -123,6 +123,13 @@
                     android:textSize="16dp"/>
 
             </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_below="@+id/status"
+                android:id="@+id/orderlist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_below="@+id/status"

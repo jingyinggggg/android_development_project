@@ -170,16 +170,34 @@
 
             </androidx.gridlayout.widget.GridLayout>
 
-            <ImageView
-                android:id="@+id/noti_btn"
-                android:layout_width="25sp"
-                android:layout_height="38sp"
-                android:layout_marginTop="25sp"
-                android:src="@drawable/noti"
+            <RelativeLayout
+                android:layout_width="30sp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginRight="21sp"
-                android:onClick="homepage_redirect"
-                ></ImageView>
+                android:layout_marginTop="25sp"
+                android:layout_marginRight="21sp">
+
+                <ImageView
+                    android:id="@+id/noti_btn"
+                    android:layout_width="25sp"
+                    android:layout_height="38sp"
+                    android:src="@drawable/noti"
+                    android:onClick="homepage_redirect"
+                    android:layout_alignParentStart="true"
+                    ></ImageView>
+                
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/noti_count"
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
+                    android:text="0"
+                    android:layout_alignParentEnd="true"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:background="@drawable/notification_icon"/>
+            </RelativeLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

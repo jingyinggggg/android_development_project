@@ -38,7 +38,7 @@ public class HomePage extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     SharedPreferences sharedPreferences;
     FirebaseDatabase db;
-    DatabaseReference reference;
+    DatabaseReference reference, notificationRef, systemNotificationRef;
     //sharedpreferences
     private static final String SHARED_PREF_NAME = "localstorage";
     private static final String KEY_ID = "userId";
@@ -46,6 +46,8 @@ public class HomePage extends AppCompatActivity {
     private static final String REMEMBER = "remember";
     String username, userid;
 
+    int systemNotificationCount = 0;
+    int regularNotificationCount = 0;
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         if(actionBarDrawerToggle.onOptionsItemSelected(item)){
@@ -135,6 +137,21 @@ public class HomePage extends AppCompatActivity {
 
                     String balance = String.format("%.2f", walletBalance);
                     wallet_balance.setText("RM" + balance);
+
+                    int intUserId = Integer.parseInt(userid);
+                    if (username!=null && walletBalance <= 10){
+                        String title = "wallet";
+                        String type = "low balance";
+                        String content = userid;
+                        String imageResId  = String.valueOf(R.drawable.wallet2);
+
+                        int is_read = 0;
+                        DatabaseReference notificationReference = FirebaseDatabase.getInstance().getReference("Notification").child(username).child(title).child(content);
+
+                        NotificationClass notificationClass = new NotificationClass(intUserId,imageResId ,title,type,content,is_read);
+                        notificationReference.setValue(notificationClass);
+
+                    }
                 }
             }
 
@@ -154,6 +171,49 @@ public class HomePage extends AppCompatActivity {
                 clipboardManager.setPrimaryClip(clipData);
 
                 Toast.makeText(HomePage.this, "Warehouse address copied", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        notificationRef = FirebaseDatabase.getInstance().getReference("Notification");
+        systemNotificationRef = FirebaseDatabase.getInstance().getReference("SystemNotification");
+
+        systemNotificationRef.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    if (dataSnapshot.exists()){
+                        int isRead = dataSnapshot.child("is_read").getValue(int.class);
+                        if (isRead == 0) {
+                            systemNotificationCount = systemNotificationCount + 1;
+                        }
+                    }
+                }
+                updateNotificationCount(systemNotificationCount);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle possible errors
+            }
+        });
+
+
+        notificationRef.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot categorySnapshot : snapshot.getChildren()) {
+                    for (DataSnapshot notificationSnapshot : categorySnapshot.getChildren()) {
+                        int isRead = notificationSnapshot.child("is_read").getValue(int.class);
+                        if (isRead == 0) {
+                            regularNotificationCount = regularNotificationCount + 1;
+                        }
+                    }
+                }
+                updateNotificationCount(regularNotificationCount);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle possible errors
             }
         });
 
@@ -281,5 +341,12 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
+    }
+    private void updateNotificationCount(int totalNotificationCount) {
+        TextView noti_count = findViewById(R.id.noti_count);
+        if (totalNotificationCount > 0){
+            noti_count.setVisibility(View.VISIBLE);
+            noti_count.setText(String.valueOf(totalNotificationCount));
+        }
     }
 }
