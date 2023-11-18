@@ -151,14 +151,24 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                             String category = snapshot.child("category").getValue(String.class);
                             String message;
 
-                            if (title.equals("booking")) {
+                            if (type.startsWith("parcel_collected")) {
                                 holder.notification_title.setText("Reminder for "+"( Track No " + notificationClass.getContent() +" )");
                                 message ="Your parcel of " + category + " is collected at warehouse ! \nStart ship to Malaysia now !";
-                            } else {
+                            }else {
                                 message = "Error!!";
                             }
 
                             holder.notification_content.setText(message);
+                        }else {
+                            if (type.startsWith("parcel_declined")) {
+                                String message;
+                                holder.notification_title.setText("Declined parcel for " + "( Track No " + notificationClass.getContent() + " )");
+                                // Extract additional message if needed
+                                String additionalInfo = type.substring("parcel_declined".length()).trim();
+                                message = "Your parcel of " + content + " is declined by warehouse. " + (additionalInfo.isEmpty() ? "" : additionalInfo);
+
+                                holder.notification_content.setText(message);
+                            }
                         }
                     }
 
@@ -170,7 +180,6 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
             }
             else
             {
-
                 ref.child(username).child(notificationClass.getContent()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -179,21 +188,30 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                             String category = snapshot.child("category").getValue(String.class);
                             String message;
 
-                            if (type.equals("order_packing")) {
-                                holder.notification_title.setText("Reminder for "+"( Order No " + notificationClass.getContent() +" )");
-                                message = "Your order of " + category + " is Requesting for approval at "+ warehouse +" Please wait for more!";
-                            } else if (type.equals("order_delivering")) {
-                                holder.notification_title.setText("Reminder for "+"( Order No " + notificationClass.getContent() +" )");
-                                message = "Your order of " + category + " is Delivering from warehouse ! \nPlease Wait until it arrives !";
-                            }else if(type.equals("order_delivered")) {
-                                holder.notification_title.setText("Reminder for "+"( Order No " + notificationClass.getContent() +" )");
-                                message = "Your order of " + category + " has been " + warehouse +" ! It has arrived !!";
-                            }else {
-                                message = "Error!!";
-                            }
+
+                                if (type.equals("order_packing")) {
+                                    holder.notification_title.setText("Reminder for "+"( Order No " + notificationClass.getContent() +" )");
+                                    message = "Your order of " + category + " is Requesting for approval at "+ warehouse +" Please wait for more!";
+                                } else if (type.equals("order_delivering")) {
+                                    holder.notification_title.setText("Reminder for "+"( Order No " + notificationClass.getContent() +" )");
+                                    message = "Your order of " + category + " is Delivering from warehouse ! \nPlease Wait until it arrives !";
+                                }else if(type.equals("order_delivered")) {
+                                    holder.notification_title.setText("Reminder for "+"( Order No " + notificationClass.getContent() +" )");
+                                    message = "Your order of " + category + " has been " + warehouse +" ! It has arrived !!";
+                                }else {
+                                    message = "Error!!";
+                                }
 
                             holder.notification_content.setText(message);
+
+
+                        }else {
+                            String message;
+                            holder.notification_title.setText("Declined order for "+"( Order No " + notificationClass.getContent() +" )");
+                            message = "Your order of " + content + " has been declined the reason is "+type;
+                            holder.notification_content.setText(message);
                         }
+
                     }
 
                     @Override
@@ -201,6 +219,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                         holder.notification_content.setText("Error loading notification details.");
                     }
                 });
+
 
             }
         }else {
