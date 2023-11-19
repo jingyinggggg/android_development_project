@@ -178,20 +178,22 @@ public class OrderRequestAdmin extends AppCompatActivity {
                 // Build the AlertDialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(OrderRequestAdmin.this);
                 builder.setView(input); // Add the EditText to the dialog
-                builder.setTitle("Enter Description");
-                builder.setMessage("Please enter the reason for declining the order:");
+                builder.setTitle("Enter Description (10 words max)");
+                builder.setMessage("Please enter the reason for declining the order: ");
 
                 // Set up the buttons
                 builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String description = input.getText().toString(); // Get user input
+                        String description = input.getText().toString().trim(); // Get user input
                         // Proceed with the rest of the logic only if description is not empty
-                        if (!description.isEmpty()) {
+                        String[] words = description.split("\\s+");
+                        if (description.isEmpty() || words.length >= 10) {
+                            Toast.makeText(OrderRequestAdmin.this, "Please enter a valid description with the length of 10 words.", Toast.LENGTH_SHORT).show();
+                            return;// Stop further execution
+                        } else {
                             declineOrder(description,orderNo,username,userId); // Call the decline order function
                             redirect_order(view);
-                        } else {
-                            Toast.makeText(OrderRequestAdmin.this, "You must enter a description.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -213,7 +215,7 @@ public class OrderRequestAdmin extends AppCompatActivity {
             String title = "order";
             String type = description;
             String content = orderNo;
-            String imageResId = String.valueOf(R.drawable.reminder);
+            String imageResId = String.valueOf(R.drawable.decline_order);
 
             int is_read = 0;
             DatabaseReference notificationReference = FirebaseDatabase.getInstance().getReference("Notification").child(username).child(title).child(content);
@@ -267,7 +269,7 @@ public class OrderRequestAdmin extends AppCompatActivity {
             String title = "order";
             String type = notification_type;
             String content = orderHist.getOrder_number();
-            String imageResId = String.valueOf(R.drawable.ship);
+            String imageResId = String.valueOf(R.drawable.order_ship);
 
             if (orderHist.getTransport_type().equals("sea")) {
                 imageResId = String.valueOf(R.drawable.order_ship);

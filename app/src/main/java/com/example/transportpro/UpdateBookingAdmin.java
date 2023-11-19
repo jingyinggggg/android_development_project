@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -154,7 +155,7 @@ public class UpdateBookingAdmin extends AppCompatActivity {
 
                                                 if (username!=null){
                                                     String title = "booking";
-                                                    String type = "parcel_collected";
+                                                    String type = "parcel_collected,reminder";
                                                     String content = trackNo;
                                                     String imageResId  = String.valueOf(R.drawable.reminder);
 
@@ -189,37 +190,58 @@ public class UpdateBookingAdmin extends AppCompatActivity {
                                     @Override
                                     public void onClick(View view) {
 
+                                        // Create an EditText for the user to enter description
+                                        final EditText input = new EditText(UpdateBookingAdmin.this);
+                                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                                LinearLayout.LayoutParams.MATCH_PARENT);
+                                        input.setLayoutParams(lp);
+
                                         // Create an AlertDialog.Builder with this context
                                         AlertDialog.Builder builder = new AlertDialog.Builder(UpdateBookingAdmin.this);
-                                        builder.setTitle("Confirm Action");
-                                        builder.setMessage("Are you sure you want to decline this booking?");
+                                        builder.setView(input);
+                                        builder.setTitle("Enter Description (10 words max)");
+                                        builder.setMessage("Please enter the reason for declining the order: ");
 
                                         // Set up the buttons
                                         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                // User clicked 'Yes' button, perform the action
+
+                                                String description = input.getText().toString().trim(); // Get user input
+
+                                                String[] words = description.split("\\s+");
+                                                if (description.isEmpty() || words.length >= 10) {
+                                                    Toast.makeText(UpdateBookingAdmin.this, "Please enter a valid description with the length of 10 words.", Toast.LENGTH_SHORT).show();
+                                                    return; // Stop further execution
+                                                }
+
+                                                // Proceed with the rest of the logic only if description is not empty
+                                                // User clicked 'No' button, perform the action
                                                 if (username != null) {
                                                     String title = "booking";
-                                                    String type = "parcel_declined";
+                                                    String type = "parcel_declined,"+description;
                                                     String content = trackNo;
-                                                    String imageResId = String.valueOf(R.drawable.reminder);
+                                                    String imageResId = String.valueOf(R.drawable.parcel_declined);
 
                                                     int is_read = 0;
                                                     DatabaseReference notificationReference = FirebaseDatabase.getInstance().getReference("Notification").child(username).child(title).child(content);
 
                                                     NotificationClass notificationClass = new NotificationClass(userId, imageResId, title, type, content, is_read);
                                                     notificationReference.setValue(notificationClass);
+
+                                                    bookingReference.child(username).child(trackNo).getRef().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            Toast.makeText(UpdateBookingAdmin.this, "The Booking " + trackNo + " has been declined", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }).addOnFailureListener(e -> Toast.makeText(UpdateBookingAdmin.this, "Failed to decline booking.", Toast.LENGTH_SHORT).show());
+                                                    redirect_view_booking(view);
+                                                }else {
+                                                    Toast.makeText(UpdateBookingAdmin.this, "Error: User not identified.", Toast.LENGTH_SHORT).show();
                                                 }
 
-                                                bookingReference.child(username).child(trackNo).getRef().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        Toast.makeText(UpdateBookingAdmin.this, "The Booking " + trackNo + " has been declined", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
 
-                                                redirect_view_booking(view);
                                             }
                                         });
 

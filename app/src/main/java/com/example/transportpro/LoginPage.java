@@ -82,13 +82,6 @@ public class LoginPage extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME,MODE_PRIVATE);
         String id = sharedPreferences.getString(KEY_ID,null);
 
-        if (id != null){
-            openHomePage();
-        }
-        else if (id == "1") {
-            adminPage();
-        }
-
         rememberUser = (CheckBox) findViewById(R.id.rememberMe);
 
         login = (Button) findViewById(R.id.loginButton);

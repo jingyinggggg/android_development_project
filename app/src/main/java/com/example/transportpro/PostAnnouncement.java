@@ -72,7 +72,7 @@ public class PostAnnouncement extends AppCompatActivity {
                 // Use the selected value
                 Toast.makeText(PostAnnouncement.this, "Selected: " + selectedItem, Toast.LENGTH_SHORT).show();
                 if (selectedItem.equals("Maintenance")){
-                    drawableResId = getResources().getIdentifier("maintenance", "drawable", getPackageName());
+                    drawableResId = R.drawable.maintenance;
                     imageView.setImageResource(drawableResId);
                 }
             }
@@ -115,6 +115,7 @@ public class PostAnnouncement extends AppCompatActivity {
                     }
                 }
                 for (String currentUser : user){
+
                     String type = getResources().getResourceEntryName(drawableResId);
                     String title = announcement_title.getText().toString(); // Retrieve text from EditText
                     String content = announcement_content.getText().toString(); // Retrieve text from EditText

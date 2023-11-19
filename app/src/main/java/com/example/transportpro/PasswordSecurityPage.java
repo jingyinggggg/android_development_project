@@ -31,6 +31,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class PasswordSecurityPage extends AppCompatActivity {
     public ImageButton setting;
     private Button confirm;
@@ -98,43 +101,45 @@ public class PasswordSecurityPage extends AppCompatActivity {
                 String newPasswordText = newPassword.getText().toString();
                 String reenterNewPasswordText = reenterNewPassword.getText().toString();
 
-                if(!currentPasswordText.isEmpty() && !newPasswordText.isEmpty() && !reenterNewPasswordText.isEmpty() && newPasswordText != reenterNewPasswordText){
-                    sharedPreferences = getSharedPreferences(SHARED_PREF_NAME,MODE_PRIVATE);
-                    String username = sharedPreferences.getString(KEY_USERNAME,null);
+                if(!currentPasswordText.isEmpty() && !newPasswordText.isEmpty() && !reenterNewPasswordText.isEmpty()){
+                    if (newPasswordText.equals(reenterNewPasswordText)){
+                        if (isPasswordValid(newPasswordText,passwordError)){
+                            sharedPreferences = getSharedPreferences(SHARED_PREF_NAME,MODE_PRIVATE);
+                            String username = sharedPreferences.getString(KEY_USERNAME,null);
 
-                    db = FirebaseDatabase.getInstance();
-                    reference = db.getReference("User");
+                            db = FirebaseDatabase.getInstance();
+                            reference = db.getReference("User");
 
-                    reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(snapshot.hasChild(username)){
-                                DatabaseReference userReference = reference.child(username);
-                                String storedPassword = snapshot.child(username).child("password").getValue(String.class);
+                            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(snapshot.hasChild(username)){
+                                        DatabaseReference userReference = reference.child(username);
+                                        String storedPassword = snapshot.child(username).child("password").getValue(String.class);
 
-                                if(currentPasswordText.equals(storedPassword)){
-                                    if (passwordError.getVisibility() == View.GONE && reenterNewPasswordError.getVisibility() == View.GONE){
-                                        userReference.child("password").setValue(newPasswordText);
-                                        showConfirmDialog(view);
-                                    }
-                                    else{
-                                        Toast.makeText(PasswordSecurityPage.this, "Something is wrong, Please try again", Toast.LENGTH_SHORT).show();
+                                        if(currentPasswordText.equals(storedPassword)){
+                                            userReference.child("password").setValue(newPasswordText);
+                                            showConfirmDialog(view);
+                                        }
+                                        else {
+                                            Toast.makeText(PasswordSecurityPage.this, "Wrong Current Password", Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 }
-                                else {
-                                    Toast.makeText(PasswordSecurityPage.this, "Wrong Password", Toast.LENGTH_SHORT).show();
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
                                 }
-                            }
+                            });
                         }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
+                    }else {
+                        reenterNewPasswordError.setText("Password do not match");
+                        reenterNewPasswordError.setVisibility(View.VISIBLE);
+                    }
                 }
                 else{
-                    Toast.makeText(PasswordSecurityPage.this, "Something is wrong, Please try again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PasswordSecurityPage.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -142,6 +147,23 @@ public class PasswordSecurityPage extends AppCompatActivity {
 
     }
 
+    private boolean isPasswordValid(String password, TextView passwordError){
+        if (password.length() < 8) {
+            passwordError.setText("***Password must be a minimum of 8 characters");
+            passwordError.setVisibility(View.VISIBLE);
+            return false;
+        }else {
+            Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
+            Matcher matcher = pattern.matcher(password);
+            if (!matcher.find()) {
+                passwordError.setText("Weak Password. Please include a minimum of 1 special character");
+                passwordError.setVisibility(View.VISIBLE);
+                return false;
+            }
+        }
+        passwordError.setVisibility(View.GONE);
+        return true;
+    }
 
 
     public void showConfirmDialog(View v){

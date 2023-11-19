@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="145dp"
+    android:layout_height="wrap_content"
+    android:paddingTop="20dp"
+    android:paddingBottom="30dp"
     android:orientation="vertical"
     android:gravity="center"
     android:background="@drawable/order_items_border">
@@ -111,7 +113,7 @@
                     android:id="@+id/track_desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="banana"
+                    android:text="sadkfjhaskljdfhaskjdfhaskaskjdfhaskj"
                     android:textSize="14sp"
                     android:fontFamily="@font/inter_regular"
                     android:gravity="end"/>
