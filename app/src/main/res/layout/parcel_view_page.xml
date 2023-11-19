@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ParcelEditPage">
+
+    <ImageButton
+        android:id="@+id/backIcon"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        app:srcCompat="@drawable/back_arrow"
+        android:background="@android:color/transparent"
+        android:onClick="backParcelPage"/>
+
+    <TextView
+        android:id="@+id/booking"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Parcel"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/menu"
+        android:layout_marginTop="65dp"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/grey">
+    </View>
+
+    <TextView
+        android:id="@+id/trackDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/menu"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Track Details"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/trackingNumber"
+        android:layout_width="120dp"
+        android:layout_height="53dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/trackDetails"
+        android:text="Track Number"
+        android:textSize="16sp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/trackingNumberInput"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:layout_toRightOf="@+id/trackingNumber"
+        android:layout_below="@+id/trackDetails"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:text="1512435151346"
+        android:textSize="14sp"
+        android:background="@drawable/round_button"/>
+
+    <TextView
+        android:id="@+id/category"
+        android:layout_width="120dp"
+        android:layout_height="53dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/trackingNumber"
+        android:text="Category"
+        android:textSize="16sp"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/categoryInput"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:layout_toRightOf="@+id/category"
+        android:layout_below="@+id/trackingNumberInput"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:text="Bag"
+        android:textSize="14sp"
+        android:background="@drawable/round_button"/>
+
+    <TextView
+        android:id="@+id/delivery"
+        android:layout_width="120dp"
+        android:layout_height="53dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/category"
+        android:text="Delivery by"
+        android:textSize="16sp"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/deliveryInput"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:layout_toRightOf="@+id/delivery"
+        android:layout_below="@+id/categoryInput"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:text="Spring Shop"
+        android:textSize="14sp"
+        android:background="@drawable/round_button"/>
+
+    <TextView
+        android:id="@+id/quantity"
+        android:layout_width="120dp"
+        android:layout_height="53dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/delivery"
+        android:text="Quantity"
+        android:textSize="16sp"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/quantityInput"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:layout_toRightOf="@+id/quantity"
+        android:layout_below="@+id/deliveryInput"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:text="2"
+        android:textSize="14sp"
+        android:background="@drawable/round_button"/>
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="120dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/quantity"
+        android:text="Description"
+        android:textSize="16sp"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/descriptionInput"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_toRightOf="@+id/description"
+        android:layout_below="@+id/quantityInput"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:text=""
+        android:textSize="14sp"
+        android:background="@drawable/round_button"/>
+
+    <TextView
+        android:id="@+id/characterCountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="25dp"
+        android:text="0/160"
+        android:layout_below="@+id/descriptionInput"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/doneButton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_below="@+id/descriptionInput"
+        android:layout_marginTop="120dp"
+        android:gravity="center"
+        app:cornerRadius="7dp"
+        android:backgroundTint="@color/purple"
+        android:text="Done"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:onClick="backParcelPage"/>
+
+</RelativeLayout>

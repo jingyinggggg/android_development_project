@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/payment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E7E7E7"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/round_corner_layout">
+
+            <ImageView
+                android:id="@+id/cargo_image"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:adjustViewBounds="true"
+                android:maxWidth="50dp"
+                android:layout_gravity="center"
+                android:maxHeight="50dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/aircraft" />
+
+            <TextView
+                android:id="@+id/orderNo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="top"
+                android:layout_marginLeft="80dp"
+                android:layout_marginTop="13dp"
+                android:text="Order Number: " />
+
+            <TextView
+                android:id="@+id/dateOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="40dp"
+                android:layout_marginLeft="80dp"
+                android:text=""
+                android:textSize="14sp"
+                android:textColor="#A9A9A9"/>
+
+            <TextView
+                android:id="@+id/priceOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RM "
+                android:textStyle="bold"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"/>
+
+            <Button
+                android:id="@+id/buttonClick"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="8dp"
+                android:layout_below="@id/priceOrder"
+                android:text=""
+                android:onClick="showPaymentMethodSelectionDialog"
+                android:textSize="12sp"
+                android:backgroundTint="#3D3F99"
+                app:cornerRadius="8dp"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

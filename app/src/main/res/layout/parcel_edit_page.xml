@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ParcelEditPage">
+
+    <ImageButton
+        android:id="@+id/backIcon"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        app:srcCompat="@drawable/back_arrow"
+        android:background="@android:color/transparent"
+        android:onClick="backParcelPage"/>
+
+    <TextView
+        android:id="@+id/booking"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/edit"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/menu"
+        android:layout_marginTop="65dp"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/grey">
+    </View>
+
+    <TextView
+        android:id="@+id/trackDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/menu"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Track Details"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/trackingNumber"
+        android:layout_width="120dp"
+        android:layout_height="53dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/trackDetails"
+        android:text="Track Number"
+        android:textSize="16sp"
+        android:textColor="@color/black"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:id="@+id/textInputLayoutTrackingNumber"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:layout_toRightOf="@+id/trackingNumber"
+        android:layout_below="@+id/trackDetails"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:hint="Track Number"
+        app:boxBackgroundColor="@color/editBoxGrey">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/trackingNumberInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:textSize="14sp"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/category"
+        android:layout_width="120dp"
+        android:layout_height="53dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/trackingNumber"
+        android:text="Category"
+        android:textSize="16sp"
+        android:textColor="@color/black" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:id="@+id/textInputLayoutCategory"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:layout_toRightOf="@+id/category"
+        android:layout_below="@+id/textInputLayoutTrackingNumber"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:hint="Category"
+        app:boxBackgroundColor="@color/editBoxGrey">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/categoryInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textSize="14sp"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/delivery"
+        android:layout_width="120dp"
+        android:layout_height="53dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/category"
+        android:text="Delivery by"
+        android:textSize="16sp"
+        android:textColor="@color/black" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:id="@+id/textInputLayoutDelivery"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:layout_toRightOf="@+id/delivery"
+        android:layout_below="@+id/textInputLayoutCategory"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:hint="Delivery by"
+        app:boxBackgroundColor="@color/editBoxGrey">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/deliveryInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textSize="14sp"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/quantity"
+        android:layout_width="120dp"
+        android:layout_height="53dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/delivery"
+        android:text="Quantity"
+        android:textSize="16sp"
+        android:textColor="@color/black" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:id="@+id/textInputLayoutQuantity"
+        android:layout_width="match_parent"
+        android:layout_height="53dp"
+        android:layout_toRightOf="@+id/quantity"
+        android:layout_below="@+id/textInputLayoutDelivery"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:hint="Quantity"
+        app:boxBackgroundColor="@color/editBoxGrey">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/quantityInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:textSize="14sp"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="120dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:layout_below="@+id/quantity"
+        android:text="Description"
+        android:textSize="16sp"
+        android:textColor="@color/black" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:id="@+id/textInputLayoutDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/description"
+        android:layout_below="@+id/textInputLayoutQuantity"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:hint="Description"
+        app:counterEnabled="true"
+        app:counterMaxLength="160"
+        app:boxBackgroundColor="@color/editBoxGrey">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/descriptionInput"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:inputType="textMultiLine"
+            android:textSize="14sp"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/updateButton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_below="@+id/textInputLayoutDescription"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        app:cornerRadius="7dp"
+        android:backgroundTint="@color/purple"
+        android:text="Update"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:onClick="backParcelPage"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/orderButton"
+        android:layout_below="@+id/updateButton"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order is Collected, you can start a new order"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            app:cornerRadius="7dp"
+            android:backgroundTint="@color/purple"
+            android:text="New order"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:onClick="toNewOrder"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_below="@+id/orderButton"
+        android:layout_marginTop="5dp"
+        app:cornerRadius="7dp"
+        android:backgroundTint="@color/white"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/red"
+        android:textAllCaps="false"
+        android:layout_gravity="center"
+        android:textSize="18sp"
+        android:textColor="@color/red"
+        android:text="@string/delete"
+        android:onClick="backParcelPage"/>
+
+</RelativeLayout>

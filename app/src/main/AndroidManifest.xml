@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.TransportPro"
+        tools:targetApi="31">
+        <activity
+            android:name=".sidebar"
+            android:exported="true"/>
+        <activity
+            android:name=".InvoicePage"
+            android:exported="false" />
+        <activity
+            android:name=".AdminHomePage"
+            android:exported="false" />
+        <activity
+            android:name=".CustomerBookingPage"
+            android:exported="false" />
+        <activity
+            android:name=".OrderAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".OrderRequestAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateBookingAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateWarehouseAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".WarehouseAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".WalletPage"
+            android:exported="false" />
+        <activity
+            android:name=".Payment"
+            android:exported="false" />
+        <activity
+            android:name=".PostAnnouncement"
+            android:exported="false" />
+        <activity
+            android:name=".DeleteAccountPage"
+            android:exported="false" />
+        <activity
+            android:name=".PasswordSecurityPage"
+            android:exported="false" />
+        <activity
+            android:name=".AccountPage"
+            android:exported="false" />
+        <activity
+            android:name=".Setting"
+            android:exported="false" />
+        <activity
+            android:name=".Edit_order"
+            android:exported="false" />
+        <activity
+            android:name=".Orderhistory"
+            android:exported="false" />
+        <activity
+            android:name=".NewOrder"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".HomePage"
+            android:exported="false" />
+        <activity
+            android:name=".ParcelViewPage"
+            android:exported="false" />
+        <activity
+            android:name=".ParcelPage"
+            android:exported="false" />
+        <activity
+            android:name=".ParcelEditPage"
+            android:exported="false" />
+        <activity
+            android:name=".NotificationPage"
+            android:exported="false" />
+        <activity
+            android:name=".PricingPage"
+            android:exported="false" />
+        <activity
+            android:name=".BookingPage"
+            android:exported="false" />
+        <activity
+            android:name=".SignUpPage"
+            android:exported="false" />
+        <activity
+            android:name=".LoginPage"
+            android:exported="false" />
+        <activity
+            android:name=".WarehouseSuccessDialog"
+            android:exported="false" />
+        <activity
+            android:name=".WelcomePage"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+    </application>
+
+</manifest>
