@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:backgroundTint="#E7E7E7">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#E7E7E7"
+        android:layout_marginBottom="15sp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="62dp"
+            android:background="@drawable/wallet_topup_corner_border"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/wallet_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="23dp"
+                android:layout_marginTop="8dp"
+                android:text="Top Up"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/wallet_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="22dp"
+                android:layout_marginBottom="15dp"
+                android:text="20/07/2023 18:49:23"
+                android:textColor="#6D6D6D"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/wallet_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="18dp"
+                android:layout_marginBottom="21dp"
+                android:text="+ RM 50"
+                android:textColor="#3D3F99"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

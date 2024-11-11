@@ -1,6 +1,11 @@
 package com.example.transportpro;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
@@ -9,46 +14,75 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class ConfirmFragment extends Fragment {
+    RecyclerView recyclerView;
+    ArrayList<BookingClass> bookingClassArrayList;
+    AdapterSelectOrder adapterSelectOrder;
+    DatabaseReference database;
+    String currentUserId, username;
+    private AppCompatActivity activity;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_confirm, container, false);
 
-        // Initialize your TextViews and other views here
-        TextView confirmTitleTextView = view.findViewById(R.id.titleTextView);
-        TextView confirmTrackNumberTextView = view.findViewById(R.id.trackNumberTextView);
-        TextView confirmQuantityTextView = view.findViewById(R.id.quantityTextView);
-        TextView confirmCollectedTextView = view.findViewById(R.id.collectedTextView);
-        TextView confirmWeightTextView = view.findViewById(R.id.weightTextView);
-        LinearLayout confirmLinearLayout = view.findViewById(R.id.confirm_container);
+        // Get the current user ID from SharedPreferences
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("localstorage", Context.MODE_PRIVATE);
+        currentUserId = sharedPreferences.getString("userId", null);
+            username = sharedPreferences.getString("userName", null);
+        int user_id = Integer.parseInt(currentUserId);
 
-        // Initialize shared ViewModel
-        SharedViewModel sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+        recyclerView = view.findViewById(R.id.confirm_container);
+        database = FirebaseDatabase.getInstance().getReference("Booking").child(username);
+        recyclerView.setHasFixedSize(true);
 
-        // Observe changes in the text data
-        sharedViewModel.getTextData().observe(getViewLifecycleOwner(), new Observer<String>() {
+        bookingClassArrayList = new ArrayList<>();
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        adapterSelectOrder = new AdapterSelectOrder(getContext(), bookingClassArrayList, activity, "ConfirmOrder");
+        adapterSelectOrder.setCurrentUserId(currentUserId); // Set the currentUserId in the adapter
+        recyclerView.setAdapter(adapterSelectOrder);
+
+        database.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChanged(String textData) {
-                // Check if data is empty and hide LinearLayout if needed
-                if (textData.isEmpty()) {
-                    confirmLinearLayout.setVisibility(View.GONE);
-                } else {
-                    // Parse and set the data to the respective TextViews in the Confirm tab
-                    String[] lines = textData.split("\n");
-                    if (lines.length >= 5) {
-                        confirmTitleTextView.setText(lines[0]);
-                        confirmTrackNumberTextView.setText(lines[2]); // Update index to match your data
-                        confirmQuantityTextView.setText(lines[3]); // Update index to match your data
-                        confirmCollectedTextView.setText(lines[5]); // Update index to match your data
-                        confirmWeightTextView.setText(lines[6]); // Update index to match your data
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                bookingClassArrayList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    BookingClass bookingClass = dataSnapshot.getValue(BookingClass.class);
+                    if (bookingClass.getCollected() == 1) {
+                        bookingClassArrayList.add(bookingClass);
+                        recyclerView.setAdapter(adapterSelectOrder);
                     }
 
-                    confirmLinearLayout.setVisibility(View.VISIBLE);
                 }
+                adapterSelectOrder.notifyDataSetChanged();
+
+                if(bookingClassArrayList.isEmpty()){
+                    recyclerView.setVisibility(View.GONE);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
+
+        // Initialize shared ViewModel
+        SharedViewModel sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         // Observe changes in the selected transport mode
         sharedViewModel.getTransportData().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -60,6 +94,16 @@ public class ConfirmFragment extends Fragment {
             }
         });
 
+        sharedViewModel.getSensitiveItem().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                TextView sensitive = view.findViewById(R.id.sensitive);
+                sensitive.setVisibility(View.VISIBLE);
+                sensitive.setText(s);
+
+            }
+        });
+
         sharedViewModel.getReceiverData().observe(getViewLifecycleOwner(), new Observer<ReceiverData>() {
             @Override
             public void onChanged(ReceiverData receiverData) {
@@ -68,15 +112,21 @@ public class ConfirmFragment extends Fragment {
                 TextView name = view.findViewById(R.id.confirm_name);
                 TextView mobile = view.findViewById(R.id.confirm_mobile);
                 TextView email = view.findViewById(R.id.confirm_email);
+                TextView state = view.findViewById(R.id.state);
                 TextView postcode = view.findViewById(R.id.confirm_postcode);
                 TextView add1 = view.findViewById(R.id.confirm_add);
+                TextView add2 = view.findViewById(R.id.confirm_add1);
+                TextView add3 = view.findViewById(R.id.confirm_add2);
 
                 // Set the received data to TextViews
                 name.setText(receiverData.getName());
                 mobile.setText(receiverData.getMobile());
                 email.setText(receiverData.getEmail());
+                state.setText(receiverData.getState());
                 postcode.setText(receiverData.getPostcode());
                 add1.setText(receiverData.getAdd1());
+                add2.setText(receiverData.getAdd2());
+                add3.setText(receiverData.getAdd3());
             }
         });
 

@@ -82,7 +82,6 @@
                     android:layout_width="30sp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
-                    android:onClick="goAccountPage"
                     android:src="@drawable/setting_right"/>
             </LinearLayout>
 
@@ -133,7 +132,6 @@
                     android:layout_width="30sp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
-                    android:onClick="goAccountPage"
                     android:src="@drawable/setting_right"/>
             </LinearLayout>
 
@@ -184,7 +182,6 @@
                     android:layout_width="30sp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
-                    android:onClick="goAccountPage"
                     android:src="@drawable/setting_right"/>
             </LinearLayout>
 
@@ -239,7 +236,6 @@
                     android:layout_width="30sp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
-                    android:onClick="goAccountPage"
                     android:src="@drawable/setting_right"/>
             </LinearLayout>
 

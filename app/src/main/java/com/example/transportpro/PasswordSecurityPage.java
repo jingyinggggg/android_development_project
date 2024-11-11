@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -24,9 +25,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class PasswordSecurityPage extends AppCompatActivity {
     public ImageButton setting;
     private Button confirm;
+    SharedPreferences sharedPreferences;
+    FirebaseDatabase db;
+    DatabaseReference reference;
+    private static final String SHARED_PREF_NAME = "localstorage";
+    private static final String KEY_ID = "userId";
+    private static final String KEY_USERNAME = "userName";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,18 +57,6 @@ public class PasswordSecurityPage extends AppCompatActivity {
                 backSettingPage();
             }
         });
-
-
-// Confirm change password
-        confirm = (Button) findViewById(R.id.confirm_button);
-        confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showConfirmDialog(view);
-            }
-        });
-
-
 
 // Cancel change password
         TextView cancel = findViewById(R.id.cancel_button);
@@ -88,8 +92,78 @@ public class PasswordSecurityPage extends AppCompatActivity {
         currentPassword.addTextChangedListener(new PasswordTextWatcher(currentPassword, newPassword, passwordError, reenterNewPassword, reenterNewPasswordError));
         newPassword.addTextChangedListener(new PasswordTextWatcher(currentPassword, newPassword, passwordError, reenterNewPassword, reenterNewPasswordError));
         reenterNewPassword.addTextChangedListener(new PasswordTextWatcher(currentPassword, newPassword, passwordError, reenterNewPassword, reenterNewPasswordError));
+
+        confirm = (Button) findViewById(R.id.confirm_button);
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String currentPasswordText = currentPassword.getText().toString();
+                String newPasswordText = newPassword.getText().toString();
+                String reenterNewPasswordText = reenterNewPassword.getText().toString();
+
+                if(!currentPasswordText.isEmpty() && !newPasswordText.isEmpty() && !reenterNewPasswordText.isEmpty()){
+                    if (newPasswordText.equals(reenterNewPasswordText)){
+                        if (isPasswordValid(newPasswordText,passwordError)){
+                            sharedPreferences = getSharedPreferences(SHARED_PREF_NAME,MODE_PRIVATE);
+                            String username = sharedPreferences.getString(KEY_USERNAME,null);
+
+                            db = FirebaseDatabase.getInstance();
+                            reference = db.getReference("User");
+
+                            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(snapshot.hasChild(username)){
+                                        DatabaseReference userReference = reference.child(username);
+                                        String storedPassword = snapshot.child(username).child("password").getValue(String.class);
+
+                                        if(currentPasswordText.equals(storedPassword)){
+                                            userReference.child("password").setValue(newPasswordText);
+                                            showConfirmDialog(view);
+                                        }
+                                        else {
+                                            Toast.makeText(PasswordSecurityPage.this, "Wrong Current Password", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
+                    }else {
+                        reenterNewPasswordError.setText("Password do not match");
+                        reenterNewPasswordError.setVisibility(View.VISIBLE);
+                    }
+                }
+                else{
+                    Toast.makeText(PasswordSecurityPage.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
     }
 
+    private boolean isPasswordValid(String password, TextView passwordError){
+        if (password.length() < 8) {
+            passwordError.setText("***Password must be a minimum of 8 characters");
+            passwordError.setVisibility(View.VISIBLE);
+            return false;
+        }else {
+            Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
+            Matcher matcher = pattern.matcher(password);
+            if (!matcher.find()) {
+                passwordError.setText("Weak Password. Please include a minimum of 1 special character");
+                passwordError.setVisibility(View.VISIBLE);
+                return false;
+            }
+        }
+        passwordError.setVisibility(View.GONE);
+        return true;
+    }
 
 
     public void showConfirmDialog(View v){

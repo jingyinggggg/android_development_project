@@ -82,13 +82,6 @@ public class LoginPage extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME,MODE_PRIVATE);
         String id = sharedPreferences.getString(KEY_ID,null);
 
-        if (id != null){
-            openHomePage();
-        }
-        else if (id == "1") {
-            adminPage();
-        }
-
         rememberUser = (CheckBox) findViewById(R.id.rememberMe);
 
         login = (Button) findViewById(R.id.loginButton);
@@ -117,17 +110,17 @@ public class LoginPage extends AppCompatActivity {
 
                                 if (getPassword.equals(password)){
                                     if (getDeletedAcc == 0){
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        editor.putString(KEY_ID, String.valueOf(getId));
+                                        editor.putString(KEY_USERNAME, username);
+                                        if(rememberUser.isChecked()){
+                                            editor.putString(REMEMBER, "true");
+                                        }
+                                        editor.apply();
                                         if(getAdmin == 1){
                                             adminPage();
                                         }
                                         else{
-                                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                                            editor.putString(KEY_ID, String.valueOf(getId));
-                                            editor.putString(KEY_USERNAME, username);
-                                            if(rememberUser.isChecked()){
-                                                editor.putString(REMEMBER, "true");
-                                            }
-                                            editor.apply();
                                             openHomePage();
                                         }
                                         Toast.makeText(LoginPage.this, "Welcome "+ username, Toast.LENGTH_SHORT).show();
@@ -174,8 +167,8 @@ public class LoginPage extends AppCompatActivity {
         startActivity(signUpPage);
     }
     public void adminPage(){
-        Intent signUpPage = new Intent(this, AdminHomePage.class);
-        startActivity(signUpPage);
+        Intent adminPage = new Intent(this, AdminHomePage.class);
+        startActivity(adminPage);
     }
 
 

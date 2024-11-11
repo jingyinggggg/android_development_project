@@ -53,6 +53,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/customerId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_bold"
@@ -62,6 +63,7 @@
                 android:textSize="20dp" />
 
             <TextView
+                android:id="@+id/customerName"
                 android:layout_width="250dp"
                 android:layout_height="20dp"
                 android:fontFamily="@font/inter_regular"
@@ -108,7 +110,7 @@
                         android:layout_gravity="bottom">
 
                         <TextView
-                            android:id="@+id/trackNo"
+                            android:id="@+id/trackNo_display"
                             android:layout_width="267dp"
                             android:layout_height="23dp"
                             android:background="@color/white"
@@ -186,6 +188,42 @@
                             android:layout_height="23dp"
                             android:background="@color/white"
                             android:text="Vehicle"
+                            android:textColor="@color/black"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_gravity="bottom"
+                            android:background="@color/grey" />
+
+                    </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="112dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_regular"
+                    android:text="Quantity :"
+                    android:textColor="@color/black" />
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom">
+
+                        <TextView
+                            android:id="@+id/quantity"
+                            android:layout_width="267dp"
+                            android:layout_height="23dp"
+                            android:background="@color/white"
+                            android:text="0"
                             android:textColor="@color/black"/>
 
                         <View

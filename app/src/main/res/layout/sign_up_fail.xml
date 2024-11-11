@@ -61,19 +61,6 @@
             android:textAllCaps="false"
             android:layout_gravity="center"/>
 
-        <Button
-            android:id="@+id/backHome"
-            android:layout_width="120dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="20dp"
-            app:cornerRadius="7dp"
-            android:backgroundTint="@color/red"
-            android:text="@string/home"
-            android:textSize="15sp"
-            android:textColor="@color/white"
-            android:textAllCaps="false"
-            android:layout_gravity="center_horizontal" />
-
     </LinearLayout>
 
 </LinearLayout>
