@@ -59,7 +59,7 @@ public class SignUpPage extends AppCompatActivity {
                 password = binding.passwordInput.getText().toString();
                 Rpassword = binding.reenterPasswordInput.getText().toString();
 
-                if (!fullname.isEmpty() && !username.isEmpty() && !email.isEmpty() && !contact.isEmpty() && !password.isEmpty() && !Rpassword.isEmpty() && password.equals(Rpassword)) {
+                if (validateInputs()) {
                     db = FirebaseDatabase.getInstance();
                     reference = db.getReference("User");
 
@@ -67,19 +67,15 @@ public class SignUpPage extends AppCompatActivity {
                     reference.orderByChild("username").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists()){
+                            if (dataSnapshot.exists()) {
                                 showAlertDialog(R.layout.sign_up_fail, 2);
                                 Toast.makeText(SignUpPage.this, "Username is already used, please try another", Toast.LENGTH_SHORT).show();
-                            }
-                            else {
+                            } else {
                                 // Username is unique, proceed to create the user
                                 reference.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                        // Count the number of users with the same username
                                         int numUsersWithSameUsername = (int) dataSnapshot.getChildrenCount();
-
-                                        // Increment the maximum user ID to generate a new user ID
                                         int newUserId = numUsersWithSameUsername + 1;
 
                                         int isAdminAccount = 0;
@@ -91,7 +87,6 @@ public class SignUpPage extends AppCompatActivity {
                                         User user = new User(isDeletedAccount, isAdminAccount, newUserId, fullname, username, email, contact, hashedPassword);
 
                                         showAlertDialog(R.layout.sign_up_successful, 1);
-
                                         setUserInDatabase(username, user);
                                     }
 
@@ -115,7 +110,6 @@ public class SignUpPage extends AppCompatActivity {
         });
 
         // Password Validation
-        // Get reference to the TextInputLayout and TextInputEditText for password
         TextInputLayout layoutPassword = findViewById(R.id.textInputLayoutPassword);
         TextInputEditText eTextPassword = findViewById(R.id.passwordInput);
         eTextPassword.addTextChangedListener(new TextWatcher() {
@@ -148,7 +142,6 @@ public class SignUpPage extends AppCompatActivity {
         });
 
         // Validate Re-enter password
-        // Get reference to the TextInputLayout and TextInputEditText for reenter password
         TextInputLayout textInputLayoutReenterPassword = findViewById(R.id.textInputLayoutRepeatPassword);
         TextInputEditText reenterPasswordInput = findViewById(R.id.reenterPasswordInput);
 
@@ -162,7 +155,6 @@ public class SignUpPage extends AppCompatActivity {
                 String password = eTextPassword.getText().toString();
                 String reenterPassword = reenterPasswordInput.getText().toString();
 
-                // If password does not match reenter password, error message displayed
                 if (password.equals(reenterPassword)) {
                     textInputLayoutReenterPassword.setError(null);
                 } else {
@@ -174,6 +166,34 @@ public class SignUpPage extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
+    }
+
+    private boolean validateInputs() {
+        if (fullname.isEmpty() || username.isEmpty() || email.isEmpty() || contact.isEmpty() || password.isEmpty() || Rpassword.isEmpty()) {
+            Toast.makeText(SignUpPage.this, "All fields must be filled", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (!password.equals(Rpassword)) {
+            Toast.makeText(SignUpPage.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // Email validation
+        String emailPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
+        if (!email.matches(emailPattern)) {
+            Toast.makeText(SignUpPage.this, "Invalid email format", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // Phone number validation
+        String phonePattern = "^[0-9]{10,13}$";  // Example pattern for 10-13 digit phone numbers
+        if (!contact.matches(phonePattern)) {
+            Toast.makeText(SignUpPage.this, "Invalid phone number format", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 
     public void backLoginPage(View view) {
@@ -188,12 +208,9 @@ public class SignUpPage extends AppCompatActivity {
         showDialog.setContentView(layoutView);
         showDialog.setCancelable(false);
         showDialog.getWindow().getAttributes().windowAnimations = R.style.animation;
-        // Sign up successful
         if (type == 1) {
             showDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.round_button_success));
-
             Button done = showDialog.findViewById(R.id.done);
-
             done.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -203,7 +220,6 @@ public class SignUpPage extends AppCompatActivity {
         } else {
             showDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.round_button_fail));
             Button signUpFail = layoutView.findViewById(R.id.tryAgainButton);
-            // Click on the try again button
             signUpFail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -215,22 +231,18 @@ public class SignUpPage extends AppCompatActivity {
         showDialog.show();
     }
 
-    // Separate method to set user data in the database
     private void setUserInDatabase(String username, User user) {
         reference.child(username).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    // Data was successfully written to the database
                     Log.d("Firebase", "Data write successful");
-                    // Reset the input fields
                     binding.nameInput.setText("");
                     binding.usernameInput.setText("");
                     binding.emailInput.setText("");
                     binding.phoneInput.setText("");
                     binding.passwordInput.setText("");
                 } else {
-                    // Handle the error
                     Exception e = task.getException();
                     if (e != null) {
                         Log.e("Firebase", "Data write failed: " + e.getMessage());
