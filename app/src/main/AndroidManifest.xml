@@ -57,6 +57,9 @@
             android:name=".PasswordSecurityPage"
             android:exported="false" />
         <activity
+            android:name=".PhoneVerification"
+            android:exported="false" />
+        <activity
             android:name=".AccountPage"
             android:exported="false" />
         <activity

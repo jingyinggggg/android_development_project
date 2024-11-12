@@ -107,11 +107,18 @@
         app:boxCornerRadiusTopEnd="7dp"
         app:boxCornerRadiusTopStart="7dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/phoneInput"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutPhone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="phone"/>
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phoneInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phone Number (+60XXXXXXXXX)"
+                android:inputType="phone"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
     </com.google.android.material.textfield.TextInputLayout>
 

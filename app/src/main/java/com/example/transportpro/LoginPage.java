@@ -46,6 +46,7 @@ public class LoginPage extends AppCompatActivity {
     LoginPageBinding binding;
     TextView logo, signUp;
     CheckBox rememberUser;
+    TextView forgotPassword;
     Button login;
     Button admin;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://transportpro-13407-default-rtdb.firebaseio.com/");
@@ -63,92 +64,80 @@ public class LoginPage extends AppCompatActivity {
         binding = LoginPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        //Set the style for the name of application
-        logo = (TextView) findViewById(R.id.logoName); //Find the logo id
-        String logoText = "TransportPro"; //Assign the logo name
+        logo = (TextView) findViewById(R.id.logoName);
+        String logoText = "TransportPro";
         SpannableString ss = new SpannableString(logoText);
-        StyleSpan boldItalicSpan = new StyleSpan(Typeface.BOLD_ITALIC); //Set the text become bold and italic
-        ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.rgb(51,134,197)); //Set the text color
-        ss.setSpan(boldItalicSpan, 9, 12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); //Set the specific text to bold and italic
-        ss.setSpan(colorSpan, 9,12,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); //Set the specific text to certain color
-        logo.setText(ss); //Apply the text style to the logo name
+        StyleSpan boldItalicSpan = new StyleSpan(Typeface.BOLD_ITALIC);
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.rgb(51,134,197));
+        ss.setSpan(boldItalicSpan, 9, 12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(colorSpan, 9, 12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        logo.setText(ss);
 
-        //Set the style for the sign up text view
         signUp = (TextView) findViewById(R.id.signUp);
         SpannableString signUpText = new SpannableString(signUp.getText().toString());
         signUpText.setSpan(new UnderlineSpan(), 0, signUpText.length(), 0);
         signUp.setText(signUpText);
 
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME,MODE_PRIVATE);
-        String id = sharedPreferences.getString(KEY_ID,null);
-
         rememberUser = (CheckBox) findViewById(R.id.rememberMe);
 
         login = (Button) findViewById(R.id.loginButton);
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                username = binding.usernameInput.getText().toString().toLowerCase(Locale.ROOT);
-                password = binding.passwordInput.getText().toString();
+        login.setOnClickListener(v -> {
+            username = binding.usernameInput.getText().toString().toLowerCase(Locale.ROOT);
+            password = binding.passwordInput.getText().toString();
 
-                if (username.isEmpty()){
-                    Toast.makeText(LoginPage.this, "Please enter your username", Toast.LENGTH_SHORT).show();
-                }
-                else if(password.isEmpty()) {
-                    Toast.makeText(LoginPage.this, "Please enter your password", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    databaseReference.child("User").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(snapshot.hasChild(username)){
+            if (username.isEmpty()) {
+                Toast.makeText(LoginPage.this, "Please enter your username", Toast.LENGTH_SHORT).show();
+            }
+            else if (password.isEmpty()) {
+                Toast.makeText(LoginPage.this, "Please enter your password", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                databaseReference.child("User").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.hasChild(username)) {
+                            String getPassword = snapshot.child(username).child("password").getValue(String.class);
+                            int getId = snapshot.child(username).child("userId").getValue(int.class);
+                            int getAdmin = snapshot.child(username).child("isAdminAcc").getValue(int.class);
 
-                                final String getPassword = snapshot.child(username).child("password").getValue(String.class);
-                                final int getAdmin = snapshot.child(username).child("isAdminAcc").getValue(int.class);
-                                final int getId = snapshot.child(username).child("userId").getValue(int.class);
-                                final int getDeletedAcc = snapshot.child(username).child("isDeletedAcc").getValue(int.class);
-
-                                if (getPassword.equals(password)){
-                                    if (getDeletedAcc == 0){
-                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                                        editor.putString(KEY_ID, String.valueOf(getId));
-                                        editor.putString(KEY_USERNAME, username);
-                                        if(rememberUser.isChecked()){
-                                            editor.putString(REMEMBER, "true");
-                                        }
-                                        editor.apply();
-                                        if(getAdmin == 1){
-                                            adminPage();
-                                        }
-                                        else{
-                                            openHomePage();
-                                        }
-                                        Toast.makeText(LoginPage.this, "Welcome "+ username, Toast.LENGTH_SHORT).show();
-                                    }
-                                    else{
-                                        Toast.makeText(LoginPage.this, "This account have been deleted", Toast.LENGTH_SHORT).show();
-                                    }
+                            if (getPassword.equals(password)) {
+                                // Username and password are correct
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString(KEY_ID, String.valueOf(getId));
+                                editor.putString(KEY_USERNAME, username);
+                                if (rememberUser.isChecked()) {
+                                    editor.putString(REMEMBER, "true");
                                 }
-                                else{
-                                    Toast.makeText(LoginPage.this, "Wrong password", Toast.LENGTH_SHORT).show();
+                                editor.apply();
+
+                                if (getAdmin == 1) {
+                                    // If the user is an admin, redirect to admin page
+                                    Intent adminPage = new Intent(LoginPage.this, AdminHomePage.class);
+                                    startActivity(adminPage);
+                                } else {
+                                    // Redirect to PhoneVerification for OTP check as part of MFA
+                                    Intent phoneVerification = new Intent(LoginPage.this, PhoneVerification.class);
+                                    phoneVerification.putExtra("USERNAME", username); // Pass the username to PhoneVerification
+                                    startActivity(phoneVerification);
                                 }
+                            } else {
+                                // Password is incorrect
+                                Toast.makeText(LoginPage.this, "Wrong password", Toast.LENGTH_SHORT).show();
                             }
-                            else{
-                                Toast.makeText(LoginPage.this, "Username not found", Toast.LENGTH_SHORT).show();
-                            }
+                        } else {
+                            // Account does not exist
+                            Toast.makeText(LoginPage.this, "Account does not exist", Toast.LENGTH_SHORT).show();
                         }
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
-
-
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle error
+                    }
+                });
             }
         });
-
     }
 
     public void openHomePage(){
@@ -170,6 +159,4 @@ public class LoginPage extends AppCompatActivity {
         Intent adminPage = new Intent(this, AdminHomePage.class);
         startActivity(adminPage);
     }
-
-
 }
