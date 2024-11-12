@@ -185,7 +185,7 @@
         android:paddingTop="10dp" />
 
     <CheckBox
-        android:id="@+id/terms_checkbox"
+        android:id="@+id/privacy_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="23dp"

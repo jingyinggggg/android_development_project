@@ -43,7 +43,7 @@ public class SignUpPage extends AppCompatActivity {
     String fullname, username, email, contact, password, Rpassword;
     FirebaseDatabase db;
     DatabaseReference reference;
-    private CheckBox termsCheckbox;
+    private CheckBox privacyCheckbox;
     // Dialog Variables
     Dialog showDialog;
 
@@ -53,7 +53,7 @@ public class SignUpPage extends AppCompatActivity {
         binding = SignUpPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        termsCheckbox = findViewById(R.id.terms_checkbox);
+        privacyCheckbox = findViewById(R.id.privacy_checkbox);
         TextView termsText = findViewById(R.id.terms_text);
 
         termsText.setOnClickListener(v -> showPrivacyPoliciesDialog());
@@ -63,7 +63,7 @@ public class SignUpPage extends AppCompatActivity {
 
         binding.signUpButton.setOnClickListener(v -> {
             // Check if the terms and conditions checkbox is checked
-            if (termsCheckbox.isChecked()) {
+            if (privacyCheckbox.isChecked()) {
                 // Proceed with the sign-up logic
                 fullname = Objects.requireNonNull(binding.nameInput.getText()).toString();
                 username = Objects.requireNonNull(binding.usernameInput.getText()).toString().toLowerCase(Locale.ROOT);
@@ -200,7 +200,7 @@ public class SignUpPage extends AppCompatActivity {
                                         if (verificationTask.isSuccessful()) {
                                             Toast.makeText(SignUpPage.this, "User created successfully. Please verify your email.", Toast.LENGTH_SHORT).show();
                                             // Fetch last userId, increment it, and assign it to the new user
-                                            incrementAndSaveUserId(fullname, username, email, contact, password);
+                                            incrementAndSaveUserId(fullname, username, email, contact, password, privacyCheckbox.isChecked());
                                         } else {
                                             Toast.makeText(SignUpPage.this, "Error sending verification email.", Toast.LENGTH_SHORT).show();
                                         }
@@ -213,7 +213,7 @@ public class SignUpPage extends AppCompatActivity {
     }
 
     // Method to increment and save new userId
-    private void incrementAndSaveUserId(String fullname, String username, String email, String contact, String password) {
+    private void incrementAndSaveUserId(String fullname, String username, String email, String contact, String password, boolean hasAgreedToPrivacyPolicy) {
         DatabaseReference userIdReference = FirebaseDatabase.getInstance().getReference("lastUserId");
 
         // Fetch last userId
@@ -223,7 +223,7 @@ public class SignUpPage extends AppCompatActivity {
                 int newUserId = lastUserId + 1;
 
                 // Save the new user with incremented userId
-                User user = new User(newUserId, 0, 0, fullname, username, email, contact, password);
+                User user = new User(newUserId, 0, 0, fullname, username, email, contact, password, hasAgreedToPrivacyPolicy);
                 setUserInDatabase(username, user);
 
                 // Update lastUserId in the database
@@ -231,7 +231,7 @@ public class SignUpPage extends AppCompatActivity {
             } else {
                 // If no userId exists, start with 1
                 int initialUserId = 1;
-                User user = new User(initialUserId, 0, 0, fullname, username, email, contact, password);
+                User user = new User(initialUserId, 0, 0, fullname, username, email, contact, password, hasAgreedToPrivacyPolicy);
                 setUserInDatabase(username, user);
 
                 // Save this as the last userId
@@ -398,7 +398,7 @@ public class SignUpPage extends AppCompatActivity {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean("hasConsentedTerms", true);
             editor.apply();
-            termsCheckbox.setChecked(true);
+            privacyCheckbox.setChecked(true);
             dialog.dismiss();
             Toast.makeText(this, "Thank you for agreeing to the Privacy Policy", Toast.LENGTH_SHORT).show();
         });
