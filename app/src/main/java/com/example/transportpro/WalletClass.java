@@ -2,12 +2,12 @@ package com.example.transportpro;
 
 public class WalletClass {
     int userId;
-    double wallet_balance;
+    String wallet_balance;
 
     public WalletClass(){
 
     }
-    public WalletClass(int userId, double wallet_balance){
+    public WalletClass(int userId, String wallet_balance){
         this.userId = userId;
         this.wallet_balance = wallet_balance;
     }
@@ -20,11 +20,11 @@ public class WalletClass {
         this.userId = userId;
     }
 
-    public double getWallet_balance() {
+    public String getWallet_balance() {
         return wallet_balance;
     }
 
-    public void setWallet_balance(int wallet_balance) {
+    public void setWallet_balance(String wallet_balance) {
         this.wallet_balance = wallet_balance;
     }
 }

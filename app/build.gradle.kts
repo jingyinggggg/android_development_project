@@ -53,6 +53,10 @@ dependencies {
 
 
     implementation("com.google.firebase:firebase-analytics:22.1.2")
+// for password hashing
+    implementation ("at.favre.lib:bcrypt:0.9.0")
+    implementation ("org.mindrot:jbcrypt:0.4")
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

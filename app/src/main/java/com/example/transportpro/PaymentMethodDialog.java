@@ -21,11 +21,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -44,13 +44,14 @@ public class PaymentMethodDialog extends DialogFragment {
     FirebaseDatabase db;
     DatabaseReference reference;
     Context context;
+    private FirebaseAnalytics mFirebaseAnalytics;
+
 
     SharedPreferences sharedPreferences;
     //sharedpreferences
     private static final String SHARED_PREF_NAME = "localstorage";
     private static final String KEY_ID = "userId";
     private static final String KEY_USERNAME = "userName";
-    private FirebaseAnalytics mFirebaseAnalytics;
 
     public PaymentMethodDialog(Context context) {
         this.context = context;
@@ -67,7 +68,7 @@ public class PaymentMethodDialog extends DialogFragment {
         debit_credit_card = view.findViewById(R.id.debit_credit_card);
 
         pay = view.findViewById(R.id.payButton);
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
+
 
         String callfrom = getArguments().getString("callfrom");
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -110,72 +111,100 @@ public class PaymentMethodDialog extends DialogFragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
-                                    // Get the current balance
-                                    int currentBalance = dataSnapshot.getValue(Integer.class);
+                                    // Get the encrypted current balance from Firebase
+                                    String encryptedBalance = dataSnapshot.getValue(String.class);
+                                    try {
+                                        // Decrypt the balance
+                                        String decryptedBalance = EncryptionUtil.decrypt(encryptedBalance);
+                                        Log.d("Wallet", "Decrypted balance: " + decryptedBalance);
 
-                                    // Calculate the new balance
-                                    double newBalance = currentBalance + amount;
+                                        // Parse the decrypted balance as a double
+                                        double currentBalanceDouble = Double.parseDouble(decryptedBalance);
 
-                                    // Update the balance in the database
-                                    reference.child(username).child("wallet_balance").setValue(newBalance).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                updateLowBalanceNotifications(username);
+                                        // Calculate the new balance
+                                        double newBalance = currentBalanceDouble + amount;
+                                        Log.d("Wallet", "New balance before encryption: " + newBalance);
 
-                                                ((PaymentCompleteListener) requireActivity()).onPaymentComplete();
-                                            } else {
-                                                // Handle the case where the update was not successful
-                                                Toast.makeText(getActivity(), "Failed to update balance.", Toast.LENGTH_SHORT).show();
+                                        // Encrypt the new balance for storing in Firebase
+                                        String encryptedNewBalance = EncryptionUtil.encrypt(String.valueOf(newBalance));
+                                        Log.d("Wallet", "Encrypted new balance: " + encryptedNewBalance);
+
+                                        // Update the encrypted balance in Firebase
+                                        reference.child(username).child("wallet_balance").setValue(encryptedNewBalance).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Log.d("Wallet", "Balance updated successfully.");
+                                                    updateLowBalanceNotifications(username);
+                                                    ((PaymentCompleteListener) requireActivity()).onPaymentComplete();
+                                                } else {
+                                                    Log.e("Wallet", "Failed to update balance.");
+                                                    Toast.makeText(getActivity(), "Failed to update balance.", Toast.LENGTH_SHORT).show();
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                                    } catch (Exception e) {
+                                        Log.e("EncryptionError", "Failed to decrypt balance", e);
+                                        Toast.makeText(getActivity(), "Error in processing balance.", Toast.LENGTH_SHORT).show();
+                                    }
                                 } else {
-                                    WalletClass walletClass = new WalletClass(user_id, amount);
-                                    reference.child(username).setValue(walletClass).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                ((PaymentCompleteListener) requireActivity()).onPaymentComplete();
-                                            } else {
-                                                // Handle the case where creating the new entry was not successful
-                                                Toast.makeText(getActivity(), "Failed to create a new entry.", Toast.LENGTH_SHORT).show();
+                                    // Handle initial balance encryption and save if no balance exists
+                                    try {
+                                        // Encrypt the initial balance amount directly
+                                        String encryptedInitialBalance = EncryptionUtil.encrypt(String.valueOf(amount));
+                                        Log.d("Wallet", "Initial encrypted balance: " + encryptedInitialBalance);
+
+                                        WalletClass walletClass = new WalletClass(user_id, encryptedInitialBalance);
+                                        reference.child(username).setValue(walletClass).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Log.d("Wallet", "Initial balance set successfully.");
+                                                    ((PaymentCompleteListener) requireActivity()).onPaymentComplete();
+                                                } else {
+                                                    Log.e("Wallet", "Failed to create a new entry.");
+                                                    Toast.makeText(getActivity(), "Failed to create a new entry.", Toast.LENGTH_SHORT).show();
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                                    } catch (Exception e) {
+                                        Log.e("EncryptionError", "Failed to encrypt initial balance", e);
+                                        Toast.makeText(getActivity(), "Error in setting initial balance.", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
 
+                                // Record the wallet activity
                                 db = FirebaseDatabase.getInstance();
                                 reference = db.getReference("Wallet_Activity");
 
                                 Date date = new Date();
                                 SimpleDateFormat p_number = new SimpleDateFormat("yyyyMMddHHmmss");
-
                                 p_number.setTimeZone(TimeZone.getTimeZone("GMT+8"));
                                 String payment_number = userid + p_number.format(date);
 
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-
                                 String formattedDate = dateFormat.format(date);
 
                                 String activity = "Top Up";
-
                                 String p_text = "+ " + priceText;
 
                                 WalletActivityClass walletActivityClass = new WalletActivityClass(user_id, payment_number, activity, formattedDate, p_text);
-
                                 reference.child(username).child(payment_number).setValue(walletActivityClass).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        logWalletTopUp(username, payment_number, activity);
+                                        if (task.isSuccessful()) {
+                                            logWalletTopUp(username, payment_number, activity);
+                                            Log.d("WalletActivity", "Wallet activity recorded successfully.");
+                                        } else {
+                                            Log.e("WalletActivity", "Failed to record wallet activity.");
+                                        }
                                     }
                                 });
                             }
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
-                                // Handle the error here, if any
                                 Log.e("Firebase", "Database error: " + databaseError.getMessage());
                             }
                         });

@@ -1,1 +1,1 @@
-Please rename the neworder file to Neworder before run app in android studio
+# android_development_project

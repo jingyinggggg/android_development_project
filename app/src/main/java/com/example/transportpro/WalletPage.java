@@ -15,6 +15,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -29,8 +31,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 public class WalletPage extends AppCompatActivity implements PaymentMethodDialog.PaymentCompleteListener {
     Context context;
@@ -63,20 +70,37 @@ public class WalletPage extends AppCompatActivity implements PaymentMethodDialog
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // The "wallet_balance" exists for the user with the given userid
-                    double walletBalance = dataSnapshot.getValue(double.class);
-                    TextView wallet_balance = findViewById(R.id.wallet_balance);
+                    // The "wallet_balance" exists for the user with the given username
+                    String encryptedWalletBalance = dataSnapshot.getValue(String.class);
 
-                    String balance = String.format("%.2f", walletBalance);
-                    wallet_balance.setText("RM " + balance);
+                    try {
+                        // Decrypt the encrypted wallet balance
+                        String decryptedWalletBalance = EncryptionUtil.decrypt(encryptedWalletBalance);
+
+                        // Convert the decrypted wallet balance String to double
+                        double balanceValue = Double.parseDouble(decryptedWalletBalance);
+
+                        // Format the balance to 2 decimal places
+                        String balance = String.format("%.2f", balanceValue);
+
+                        // Display the wallet balance in the TextView
+                        TextView wallet_balance = findViewById(R.id.wallet_balance);
+                        wallet_balance.setText("RM " + balance);
+
+                    } catch (Exception e) {
+                        // Handle errors such as decryption failure or number parsing failure
+                        Log.e("WalletBalance", "Error decrypting or parsing wallet balance", e);
+                    }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Handle database read failure
+                Log.e("DatabaseError", "Failed to read wallet balance", error.toException());
             }
         });
+
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottombar);
 
@@ -132,18 +156,22 @@ public class WalletPage extends AppCompatActivity implements PaymentMethodDialog
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            // The "wallet_balance" exists for the user with the given userid
-                            double walletBalance = dataSnapshot.getValue(double.class);
-                            TextView wallet_balance = findViewById(R.id.wallet_balance);
+                            String encryptedBalance = dataSnapshot.getValue(String.class);
 
-                            String balance = String.format("%.2f", walletBalance);
-                            wallet_balance.setText("RM " + balance);
+                            // Decrypt the balance
+                            try {
+                                String walletBalance = EncryptionUtil.decrypt(encryptedBalance);
+                                TextView wallet_balance = findViewById(R.id.wallet_balance);
+                                String balance = String.format("%.2f", walletBalance);
+                                wallet_balance.setText("RM " + balance);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        // Handle database error
                     }
                 });
             }
@@ -213,5 +241,6 @@ public class WalletPage extends AppCompatActivity implements PaymentMethodDialog
             dialogFragment.dismiss();
         }
     }
+
 
 }
