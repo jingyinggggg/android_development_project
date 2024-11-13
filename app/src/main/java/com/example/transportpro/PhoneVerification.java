@@ -66,8 +66,8 @@ public class PhoneVerification extends AppCompatActivity {
             return;
         }
 
-// Check if the phone number exists in Firebase Realtime Database
-        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
+        // Check if the phone number exists in Firebase Realtime Database
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("User");
         usersRef.orderByChild("contact").equalTo(phoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
