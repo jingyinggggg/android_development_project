@@ -66,16 +66,13 @@ public class PhoneVerification extends AppCompatActivity {
             return;
         }
 
-        // Check if the phone number exists in Firebase Realtime Database
-        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("");
+// Check if the phone number exists in Firebase Realtime Database
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
         usersRef.orderByChild("contact").equalTo(phoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    // Phone number already registered
-                    Toast.makeText(PhoneVerification.this, "This phone number is already registered. Please use another number.", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Phone number not registered, proceed with sending OTP
+                    // Phone number is registered, proceed with sending OTP
                     PhoneAuthOptions options = PhoneAuthOptions.newBuilder(auth)
                             .setPhoneNumber(phoneNumber)
                             .setTimeout(60L, TimeUnit.SECONDS)
@@ -102,6 +99,9 @@ public class PhoneVerification extends AppCompatActivity {
                             })
                             .build();
                     PhoneAuthProvider.verifyPhoneNumber(options);
+                } else {
+                    // Phone number is not registered, show an error message
+                    Toast.makeText(PhoneVerification.this, "This phone number is not registered. Please register first.", Toast.LENGTH_SHORT).show();
                 }
             }
 
