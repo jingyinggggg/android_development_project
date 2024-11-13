@@ -41,6 +41,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 public class LoginPage extends AppCompatActivity {
 
     String username, password;
@@ -49,6 +51,7 @@ public class LoginPage extends AppCompatActivity {
     CheckBox rememberUser;
     Button login;
     Button admin;
+
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://transportpro-13407-default-rtdb.firebaseio.com/");
     SharedPreferences sharedPreferences;
     private FirebaseAnalytics mFirebaseAnalytics;
@@ -116,12 +119,12 @@ public class LoginPage extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (snapshot.hasChild(username)) {
-                                final String getPassword = snapshot.child(username).child("password").getValue(String.class);
+                                final String storedPasswordHash = snapshot.child(username).child("password").getValue(String.class);
                                 final int getAdmin = snapshot.child(username).child("isAdminAcc").getValue(int.class);
                                 final int getId = snapshot.child(username).child("userId").getValue(int.class);
                                 final int getDeletedAcc = snapshot.child(username).child("isDeletedAcc").getValue(int.class);
 
-                                if (getPassword.equals(password)) {
+                                if (BCrypt.checkpw(password, storedPasswordHash)) {
                                     if (getDeletedAcc == 0) {
                                         SharedPreferences.Editor editor = sharedPreferences.edit();
                                         editor.putString(KEY_ID, String.valueOf(getId));
@@ -145,6 +148,10 @@ public class LoginPage extends AppCompatActivity {
                                             adminPage();
                                         } else {
                                             openHomePage();
+                                            // Redirect to PhoneVerification for OTP check as part of MFA
+//                                            Intent phoneVerification = new Intent(LoginPage.this, PhoneVerification.class);
+//                                            phoneVerification.putExtra("USERNAME", username); // Pass the username to PhoneVerification
+//                                            startActivity(phoneVerification);
                                         }
                                         Toast.makeText(LoginPage.this, "Welcome " + username, Toast.LENGTH_SHORT).show();
                                     } else {

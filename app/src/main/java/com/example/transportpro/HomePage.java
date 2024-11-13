@@ -21,12 +21,12 @@ import android.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -45,11 +45,12 @@ public class HomePage extends AppCompatActivity {
     private static final String KEY_ID = "userId";
     private static final String KEY_USERNAME = "userName";
     private static final String REMEMBER = "remember";
-    private FirebaseAnalytics mFirebaseAnalytics;
     String username, userid;
 
     int systemNotificationCount = 0;
     int regularNotificationCount = 0;
+
+    private FirebaseAnalytics mFirebaseAnalytics;
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         if(actionBarDrawerToggle.onOptionsItemSelected(item)){
@@ -63,7 +64,6 @@ public class HomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage);
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         getUserDetail();
         getTracking();
 
@@ -72,7 +72,7 @@ public class HomePage extends AppCompatActivity {
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         bottomNavigationView = findViewById(R.id.bottombar);
 
         bottomNavigationView.setSelectedItemId(R.id.bar_home);
@@ -138,35 +138,46 @@ public class HomePage extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // The "wallet_balance" exists for the user with the given userid
-                    double walletBalance = dataSnapshot.getValue(double.class);
-                    TextView wallet_balance= findViewById(R.id.walletBalance);
+                    // Retrieve the encrypted wallet balance as a String
+                    String encryptedBalance = dataSnapshot.getValue(String.class);
+                    try {
+                        // Decrypt the balance
+                        String decryptedBalance = EncryptionUtil.decrypt(encryptedBalance); // Assuming you have a decrypt method
+                        double walletBalance = Double.parseDouble(decryptedBalance);
 
-                    String balance = String.format("%.2f", walletBalance);
-                    wallet_balance.setText("RM" + balance);
+                        // Display the wallet balance
+                        TextView wallet_balance = findViewById(R.id.walletBalance);
+                        String balance = String.format("%.2f", walletBalance);
+                        wallet_balance.setText("RM" + balance);
 
-                    int intUserId = Integer.parseInt(userid);
-                    if (username!=null && walletBalance <= 10){
-                        String title = "wallet";
-                        String type = "low balance";
-                        String content = userid;
-                        String imageResId  = String.valueOf(R.drawable.wallet2);
+                        // Check if the balance is low
+                        int intUserId = Integer.parseInt(userid);
+                        if (username != null && walletBalance <= 10) {
+                            // Create and send a low balance notification
+                            String title = "wallet";
+                            String type = "low balance";
+                            String content = userid;
+                            String imageResId = String.valueOf(R.drawable.wallet2);
+                            int is_read = 0;
 
-                        int is_read = 0;
-                        DatabaseReference notificationReference = FirebaseDatabase.getInstance().getReference("Notification").child(username).child(title).child(content);
+                            DatabaseReference notificationReference = FirebaseDatabase.getInstance().getReference("Notification").child(username).child(title).child(content);
 
-                        NotificationClass notificationClass = new NotificationClass(intUserId,imageResId ,title,type,content,is_read);
-                        notificationReference.setValue(notificationClass);
-
+                            NotificationClass notificationClass = new NotificationClass(intUserId, imageResId, title, type, content, is_read);
+                            notificationReference.setValue(notificationClass);
+                        }
+                    } catch (Exception e) {
+                        // Handle decryption failure or invalid format
+                        Log.e("DecryptionError", "Failed to decrypt the wallet balance", e);
                     }
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Firebase", "Database error: " + databaseError.getMessage());
             }
         });
+
 
         copy = findViewById(R.id.copy);
 
