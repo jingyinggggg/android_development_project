@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +40,7 @@ public class SignUpPage extends AppCompatActivity {
 
     // Dialog Variables
     Dialog showDialog;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class SignUpPage extends AppCompatActivity {
         binding = SignUpPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         binding.signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -218,6 +221,10 @@ public class SignUpPage extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("username", username);
+                    bundle.putString("activity", "User register");
+                    mFirebaseAnalytics.logEvent("Update_profile", bundle);
                     // Data was successfully written to the database
                     Log.d("Firebase", "Data write successful");
                     // Reset the input fields

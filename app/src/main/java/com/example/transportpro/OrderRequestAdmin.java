@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,13 +54,13 @@ public class OrderRequestAdmin extends AppCompatActivity {
     int parcel_qty;
     double tWeight;
     String fullName, contact, email, postCode, add1, add2, add3, transport_type,category,track_number;
-
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_request);
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         header_button = findViewById(R.id.backArrow);
 
         bindViews();
@@ -145,6 +146,7 @@ public class OrderRequestAdmin extends AppCompatActivity {
                             if (orderHist != null) {
                                 if (orderHist.getOrder_status().equals("Delivering")){
                                     notification_type = "order_delivering";
+                                    logUpdateOrder(username, "accept");
                                     setNotification(orderHist,username,notification_type);
                                 }
                             }
@@ -229,6 +231,7 @@ public class OrderRequestAdmin extends AppCompatActivity {
         orderReference.child(username).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                logUpdateOrder(username, "decline");
                 track_number_list.clear();
                 for (DataSnapshot orderSnapshot : snapshot.getChildren()){
                     String currentOrderNo = orderSnapshot.child("order_number").getValue(String.class);
@@ -354,10 +357,10 @@ public class OrderRequestAdmin extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot bookingSnapshot) {
                 if (bookingSnapshot.exists()) {
-                        BookingClass booking = bookingSnapshot.getValue(BookingClass.class);
-                        if (booking != null) {
-                            bookingClassArrayList.add(booking);
-                        }
+                    BookingClass booking = bookingSnapshot.getValue(BookingClass.class);
+                    if (booking != null) {
+                        bookingClassArrayList.add(booking);
+                    }
                     adapterOrderRequest.notifyDataSetChanged();
                 }
             }
@@ -405,4 +408,14 @@ public class OrderRequestAdmin extends AppCompatActivity {
         startActivity(orderIntent);
     }
 
+    public void logUpdateOrder(String username, String action) {
+        Bundle bundle = new Bundle();
+        bundle.putString("username", username);
+        if (action == "accept"){
+            mFirebaseAnalytics.logEvent("accept_order", bundle);
+        }
+        else if (action == "decline"){
+            mFirebaseAnalytics.logEvent("decline_order", bundle);
+        }
+    }
 }

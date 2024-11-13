@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,11 +52,13 @@ public class Edit_order extends AppCompatActivity {
     String category_name, userid, transport_type, sensitive_item, name, mobile, email, state, postcode, add1, add2 ,add3, order_number, formattedDate, order_status;
     double totalweight, price;
     int parcel_quantity;
+    private FirebaseAnalytics mFirebaseAnalytics;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_order);
         setContentView(R.layout.edit_order);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         tabLayout = findViewById(R.id.orderTab);
         viewPager2 = findViewById(R.id.view_pager);
         newOrderTabAdapter = new EditOrderTabAdapter(this);
@@ -222,6 +225,7 @@ public class Edit_order extends AppCompatActivity {
                     orderhistory.child(order_number).setValue(orderHistoryClass).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
+                            logEditOrder(username, order_number,"update");
                             Toast.makeText(Edit_order.this, "Edit order " + order_number + " successful", Toast.LENGTH_SHORT).show();
                             Intent Orderhistory = new Intent(Edit_order.this, Orderhistory.class);
                             startActivity(Orderhistory);
@@ -259,6 +263,7 @@ public class Edit_order extends AppCompatActivity {
                                 }
                             }
                         }
+                        logEditOrder(username, order_number,"delete");
                         Toast.makeText(Edit_order.this, "Delete order " + order_number + " successful", Toast.LENGTH_SHORT).show();
                         Intent Orderhistory = new Intent(Edit_order.this, Orderhistory.class);
                         startActivity(Orderhistory);
@@ -369,5 +374,18 @@ public class Edit_order extends AppCompatActivity {
 
         return finalCost;
 
+    }
+    public void logEditOrder(String username, String orderId, String action) {
+        Bundle bundle = new Bundle();
+        bundle.putString("username", username);
+        bundle.putString("order_id", orderId);
+        mFirebaseAnalytics.logEvent("edit_order", bundle);
+        bundle.putString("Action", action);
+        if(action == "update"){
+            mFirebaseAnalytics.logEvent("edit_order", bundle);
+        }
+        else if(action == "delete"){
+            mFirebaseAnalytics.logEvent("delete_order", bundle);
+        }
     }
 }

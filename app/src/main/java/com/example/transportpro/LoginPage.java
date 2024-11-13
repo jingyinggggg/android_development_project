@@ -39,6 +39,7 @@ import java.lang.reflect.Type;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class LoginPage extends AppCompatActivity {
 
@@ -50,12 +51,13 @@ public class LoginPage extends AppCompatActivity {
     Button admin;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://transportpro-13407-default-rtdb.firebaseio.com/");
     SharedPreferences sharedPreferences;
-
+    private FirebaseAnalytics mFirebaseAnalytics;
     //sharedpreferences
     private static final String SHARED_PREF_NAME = "localstorage";
     private static final String KEY_ID = "userId";
     private static final String KEY_USERNAME = "userName";
     private static final String REMEMBER = "remember";
+    private static final String LOGIN_TIME = "login_time";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,12 @@ public class LoginPage extends AppCompatActivity {
         binding = LoginPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Initialize Firebase Analytics
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        // Log an event when the Login Page is viewed
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.METHOD, "LoginPage");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle);
         //Set the style for the name of application
         logo = (TextView) findViewById(R.id.logoName); //Find the logo id
         String logoText = "TransportPro"; //Assign the logo name
@@ -91,61 +99,89 @@ public class LoginPage extends AppCompatActivity {
                 username = binding.usernameInput.getText().toString().toLowerCase(Locale.ROOT);
                 password = binding.passwordInput.getText().toString();
 
-                if (username.isEmpty()){
+                if (username.isEmpty()) {
                     Toast.makeText(LoginPage.this, "Please enter your username", Toast.LENGTH_SHORT).show();
-                }
-                else if(password.isEmpty()) {
+                    // Log empty username attempt
+                    Bundle bundle = new Bundle();
+                    bundle.putString("login_status", "empty_username");
+                    mFirebaseAnalytics.logEvent("login_attempt", bundle);
+                } else if (password.isEmpty()) {
                     Toast.makeText(LoginPage.this, "Please enter your password", Toast.LENGTH_SHORT).show();
-                }
-                else{
+                    // Log empty password attempt
+                    Bundle bundle = new Bundle();
+                    bundle.putString("login_status", "empty_password");
+                    mFirebaseAnalytics.logEvent("login_attempt", bundle);
+                } else {
                     databaseReference.child("User").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(snapshot.hasChild(username)){
-
+                            if (snapshot.hasChild(username)) {
                                 final String getPassword = snapshot.child(username).child("password").getValue(String.class);
                                 final int getAdmin = snapshot.child(username).child("isAdminAcc").getValue(int.class);
                                 final int getId = snapshot.child(username).child("userId").getValue(int.class);
                                 final int getDeletedAcc = snapshot.child(username).child("isDeletedAcc").getValue(int.class);
 
-                                if (getPassword.equals(password)){
-                                    if (getDeletedAcc == 0){
+                                if (getPassword.equals(password)) {
+                                    if (getDeletedAcc == 0) {
                                         SharedPreferences.Editor editor = sharedPreferences.edit();
                                         editor.putString(KEY_ID, String.valueOf(getId));
                                         editor.putString(KEY_USERNAME, username);
-                                        if(rememberUser.isChecked()){
+                                        if (rememberUser.isChecked()) {
                                             editor.putString(REMEMBER, "true");
                                         }
                                         editor.apply();
-                                        if(getAdmin == 1){
+                                        // Record login time
+                                        long loginTime = System.currentTimeMillis();
+                                        editor.putLong(LOGIN_TIME, loginTime);
+                                        editor.apply();
+                                        // Log successful login event
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString(FirebaseAnalytics.Param.METHOD, "FirebaseDatabase");
+                                        bundle.putString("username", username);
+                                        bundle.putString("login_status", "success");
+                                        mFirebaseAnalytics.setUserProperty("username", username);
+                                        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle);
+                                        if (getAdmin == 1) {
                                             adminPage();
-                                        }
-                                        else{
+                                        } else {
                                             openHomePage();
                                         }
-                                        Toast.makeText(LoginPage.this, "Welcome "+ username, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginPage.this, "Welcome " + username, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(LoginPage.this, "This account has been deleted", Toast.LENGTH_SHORT).show();
+                                        // Log deleted account attempt
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("login_status", "deleted_account");
+                                        bundle.putString("username", username);
+                                        mFirebaseAnalytics.logEvent("login_attempt", bundle);
                                     }
-                                    else{
-                                        Toast.makeText(LoginPage.this, "This account have been deleted", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                                else{
+                                } else {
                                     Toast.makeText(LoginPage.this, "Wrong password", Toast.LENGTH_SHORT).show();
+                                    // Log wrong password attempt
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("login_status", "wrong_password");
+                                    bundle.putString("username", username);
+                                    mFirebaseAnalytics.logEvent("login_attempt", bundle);
                                 }
-                            }
-                            else{
+                            } else {
                                 Toast.makeText(LoginPage.this, "Username not found", Toast.LENGTH_SHORT).show();
+                                // Log username not found attempt
+                                Bundle bundle = new Bundle();
+                                bundle.putString("login_status", "username_not_found");
+                                bundle.putString("username", username);
+                                mFirebaseAnalytics.logEvent("login_attempt", bundle);
                             }
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-
+                            // Log database error
+                            Bundle bundle = new Bundle();
+                            bundle.putString("login_status", "database_error");
+                            mFirebaseAnalytics.logEvent("login_attempt", bundle);
                         }
                     });
                 }
-
-
             }
         });
 
@@ -171,5 +207,18 @@ public class LoginPage extends AppCompatActivity {
         startActivity(adminPage);
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Record logout time and calculate session duration
+        long loginTime = sharedPreferences.getLong(LOGIN_TIME, 0);
+        if (loginTime > 0) {
+            long logoutTime = System.currentTimeMillis();
+            long sessionDuration = logoutTime - loginTime;
+            // Log the session duration
+            Bundle bundle = new Bundle();
+            bundle.putLong("session_duration", sessionDuration);
+            mFirebaseAnalytics.logEvent("user_session", bundle);
+        }
+    }
 }

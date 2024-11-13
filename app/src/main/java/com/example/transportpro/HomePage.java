@@ -21,6 +21,7 @@ import android.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,6 +45,7 @@ public class HomePage extends AppCompatActivity {
     private static final String KEY_ID = "userId";
     private static final String KEY_USERNAME = "userName";
     private static final String REMEMBER = "remember";
+    private FirebaseAnalytics mFirebaseAnalytics;
     String username, userid;
 
     int systemNotificationCount = 0;
@@ -61,6 +63,7 @@ public class HomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage);
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         getUserDetail();
         getTracking();
 
@@ -102,6 +105,10 @@ public class HomePage extends AppCompatActivity {
                     startActivity(intent);
                     drawerLayout.closeDrawer(GravityCompat.START);
                 } else if (item.getItemId() == R.id.sidebar_logout) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("username", username);
+                    bundle.putString("activity", "Log out");
+                    mFirebaseAnalytics.logEvent("LogOut", bundle);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.clear();
                     editor.commit();

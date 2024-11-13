@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -20,15 +21,17 @@ public class AdminHomePage extends AppCompatActivity {
     Button post_announcement;
     SharedPreferences sharedPreferences;
     private static final String SHARED_PREF_NAME = "localstorage";
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_homepage);
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
 
         booking_page = (Button) findViewById(R.id.booking_page);
-        warehouse_page = (Button)findViewById(R.id.warehouse);
+        warehouse_page = (Button) findViewById(R.id.warehouse);
         order_page = findViewById(R.id.order_request);
         post_announcement = findViewById(R.id.post_announcement);
         log_out = findViewById(R.id.header_btn);
@@ -47,18 +50,26 @@ public class AdminHomePage extends AppCompatActivity {
             }
         });
 
-        order_page.setOnClickListener(new View.OnClickListener(){
+        order_page.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){redirect_order(view);}
+            public void onClick(View view) {
+                redirect_order(view);
+            }
         });
 
         post_announcement.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { redirect_post(view); }
+            public void onClick(View view) {
+                redirect_post(view);
+            }
         });
         log_out.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("username", "admin");
+                bundle.putString("activity", "Log out");
+                mFirebaseAnalytics.logEvent("LogOut", bundle);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear();
                 editor.commit();
@@ -73,16 +84,17 @@ public class AdminHomePage extends AppCompatActivity {
         startActivity(bookingIntent);
     }
 
-    public void redirect_warehouse(View v){
+    public void redirect_warehouse(View v) {
         Intent warehouseIntent = new Intent(AdminHomePage.this, WarehouseAdmin.class);
         startActivity(warehouseIntent);
     }
 
-    public void redirect_order(View v){
+    public void redirect_order(View v) {
         Intent orderIntent = new Intent(AdminHomePage.this, OrderAdmin.class);
         startActivity(orderIntent);
     }
-    public void redirect_post(View v){
+
+    public void redirect_post(View v) {
         Intent postIntent = new Intent(AdminHomePage.this, PostAnnouncement.class);
         startActivity(postIntent);
     }

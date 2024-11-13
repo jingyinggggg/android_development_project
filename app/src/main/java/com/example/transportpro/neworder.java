@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,11 +50,13 @@ public class NewOrder extends AppCompatActivity {
     String userid, transport_type, sensitive_item, name, mobile, email, state, postcode, add1, add2 ,add3, order_number, formattedDate;
     double totalweight;
     int count;
+    private FirebaseAnalytics mFirebaseAnalytics;
     List<String> category_name = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.neworder);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         tabLayout = findViewById(R.id.orderTab);
         viewPager2 = findViewById(R.id.view_pager);
         newOrderTabAdapter = new NewOrderTabAdapter(this);
@@ -249,6 +252,7 @@ public class NewOrder extends AppCompatActivity {
                                     orderhistory.child(order_number).setValue(orderHistoryClass).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
+                                            logSubmitOrder(username, order_number);
                                             Toast.makeText(NewOrder.this, "Order Submitted", Toast.LENGTH_SHORT).show();
                                             Intent home = new Intent(NewOrder.this, HomePage.class);
                                             startActivity(home);
@@ -375,5 +379,11 @@ public class NewOrder extends AppCompatActivity {
 
         return finalCost;
 
+    }
+    public void logSubmitOrder(String username, String orderId) {
+        Bundle bundle = new Bundle();
+        bundle.putString("username", username);
+        bundle.putString("order_id", orderId);
+        mFirebaseAnalytics.logEvent("submit_order", bundle);
     }
 }
