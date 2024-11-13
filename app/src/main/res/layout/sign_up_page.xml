@@ -20,7 +20,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginStart="23dp"
         android:text="Create New Account"
         android:textSize="24sp"
@@ -107,11 +107,18 @@
         app:boxCornerRadiusTopEnd="7dp"
         app:boxCornerRadiusTopStart="7dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/phoneInput"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutPhone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="phone"/>
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phoneInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phone Number (+60XXXXXXXXX)"
+                android:inputType="phone"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -164,11 +171,33 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/terms_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginEnd="23dp"
+        android:text="Read Privacy Policies"
+        android:textColor="@color/blue"
+        android:textSize="14sp"
+        android:clickable="true"
+        android:autoLink="none"
+        android:paddingTop="10dp" />
+
+    <CheckBox
+        android:id="@+id/terms_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginEnd="23dp"
+        android:text="I have read and accept the Privacy Policies"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
     <Button
         android:id="@+id/signUpButton"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginTop="20dp"
         android:layout_marginStart="23dp"
         android:layout_marginEnd="23dp"
         android:gravity="center"
