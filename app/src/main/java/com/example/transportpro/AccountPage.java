@@ -22,6 +22,7 @@ import com.example.transportpro.databinding.HomepageBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,11 +47,14 @@ public class AccountPage extends AppCompatActivity {
             "Perlis", "Terengganu" ,"Sabah" , "Sarawak" };
     Spinner state_spinner;
     String selectedState;
+    private FirebaseAnalytics mFirebaseAnalytics;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityAccountPageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME,MODE_PRIVATE);
         String userid = sharedPreferences.getString(KEY_ID,null);
@@ -184,6 +188,7 @@ public class AccountPage extends AppCompatActivity {
                         reference.child(username).setValue(addressClass).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
+                                logUpdateAddress(username);
                                 Toast.makeText(AccountPage.this, "Update Successfully!", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -235,5 +240,12 @@ public class AccountPage extends AppCompatActivity {
         }
 
         finish();
+    }
+    public void logUpdateAddress(String username) {
+        Bundle bundle = new Bundle();
+        bundle.putString("username", username);
+        bundle.putString("activity", "Update address");
+
+        mFirebaseAnalytics.logEvent("Update_profile", bundle);
     }
 }

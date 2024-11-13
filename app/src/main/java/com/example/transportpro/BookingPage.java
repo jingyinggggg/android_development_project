@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.transportpro.databinding.BookingPageBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -27,6 +28,7 @@ public class BookingPage extends AppCompatActivity {
     BookingPageBinding binding;
     String trackNumber, category, deliveryBy, quantity, description;
     SharedPreferences sharedPreferences;
+    private FirebaseAnalytics mFirebaseAnalytics;
     //sharedpreferences
     private static final String SHARED_PREF_NAME = "localstorage";
     private static final String KEY_ID = "userId";
@@ -40,6 +42,8 @@ public class BookingPage extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME,MODE_PRIVATE);
         String userid = sharedPreferences.getString(KEY_ID,null);
         String username = sharedPreferences.getString(KEY_USERNAME,null);
+        // Initialize Firebase Analytics
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         //Show message for user when they submit a booking
         Button submitButton = findViewById(R.id.submitButton);
@@ -70,6 +74,7 @@ public class BookingPage extends AppCompatActivity {
                     reference.child(username).child(trackNumber).setValue(booking).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            logSubmitBooking(username, trackNumber);
                             showToast("Booking submitted!");
                             Intent home = new Intent(BookingPage.this, HomePage.class);
                             startActivity(home);
@@ -92,5 +97,13 @@ public class BookingPage extends AppCompatActivity {
     public void backHomePage(View view){
         Intent homePage = new Intent(BookingPage.this, HomePage.class);
         startActivity(homePage);
+    }
+
+    public void logSubmitBooking(String username, String bookingId) {
+        Bundle bundle = new Bundle();
+        bundle.putString("username", username);
+        bundle.putString("booking_id", bookingId);
+        bundle.putString(FirebaseAnalytics.Param.METHOD, "FirebaseDatabase");
+        mFirebaseAnalytics.logEvent("submit_booking", bundle);
     }
 }

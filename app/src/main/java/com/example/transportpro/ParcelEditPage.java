@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,11 +37,14 @@ public class ParcelEditPage extends AppCompatActivity {
     private static final String SHARED_PREF_NAME = "localstorage";
     private static final String KEY_USERNAME = "userName";
     private static final String KEY_ID = "userId";
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.parcel_edit_page);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         Intent intent = getIntent();
         String trackNumber = intent.getStringExtra("track_number");
@@ -120,6 +124,7 @@ public class ParcelEditPage extends AppCompatActivity {
                                         reference.child(track_Number).setValue(booking).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
+                                                logEditBooking(username, track_Number, "update");
                                                 Toast.makeText(ParcelEditPage.this, "Parcel has been updated successfully!", Toast.LENGTH_SHORT).show();
 
                                                 Handler handler = new Handler();
@@ -165,6 +170,7 @@ public class ParcelEditPage extends AppCompatActivity {
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
+                                                logEditBooking(username, trackNumber, "delete");
                                                 Toast.makeText(ParcelEditPage.this, "Parcel has been deleted successfully!", Toast.LENGTH_SHORT).show();
 
                                                 // Navigate back to the previous page after a delay
@@ -212,5 +218,21 @@ public class ParcelEditPage extends AppCompatActivity {
         Intent parcelPage = new Intent(this, NewOrder.class);
         startActivity(parcelPage);
     }
+
+    public void logEditBooking(String username, String bookingId, String action) {
+        Bundle bundle = new Bundle();
+        bundle.putString("username", username);
+        bundle.putString("booking_id", bookingId);
+        bundle.putString("Action", action);
+
+        if(action == "update"){
+            mFirebaseAnalytics.logEvent("edit_booking", bundle);
+        }
+        else if(action == "delete"){
+            mFirebaseAnalytics.logEvent("delete_booking", bundle);
+        }
+
+    }
+
 
 }

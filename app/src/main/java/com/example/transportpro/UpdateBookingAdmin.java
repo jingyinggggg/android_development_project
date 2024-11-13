@@ -26,6 +26,7 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,12 +49,13 @@ public class UpdateBookingAdmin extends AppCompatActivity {
     String username;
     double previousWeight;
     double weight;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_booking);
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         header_button = findViewById(R.id.backArrow);
 
         /*Header Button Function*/
@@ -160,6 +162,7 @@ public class UpdateBookingAdmin extends AppCompatActivity {
                                                     String imageResId  = String.valueOf(R.drawable.reminder);
 
                                                     int is_read = 0;
+                                                    logUpdateBooking(username, "accept");
                                                     DatabaseReference notificationReference = FirebaseDatabase.getInstance().getReference("Notification").child(username).child(title).child(content);
 
                                                     NotificationClass notificationClass = new NotificationClass(userId,imageResId ,title,type,content,is_read);
@@ -233,6 +236,7 @@ public class UpdateBookingAdmin extends AppCompatActivity {
                                                     bookingReference.child(username).child(trackNo).getRef().removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
+                                                            logUpdateBooking(username, "decline");
                                                             Toast.makeText(UpdateBookingAdmin.this, "The Booking " + trackNo + " has been declined", Toast.LENGTH_SHORT).show();
                                                         }
                                                     }).addOnFailureListener(e -> Toast.makeText(UpdateBookingAdmin.this, "Failed to decline booking.", Toast.LENGTH_SHORT).show());
@@ -307,6 +311,17 @@ public class UpdateBookingAdmin extends AppCompatActivity {
         startActivity(viewBookingIntent);
     }
 
+    public void logUpdateBooking(String username, String action) {
+        Bundle bundle = new Bundle();
+        bundle.putString("username", username);
+
+        if (action == "accept"){
+            mFirebaseAnalytics.logEvent("accept_booking", bundle);
+        }
+        else if (action == "decline"){
+            mFirebaseAnalytics.logEvent("decline_booking", bundle);
+        }
 
 
+    }
 }

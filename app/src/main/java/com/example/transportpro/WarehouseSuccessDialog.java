@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,11 +28,14 @@ public class WarehouseSuccessDialog extends AppCompatActivity {
     DatabaseReference reference;
     String username,order_number,order_location;
     int userId;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.success_dialog_admin);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         ImageView dialogImage = findViewById(R.id.dialog_image);
         TextView dialogMessage = findViewById(R.id.dialog_message);
@@ -87,6 +91,7 @@ public class WarehouseSuccessDialog extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (username!=null) {
+                                logUpdateWarehouse(username);
                                 String title = "order";
                                 String type = "order_delivered";
                                 String content = order_number;
@@ -115,7 +120,11 @@ public class WarehouseSuccessDialog extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+    }
+    public void logUpdateWarehouse(String username) {
+        Bundle bundle = new Bundle();
+        bundle.putString("username", username);
+        mFirebaseAnalytics.logEvent("update_warehouse", bundle);
 
     }
 }

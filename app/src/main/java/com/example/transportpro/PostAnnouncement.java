@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,12 +47,15 @@ public class PostAnnouncement extends AppCompatActivity {
     String username;
     String selectedItem;
     int drawableResId;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_announcement);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         announcement_title = findViewById(R.id.announcement_title);
         announcement_content = findViewById(R.id.announcement_content);
@@ -129,6 +133,7 @@ public class PostAnnouncement extends AppCompatActivity {
                     systemNotificationReference.child(currentUser).child(type).setValue(systemNotificationClass).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
+                            logPostAnnouncement(username);
                             showPostedDialog();
                             Toast.makeText(PostAnnouncement.this, "Announcement Post Successful!", Toast.LENGTH_SHORT).show();
                         }
@@ -182,5 +187,12 @@ public class PostAnnouncement extends AppCompatActivity {
     public void backAdminHomepage(View view) {
         Intent intent = new Intent(PostAnnouncement.this, AdminHomePage.class);
         startActivity(intent);
+    }
+
+    public void logPostAnnouncement(String username) {
+        Bundle bundle = new Bundle();
+        bundle.putString("username", username);
+        mFirebaseAnalytics.logEvent("post_announcement", bundle);
+
     }
 }

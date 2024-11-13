@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -20,11 +21,12 @@ public class AdminHomePage extends AppCompatActivity {
     Button post_announcement;
     SharedPreferences sharedPreferences;
     private static final String SHARED_PREF_NAME = "localstorage";
+    private FirebaseAnalytics mFirebaseAnalytics;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_homepage);
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, MODE_PRIVATE);
 
         booking_page = (Button) findViewById(R.id.booking_page);
@@ -59,9 +61,15 @@ public class AdminHomePage extends AppCompatActivity {
         log_out.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString("username", "admin");
+                bundle.putString("activity", "Log out");
+
+                mFirebaseAnalytics.logEvent("LogOut", bundle);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.clear();
                 editor.commit();
+
                 Intent bookingIntent = new Intent(AdminHomePage.this, LoginPage.class);
                 startActivity(bookingIntent);
             }

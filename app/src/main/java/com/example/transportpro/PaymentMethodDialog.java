@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,6 +50,7 @@ public class PaymentMethodDialog extends DialogFragment {
     private static final String SHARED_PREF_NAME = "localstorage";
     private static final String KEY_ID = "userId";
     private static final String KEY_USERNAME = "userName";
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     public PaymentMethodDialog(Context context) {
         this.context = context;
@@ -65,7 +67,7 @@ public class PaymentMethodDialog extends DialogFragment {
         debit_credit_card = view.findViewById(R.id.debit_credit_card);
 
         pay = view.findViewById(R.id.payButton);
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
 
         String callfrom = getArguments().getString("callfrom");
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -166,6 +168,7 @@ public class PaymentMethodDialog extends DialogFragment {
                                 reference.child(username).child(payment_number).setValue(walletActivityClass).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
+                                        logWalletTopUp(username, payment_number, activity);
                                     }
                                 });
                             }
@@ -249,6 +252,7 @@ public class PaymentMethodDialog extends DialogFragment {
                                                         DatabaseReference order_reference = db.getReference("OrderHistory");
 
                                                         order_reference.child(username).child(order_number).child("isPay").setValue(1);
+                                                        logPayment(username, order_number, invoice_number);
 
                                                         Toast.makeText(getActivity(), order_number + "Paid Successful", Toast.LENGTH_SHORT).show();
 
@@ -359,5 +363,21 @@ public class PaymentMethodDialog extends DialogFragment {
 
     public interface PaymentCompleteListener {
         void onPaymentComplete();
+    }
+
+    public void logPayment(String username, String orderId, String invoice_number) {
+        Bundle bundle = new Bundle();
+        bundle.putString("username", username);
+        bundle.putString("order_id", orderId);
+        bundle.putString("invoice_number", invoice_number);
+        mFirebaseAnalytics.logEvent("Payment", bundle);
+    }
+    public void logWalletTopUp(String username, String payment_id, String activity) {
+        Bundle bundle = new Bundle();
+        bundle.putString("username", username);
+        bundle.putString("payment_id", payment_id);
+        bundle.putString("activity", activity);
+
+        mFirebaseAnalytics.logEvent("Top_up", bundle);
     }
 }
