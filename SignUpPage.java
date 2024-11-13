@@ -187,7 +187,7 @@ public class SignUpPage extends AppCompatActivity {
         }
 
         // Phone number validation
-        String phonePattern = "^[0-9]{10,13}$";  // Example pattern for 10-13 digit phone numbers
+        String phonePattern = "^\\(\\+\\d{1,3}\\) \\d{7,10}$";
         if (!contact.matches(phonePattern)) {
             Toast.makeText(SignUpPage.this, "Invalid phone number format", Toast.LENGTH_SHORT).show();
             return false;
