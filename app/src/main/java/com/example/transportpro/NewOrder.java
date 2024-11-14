@@ -88,6 +88,15 @@ public class NewOrder extends AppCompatActivity {
             }
         });
 
+        name = "";
+        mobile = "";
+        email = "";
+        state = "";
+        postcode = "";
+        add1 = "";
+        add2 = "";
+        add3 = "";
+
         sharedViewModel.getReceiverData().observe(this, new Observer<ReceiverData>() {
             @Override
             public void onChanged(ReceiverData receiverData) {
@@ -150,21 +159,21 @@ public class NewOrder extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (nextButton.getText().toString().equals("Confirm")) {
-                    // Check if receiver data is properly filled in
-                    if (name == null || mobile == null || email == null || postcode == null || add1 == null || add2 == null || add3 == null) {
-                        Toast.makeText(NewOrder.this, "Please fill in all receiver data fields", Toast.LENGTH_SHORT).show();
-                    }
-                    else if(state == "  - - Select State - - "){
-                        Toast.makeText(NewOrder.this, "Please select your state", Toast.LENGTH_SHORT).show();
-                    }
                     // Check if transport_type is selected
-                    else if (transport_type == null) {
+                    if (transport_type == null) {
                         Toast.makeText(NewOrder.this, "Please select a transport type", Toast.LENGTH_SHORT).show();
                     }
                     // Check if sensitive_item is selected
                     else if (sensitive_item == null) {
                         Toast.makeText(NewOrder.this, "Please select whether the item is sensitive", Toast.LENGTH_SHORT).show();
-                    } else {
+                    }
+                    // Check if receiver data is properly filled in
+                    else if (name.equals("") || mobile.equals("")  || email.equals("")  || postcode.equals("")  || add1.equals("")  || add2.equals("")  || add3.equals("") ) {
+                        Toast.makeText(NewOrder.this, "Please fill in all receiver data fields", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(state == "  - - Select State - - "){
+                        Toast.makeText(NewOrder.this, "Please select your state", Toast.LENGTH_SHORT).show();
+                    }else {
                         // Query the Firebase Realtime Database to get the snapshot
                         database.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override

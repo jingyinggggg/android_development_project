@@ -131,7 +131,6 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
                         if(!orderHistoryClass.getOrder_location().equals("Complete Ship to Receiver Address")){
                             addOrderView(orderHistoryClass);
                         }
-
                         adapterUpdateWarehouseOrder.notifyDataSetChanged();
                     }
                 }
@@ -142,8 +141,6 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
                 // Handle onCancelled
             }
         });
-
-
 
 
         // Find the TextView and Image Button in the header layout
@@ -173,8 +170,6 @@ public class UpdateWarehouseAdmin extends AppCompatActivity {
         ItemName.setText("Item Name : " + order.getCategory());
         order_status.setText("Order Status : " + order.getOrder_status());
         TotalItems.setText(String.valueOf(order.getParcel_quantity()));
-
-
 
         // Add the view to the container
         orderContainer.addView(orderView);

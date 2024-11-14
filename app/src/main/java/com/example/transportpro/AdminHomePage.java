@@ -18,6 +18,7 @@ public class AdminHomePage extends AppCompatActivity {
     Button warehouse_page;
     Button order_page;
     Button post_announcement;
+    Button manage_user;
     SharedPreferences sharedPreferences;
     private static final String SHARED_PREF_NAME = "localstorage";
     @Override
@@ -31,6 +32,7 @@ public class AdminHomePage extends AppCompatActivity {
         warehouse_page = (Button)findViewById(R.id.warehouse);
         order_page = findViewById(R.id.order_request);
         post_announcement = findViewById(R.id.post_announcement);
+        manage_user = findViewById(R.id.manage_user);
         log_out = findViewById(R.id.header_btn);
 
         booking_page.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +57,10 @@ public class AdminHomePage extends AppCompatActivity {
         post_announcement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { redirect_post(view); }
+        });
+        manage_user.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {redirect_manage_user(view);}
         });
         log_out.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,4 +92,11 @@ public class AdminHomePage extends AppCompatActivity {
         Intent postIntent = new Intent(AdminHomePage.this, PostAnnouncement.class);
         startActivity(postIntent);
     }
+
+    public void redirect_manage_user(View view) {
+        Intent intent = new Intent(this, UserListAdmin.class);
+        startActivity(intent);
+    }
+
+
 }
