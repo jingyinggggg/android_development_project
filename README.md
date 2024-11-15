@@ -6,6 +6,7 @@ This application is a freight-forwarding application helps manage the logistics 
 
 # Installation Instructions
 1.  Make sure you have your Android Studio installed or you can download it from [here](https://developer.android.com/studio).
+####
 2.  You can clone this repository by executing the following command (provided you have git installed) OR download the zip file from the main branch:
 ```bash
 https://github.com/jingyinggggg/android_development_project.git
@@ -39,10 +40,8 @@ https://github.com/jingyinggggg/android_development_project.git
 ####
 ![image](https://github.com/user-attachments/assets/653ae45f-0758-4045-932c-0409ba1f1c3a)
 ####
-- If you wish to login without signing up a new user, you can use the created user:
-####
-username: try
-####
+- If you wish to login without signing up a new user, you can use the created user:.<br>
+username: try.<br>
 password: abcd1234!
 ####
 - When you have successfully login to the application, the homepage will be displayed as shown in the figure below:
