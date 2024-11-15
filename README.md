@@ -6,8 +6,8 @@ This application is a freight-forwarding application helps manage the logistics 
 
 # Installation Instructions:
 1. You can Clone or download the file from the main branch.
-####
-<tab><tab>https://github.com/jingyinggggg/android_development_project.git
+```bash
+git clone https://github.com/jingyinggggg/android_development_project.git
 2. 
 3. 
 
