@@ -52,7 +52,7 @@ public class HomePage extends AppCompatActivity {
     int regularNotificationCount = 0;
 
     // Time out session (Auto log out)
-    private static final long TIMEOUT_PERIOD = 10 * 60 * 1000; // 10 minutes in milliseconds
+    private static final long TIMEOUT_PERIOD = 3 * 60 * 1000; // 3 minutes in milliseconds
     private Handler inactivityHandler = new Handler();
     private Runnable inactivityRunnable;
     private boolean isAutoLogout = false;
