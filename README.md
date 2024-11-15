@@ -20,10 +20,11 @@ https://github.com/jingyinggggg/android_development_project.git
   - Set the connection mode to "File Transfer" or "MTP" (Media Transfer Protocol): After connecting the USB, a prompt may appear on your device asking to select a USB mode. Choose "File Transfer" or "MTP" to allow data transfer between your computer and device.
   - Confirm the connection: A message may pop up on your device asking if you trust the computer. Select Allow to confirm and establish the connection.
 ####
-**OR**
+<p align="center">OR</p>
+
 - Run the application with the emulator provided by Android Studio.
 ####
-4.  You are ready to run the application now.
+5.  You are ready to run the application now.
 
 # Usage
 - If you have successfully installed the application, the start-up page will be shown in figure below:
@@ -37,6 +38,12 @@ https://github.com/jingyinggggg/android_development_project.git
 - If you are a new user, click on the sign up text, the system will bring you to the sign up page.
 ####
 ![image](https://github.com/user-attachments/assets/653ae45f-0758-4045-932c-0409ba1f1c3a)
+####
+- If you wish to login without signing up a new user, you can use the created user:
+####
+username: try
+####
+password: abcd1234!
 ####
 - When you have successfully login to the application, the homepage will be displayed as shown in the figure below:
 ####
