@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".UserDetailsAdmin">
+
+    <FrameLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#3D3F99"
+        android:gravity="center"
+        android:paddingTop="20sp"
+        android:paddingBottom="10sp">
+
+        <ImageButton
+            android:id="@+id/backArrow"
+            android:layout_width="32sp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00FFFFFF"
+            android:onClick="backUserList"
+            app:srcCompat="@drawable/baseline_arrow_back_24" />
+
+        <TextView
+            android:layout_width="351dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Edit User Details"
+            android:textColor="#FEFEFE"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10sp">
+
+        <Button
+            android:id="@+id/viewUpdateAddressButton"
+            android:layout_width="500px"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/purple"
+            android:text="Manage User Address"
+            android:visibility="gone"
+            app:cornerRadius="10dp" />
+
+        <TextView
+            android:id="@+id/noAddressTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:text="No address found for this user"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/editUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="Username"
+            android:inputType="text"
+            android:padding="15sp" />
+
+        <EditText
+            android:id="@+id/editFullname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Full Name"
+            android:inputType="textPersonName"
+            android:padding="15sp" />
+
+        <EditText
+            android:id="@+id/editEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:padding="15sp" />
+
+        <EditText
+            android:id="@+id/editContact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Contact"
+            android:inputType="phone"
+            android:padding="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:text="Admin Access" />
+
+        <Switch
+            android:id="@+id/adminAccessSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Is Admin" />
+
+        <Button
+            android:id="@+id/saveUserButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/purple"
+            android:text="Save Changes"
+            android:textColor="@drawable/btn_txt_selector_update_booking"
+            app:cornerRadius="10dp" />
+
+        <Button
+            android:id="@+id/deactivateUserButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/red"
+            android:text="Deactivate Account"
+            android:textColor="@android:color/white"
+            app:cornerRadius="10dp" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

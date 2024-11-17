@@ -121,7 +121,7 @@ public class WalletPage extends AppCompatActivity implements PaymentMethodDialog
 
         //Recent Activity
 
-            reference = FirebaseDatabase.getInstance().getReference("Wallet_Activity");
+        reference = FirebaseDatabase.getInstance().getReference("Wallet_Activity");
 
         recyclerView.setVisibility(View.VISIBLE);
         recyclerView.setHasFixedSize(true);
@@ -137,50 +137,50 @@ public class WalletPage extends AppCompatActivity implements PaymentMethodDialog
         reference.child(username)
                 .orderByKey()
                 .addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                walletActivityClassArrayList.clear();
-                ArrayList<WalletActivityClass> reversed = new ArrayList<>();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    WalletActivityClass walletActivityClass = dataSnapshot.getValue(WalletActivityClass.class);
-                    reversed.add(walletActivityClass);
-                }
-
-                Collections.reverse(reversed);
-                walletActivityClassArrayList.addAll(reversed);
-                adapterWallet.notifyDataSetChanged();
-
-                reference = db.getReference("Wallet");
-
-                reference.child(username).child("wallet_balance").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            String encryptedBalance = dataSnapshot.getValue(String.class);
-
-                            // Decrypt the balance
-                            try {
-                                String walletBalance = EncryptionUtil.decrypt(encryptedBalance);
-                                TextView wallet_balance = findViewById(R.id.wallet_balance);
-                                String balance = String.format("%.2f", walletBalance);
-                                wallet_balance.setText("RM " + balance);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        walletActivityClassArrayList.clear();
+                        ArrayList<WalletActivityClass> reversed = new ArrayList<>();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            WalletActivityClass walletActivityClass = dataSnapshot.getValue(WalletActivityClass.class);
+                            reversed.add(walletActivityClass);
                         }
+
+                        Collections.reverse(reversed);
+                        walletActivityClassArrayList.addAll(reversed);
+                        adapterWallet.notifyDataSetChanged();
+
+                        reference = db.getReference("Wallet");
+
+                        reference.child(username).child("wallet_balance").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    String encryptedBalance = dataSnapshot.getValue(String.class);
+
+                                    // Decrypt the balance
+                                    try {
+                                        String walletBalance = EncryptionUtil.decrypt(encryptedBalance);
+                                        TextView wallet_balance = findViewById(R.id.wallet_balance);
+                                        String balance = String.format("%.2f", walletBalance);
+                                        wallet_balance.setText("RM " + balance);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                // Handle database error
+                            }
+                        });
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        // Handle database error
+
                     }
+
                 });
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-
-        });
 
     }
 

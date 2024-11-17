@@ -53,7 +53,6 @@
                         android:layout_height="wrap_content"
                         android:src="@drawable/ad3"></ImageView>
 
-
                 </ViewFlipper>
             </LinearLayout>
 
@@ -63,9 +62,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:id="@+id/PostAnnouncement"
+            android:id="@+id/ManageUser"
             android:layout_below="@+id/image"
             android:layout_marginTop="5sp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp">
+
+            <Button
+                android:id="@+id/manage_user"
+                android:layout_width="match_parent"
+                android:layout_height="70sp"
+                android:backgroundTint="@color/white"
+                android:gravity="center"
+                android:text="User Management"
+                android:textAllCaps="false"
+                android:drawableLeft="@drawable/user_management"
+                android:paddingLeft="30dip"
+                android:paddingRight="26dip"
+                android:textColor="@color/purple"
+                android:textIsSelectable="false"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/purple"
+                app:cornerRadius="10dp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/PostAnnouncement"
+            android:layout_below="@+id/ManageUser"
+            android:layout_marginTop="21sp"
             android:layout_marginLeft="10sp"
             android:layout_marginRight="10sp">
 

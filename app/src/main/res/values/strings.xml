@@ -7,7 +7,7 @@
     <string name="signup">Sign Up</string>
     <string name="name">Enter Full Name</string>
     <string name="email">Enter E-mail</string>
-    <string name="phoneNo">Enter Phone Number</string>
+    <string name="phoneNo">Enter Phone Number (+60XXXXXXXXX)</string>
     <string name="passwordReenter">Re-enter Password</string>
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>

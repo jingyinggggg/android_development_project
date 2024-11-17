@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
+import android.os.Handler;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -26,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -48,6 +50,14 @@ public class HomePage extends AppCompatActivity {
 
     int systemNotificationCount = 0;
     int regularNotificationCount = 0;
+
+    // Time out session (Auto log out)
+    private static final long TIMEOUT_PERIOD = 3 * 60 * 1000; // 3 minutes in milliseconds
+    private Handler inactivityHandler = new Handler();
+    private Runnable inactivityRunnable;
+    private boolean isAutoLogout = false;
+
+    private FirebaseAnalytics mFirebaseAnalytics;
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         if(actionBarDrawerToggle.onOptionsItemSelected(item)){
@@ -69,12 +79,19 @@ public class HomePage extends AppCompatActivity {
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         bottomNavigationView = findViewById(R.id.bottombar);
 
         bottomNavigationView.setSelectedItemId(R.id.bar_home);
 
+        // Set up inactivityRunnable for auto logout
+        inactivityRunnable = () -> {
+            isAutoLogout = true;
+            logOutUser();
+        };
+
         bottomNavigationView.setOnItemSelectedListener(item -> {
+            resetInactivityTimer();
             if (item.getItemId() == R.id.bar_payment) {
                 Intent intent = new Intent(HomePage.this,Payment.class).putExtra("from","homepage");
                 startActivity(intent);
@@ -91,6 +108,7 @@ public class HomePage extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                resetInactivityTimer();
                 if (item.getItemId() == R.id.sidebar_notification){
                     Log.i("Menu drawer Tag", "Notification is clicked");
                     Intent intent = new Intent(HomePage.this,NotificationPage.class);
@@ -102,6 +120,10 @@ public class HomePage extends AppCompatActivity {
                     startActivity(intent);
                     drawerLayout.closeDrawer(GravityCompat.START);
                 } else if (item.getItemId() == R.id.sidebar_logout) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("username", username);
+                    bundle.putString("activity", "Log out");
+                    mFirebaseAnalytics.logEvent("LogOut", bundle);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.clear();
                     editor.commit();
@@ -177,6 +199,7 @@ public class HomePage extends AppCompatActivity {
         copy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                resetInactivityTimer();
                 ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clipData = ClipData.newPlainText("Warehouse", "广东省佛山市 南海区狮山镇 狮岭村新马国际C仓黄生转ID0");
                 clipboardManager.setPrimaryClip(clipData);
@@ -228,7 +251,58 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
+
+
     }
+
+    // Start the inactivity timer
+    private void startInactivityTimer() {
+        inactivityHandler.postDelayed(inactivityRunnable, TIMEOUT_PERIOD);
+    }
+
+    // Reset the inactivity timer
+    private void resetInactivityTimer() {
+        inactivityHandler.removeCallbacks(inactivityRunnable);
+        startInactivityTimer();
+    }
+
+    // Log out the user
+    private void logOutUser() {
+        if (isAutoLogout) {
+            Toast.makeText(this, "You have been logged out due to inactivity.", Toast.LENGTH_LONG).show();
+        }
+
+        // Clear shared preferences
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+
+        // Log event in Firebase Analytics if needed
+//        Bundle bundle = new Bundle();
+//        bundle.putString("username", username);
+//        bundle.putString("activity", "Auto Logout");
+//        mFirebaseAnalytics.logEvent("AutoLogOut", bundle);
+
+        // Redirect to Login Page
+        Intent intent = new Intent(HomePage.this, LoginPage.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startInactivityTimer(); // Start the timer when activity resumes
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        inactivityHandler.removeCallbacks(inactivityRunnable); // Stop the timer when activity is paused
+    }
+
+
     public void homepage_redirect(View view){
         if (view.getId() == R.id.booking_btn){
             Intent intent = new Intent(HomePage.this,BookingPage.class);
