@@ -11,7 +11,7 @@ This application is a freight-forwarding application helps manage the logistics 
 ```bash
 https://github.com/jingyinggggg/android_development_project.git
 ```
-3.  Rename the "neworder" file to "Neworder" before running the app in Android Studio
+3.  Rename the "neworder" file to "NewOrder" before running the app in Android Studio
 ####
 4.  If you are using a real device, you can pair your device with wifi or USB.
 - If you are using wifi make sure that your device and the pc connect to the same wifi connection.
