@@ -1,9 +1,6 @@
 package com.example.transportpro;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,19 +17,24 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.transportpro.databinding.SignUpPageBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,10 +48,9 @@ public class SignUpPage extends AppCompatActivity {
     FirebaseDatabase db;
     DatabaseReference reference;
     private CheckBox privacyCheckbox;
-    private FirebaseAnalytics mFirebaseAnalytics;
-
     // Dialog Variables
     Dialog showDialog;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,71 +62,79 @@ public class SignUpPage extends AppCompatActivity {
         TextView termsText = findViewById(R.id.terms_text);
 
         termsText.setOnClickListener(v -> showPrivacyPoliciesDialog());
+
+        // Initialize Firebase Database reference
+        reference = FirebaseDatabase.getInstance().getReference("User");
+
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
-        binding.signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (privacyCheckbox.isChecked()) {
-                    fullname = binding.nameInput.getText().toString();
-                    username = binding.usernameInput.getText().toString().toLowerCase(Locale.ROOT);
-                    email = binding.emailInput.getText().toString();
-                    contact = binding.phoneInput.getText().toString();
-                    password = binding.passwordInput.getText().toString();
-                    Rpassword = binding.reenterPasswordInput.getText().toString();
+        binding.signUpButton.setOnClickListener(v -> {
+            // Check if the terms and conditions checkbox is checked
+            if (privacyCheckbox.isChecked()) {
+                // Proceed with the sign-up logic
+                fullname = Objects.requireNonNull(binding.nameInput.getText()).toString();
+                username = Objects.requireNonNull(binding.usernameInput.getText()).toString().toLowerCase(Locale.ROOT);
+                email = Objects.requireNonNull(binding.emailInput.getText()).toString();
+                contact = Objects.requireNonNull(binding.phoneInput.getText()).toString();
+                password = Objects.requireNonNull(binding.passwordInput.getText()).toString();
+                Rpassword = Objects.requireNonNull(binding.reenterPasswordInput.getText()).toString();
 
-                    if (validateInputs()) {
-                        db = FirebaseDatabase.getInstance();
-                        reference = db.getReference("User");
+                // Validate input fields
+                if (!validateInputs()) {
+                    showAlertDialog(R.layout.sign_up_fail, 2);
+//                    return; // Stop execution if validation fails
+                }
 
-                        // Query to find the maximum user ID in the database
-                        reference.orderByChild("username").equalTo(username).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.exists()) {
-                                    showAlertDialog(R.layout.sign_up_fail, 2);
-                                    Toast.makeText(SignUpPage.this, "Username is already used, please try another", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    // Username is unique, proceed to create the user
-                                    reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            int numUsersWithSameUsername = (int) dataSnapshot.getChildrenCount();
-                                            int newUserId = numUsersWithSameUsername + 1;
+                // Disable button to prevent multiple submissions
+                binding.signUpButton.setEnabled(false);
 
-                                            int isAdminAccount = 0;
-                                            int isDeletedAccount = 0;
-
-                                            // Hash the password with bcrypt
-                                            String hashedPassword = BCrypt.withDefaults().hashToString(12, password.toCharArray());
-
-                                            User user = new User(isDeletedAccount, isAdminAccount, newUserId, fullname, username, email, contact, hashedPassword);
-
-                                            showAlertDialog(R.layout.sign_up_successful, 1);
-                                            setUserInDatabase(username, user);
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            // Handle database error
-                                        }
-                                    });
+                // Check if the email already exists in Firebase Authentication
+                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                firebaseAuth.fetchSignInMethodsForEmail(email)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                boolean isEmailExistsInAuth = !Objects.requireNonNull(task.getResult().getSignInMethods()).isEmpty();
+                                if (isEmailExistsInAuth) {
+                                    // Email exists in Firebase Authentication
+                                    Toast.makeText(SignUpPage.this, "Email is already used in Firebase Authentication, please try another", Toast.LENGTH_SHORT).show();
+                                    binding.signUpButton.setEnabled(true); // Re-enable the button
+                                    return;
                                 }
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                // Handle database error
+                                // Email not found in Firebase Authentication, now check Firebase Realtime Database
+                                DatabaseReference database = FirebaseDatabase.getInstance().getReference("User");
+                                database.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot.exists()) {
+                                            // Email exists in Firebase Realtime Database
+                                            Toast.makeText(SignUpPage.this, "Email is already used in the system, please try another", Toast.LENGTH_SHORT).show();
+                                            binding.signUpButton.setEnabled(true); // Re-enable the button
+                                        } else {
+                                            // Email doesn't exist in both Firebase Authentication and Realtime Database, create the user
+                                            createUser(firebaseAuth);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Toast.makeText(SignUpPage.this, "Error checking email in database: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                                        binding.signUpButton.setEnabled(true); // Re-enable button in case of error
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(SignUpPage.this, "Error: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                                binding.signUpButton.setEnabled(true); // Re-enable the button on failure
                             }
                         });
-                    } else {
-                        showAlertDialog(R.layout.sign_up_fail, 2);
-                    }
-                }
+            } else {
+                // Show a warning if terms and conditions are not accepted
+                Toast.makeText(SignUpPage.this, "Please agree to the Privacy Policies before proceeding.", Toast.LENGTH_SHORT).show();
             }
         });
 
         // Password Validation
+        // Get reference to the TextInputLayout and TextInputEditText for password
         TextInputLayout layoutPassword = findViewById(R.id.textInputLayoutPassword);
         TextInputEditText eTextPassword = findViewById(R.id.passwordInput);
         eTextPassword.addTextChangedListener(new TextWatcher() {
@@ -158,6 +167,7 @@ public class SignUpPage extends AppCompatActivity {
         });
 
         // Validate Re-enter password
+        // Get reference to the TextInputLayout and TextInputEditText for reenter password
         TextInputLayout textInputLayoutReenterPassword = findViewById(R.id.textInputLayoutRepeatPassword);
         TextInputEditText reenterPasswordInput = findViewById(R.id.reenterPasswordInput);
 
@@ -168,13 +178,62 @@ public class SignUpPage extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String password = eTextPassword.getText().toString();
-                String reenterPassword = reenterPasswordInput.getText().toString();
+                String password = Objects.requireNonNull(eTextPassword.getText()).toString();
+                String reenterPassword = Objects.requireNonNull(reenterPasswordInput.getText()).toString();
 
+                // If password does not match reenter password, error message displayed
                 if (password.equals(reenterPassword)) {
                     textInputLayoutReenterPassword.setError(null);
                 } else {
                     textInputLayoutReenterPassword.setError("Password does not match");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        TextInputLayout textInputLayoutEmail = findViewById(R.id.textInputLayoutEmail);
+        TextInputEditText emailInput = findViewById(R.id.emailInput);
+
+        emailInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String email = Objects.requireNonNull(emailInput.getText()).toString();
+
+                if (email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")){
+                    textInputLayoutEmail.setError(null);
+                } else {
+                    textInputLayoutEmail.setError("Invalid Email");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        TextInputLayout textInputLayoutContact = findViewById(R.id.textInputLayoutPhoneNumber);
+        TextInputEditText contactInput = findViewById(R.id.phoneInput);
+
+        contactInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String contact = Objects.requireNonNull(contactInput.getText()).toString();
+
+                if (contact.matches("^\\+60\\d{7,9}$")){
+                    textInputLayoutContact.setError(null);
+                } else {
+                    textInputLayoutContact.setError("Invalid Email");
                 }
             }
 
@@ -212,66 +271,124 @@ public class SignUpPage extends AppCompatActivity {
         return true;
     }
 
+    private void createUser(FirebaseAuth firebaseAuth) {
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                        if (firebaseUser != null) {
+                            firebaseUser.sendEmailVerification()
+                                    .addOnCompleteListener(verificationTask -> {
+                                        if (verificationTask.isSuccessful()) {
+                                            Toast.makeText(SignUpPage.this, "User created successfully. Please verify your email.", Toast.LENGTH_SHORT).show();
+                                            // Fetch last userId, increment it, and assign it to the new user
+                                            incrementAndSaveUserId(fullname, username, email, contact, password, privacyCheckbox.isChecked());
+                                        } else {
+                                            showAlertDialog(R.layout.sign_up_fail, 2);
+                                            Toast.makeText(SignUpPage.this, "Error sending verification email.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+                    } else {
+                        Toast.makeText(SignUpPage.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    // Method to increment and save new userId
+    private void incrementAndSaveUserId(String fullname, String username, String email, String contact, String password, boolean hasAgreedToPrivacyPolicy) {
+        DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference("User");
+
+        // Fetch all users to find the maximum userId
+        usersReference.get().addOnCompleteListener(task -> {
+
+            String hashedPassword = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+
+            if (task.isSuccessful() && task.getResult().exists()) {
+                int maxUserId = 0;
+
+                for (DataSnapshot userSnapshot : task.getResult().getChildren()) {
+                    int currentUserId = userSnapshot.child("userId").getValue(Integer.class);
+                    if (currentUserId > maxUserId) {
+                        maxUserId = currentUserId;
+                    }
+                }
+                int newUserId = maxUserId + 1;
+
+                // Create new user with the incremented userId
+                User user = new User(0, 0, newUserId, fullname, username, email, contact, hashedPassword, hasAgreedToPrivacyPolicy);
+                setUserInDatabase(username, user);
+                showAlertDialog(R.layout.sign_up_successful, 1);
+            } else {
+                // If there are no users, start with userId = 1
+                int initialUserId = 1;
+                User user = new User(0, 0, initialUserId, fullname, username, email, contact, hashedPassword, hasAgreedToPrivacyPolicy);
+                setUserInDatabase(username, user);
+                showAlertDialog(R.layout.sign_up_successful, 1);
+            }
+        });
+    }
     public void backLoginPage(View view) {
         Intent loginPage = new Intent(this, LoginPage.class);
         startActivity(loginPage);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void showAlertDialog(int myLayout, int type) {
         showDialog = new Dialog(SignUpPage.this);
         View layoutView = getLayoutInflater().inflate(myLayout, null);
 
         showDialog.setContentView(layoutView);
         showDialog.setCancelable(false);
-        showDialog.getWindow().getAttributes().windowAnimations = R.style.animation;
+        Objects.requireNonNull(showDialog.getWindow()).getAttributes().windowAnimations = R.style.animation;
+        // Sign up successful
         if (type == 1) {
             showDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.round_button_success));
+
             Button done = showDialog.findViewById(R.id.done);
-            done.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    backLoginPage(v);
-                }
-            });
+
+            done.setOnClickListener(this::backLoginPage);
         } else {
             showDialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.round_button_fail));
             Button signUpFail = layoutView.findViewById(R.id.tryAgainButton);
-            signUpFail.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showDialog.dismiss();
-                }
-            });
+            // Click on the try again button
+            signUpFail.setOnClickListener(v -> showDialog.dismiss());
         }
 
         showDialog.show();
     }
 
     private void setUserInDatabase(String username, User user) {
-        reference.child(username).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("username", username);
-                    bundle.putString("activity", "User register");
-                    mFirebaseAnalytics.logEvent("Update_profile", bundle);
-                    Log.d("Firebase", "Data write successful");
-                    binding.nameInput.setText("");
-                    binding.usernameInput.setText("");
-                    binding.emailInput.setText("");
-                    binding.phoneInput.setText("");
-                    binding.passwordInput.setText("");
-                } else {
-                    Exception e = task.getException();
-                    if (e != null) {
-                        Log.e("Firebase", "Data write failed: " + e.getMessage());
-                        showAlertDialog(R.layout.sign_up_fail, 2);
-                    }
-                }
+        reference.child(username).setValue(user).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Bundle bundle = new Bundle();
+                bundle.putString("username", username);
+                bundle.putString("activity", "User register");
+                mFirebaseAnalytics.logEvent("Update_profile", bundle);
+
+                // Log the success
+                Log.d("Firebase", "User data saved successfully.");
+
+                // Reset the input fields after successful write
+                binding.nameInput.setText("");
+                binding.usernameInput.setText("");
+                binding.emailInput.setText("");
+                binding.phoneInput.setText("");
+                binding.passwordInput.setText("");
+
+                // Redirect to the login page and pass the success message
+                showAlertDialog(R.layout.sign_up_successful, 1);
+
+                // Optionally, you can finish the current SignUpPage activity to prevent users from navigating back
+                finish();
+            } else {
+                // Handle the error
+                Log.e("Firebase", "Failed to save user data: " + task.getException().getMessage());
+                showAlertDialog(R.layout.sign_up_fail, 2);
             }
         });
     }
+
     private void showPrivacyPoliciesDialog() {
         // Define your Privacy Policies text
         String privacyPoliciesText = "Privacy Policy\n" +

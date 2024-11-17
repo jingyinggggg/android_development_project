@@ -9,12 +9,13 @@ public class User {
     String email;
     String contact;
     String password;
+    private boolean hasAgreedToPrivacyPolicy;
 
     public User() {
-        // Default constructor required for Firebase
+
     }
 
-    public User(int isDeletedAcc,int isAdminAcc, int userId, String fullname, String username, String email, String contact, String password) {
+    public User(int isDeletedAcc,int isAdminAcc, int userId, String fullname, String username, String email, String contact, String password, boolean hasAgreedToPrivacyPolicy) {
         this.isDeletedAcc = isDeletedAcc;
         this.isAdminAcc = isAdminAcc;
         this.userId = userId;
@@ -23,6 +24,7 @@ public class User {
         this.email = email;
         this.contact = contact;
         this.password = password;
+        setHasAgreedToPrivacyPolicy(hasAgreedToPrivacyPolicy);
     }
 
     public int getIsDeletedAcc(){
@@ -77,5 +79,15 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    // Example setter
+    public void setHasAgreedToPrivacyPolicy(boolean hasAgreedToPrivacyPolicy) {
+        this.hasAgreedToPrivacyPolicy = hasAgreedToPrivacyPolicy;
+    }
+
+    // Example getter
+    public boolean hasAgreedToPrivacyPolicy() {
+        return hasAgreedToPrivacyPolicy;
     }
 }

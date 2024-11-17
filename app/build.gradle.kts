@@ -39,6 +39,10 @@ android {
     }
     buildToolsVersion = "34.0.0"
 
+    tasks.withType<JavaCompile> {
+        options.compilerArgs.add("-Xlint:deprecation")
+    }
+
 }
 
 dependencies {
@@ -63,10 +67,10 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics:22.1.2")
 
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
-////    implementation("com.google.firebase:firebase-database")
-////    implementation("com.google.firebase:firebase-database-ktx")
+    implementation("com.google.firebase:firebase-database")
+    implementation("com.google.firebase:firebase-database-ktx")
     implementation("com.google.firebase:firebase-auth")
-//
+
     // Google Play Services Authentication
     implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation ("com.google.android.gms:play-services-safetynet:18.0.1")

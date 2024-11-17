@@ -147,11 +147,11 @@ public class LoginPage extends AppCompatActivity {
                                         if (getAdmin == 1) {
                                             adminPage();
                                         } else {
-                                            openHomePage();
-                                            // Redirect to PhoneVerification for OTP check as part of MFA
-//                                            Intent phoneVerification = new Intent(LoginPage.this, PhoneVerification.class);
-//                                            phoneVerification.putExtra("USERNAME", username); // Pass the username to PhoneVerification
-//                                            startActivity(phoneVerification);
+//                                            openHomePage();
+//                                             Redirect to PhoneVerification for OTP check as part of MFA
+                                            Intent phoneVerification = new Intent(LoginPage.this, PhoneVerification.class);
+                                            phoneVerification.putExtra("USERNAME", username); // Pass the username to PhoneVerification
+                                            startActivity(phoneVerification);
                                         }
                                         Toast.makeText(LoginPage.this, "Welcome " + username, Toast.LENGTH_SHORT).show();
                                     } else {
