@@ -44,6 +44,8 @@ https://github.com/jingyinggggg/android_development_project.git
 username: try<br>
 password: abcd1234!
 ####
+- Please enter phone number start with +60XXXXXXXXX to receive the OTP code (You will be logged into your account when you fill in a correct OTP code).
+####
 - When you have successfully login to the application, the homepage will be displayed as shown in the figure below:
 ####
 ![image](https://github.com/user-attachments/assets/5223495f-aaba-47f2-8477-8079171cc7b4)
